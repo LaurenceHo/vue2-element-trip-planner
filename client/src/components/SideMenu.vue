@@ -47,20 +47,22 @@
   @Component({})
 
   export default class SideMenu extends Vue {
-    handleSelect(value: any) {
-      console.log(value);
+    handleSelect(value: string) {
+      if (value === 'create') {
+        this.$router.push('/create-trip');
+      }
     }
   }
 </script>
 
 <style scoped>
   .side-menu {
-    border: none
+    border: none;
+    min-height: 55rem;
   }
 
   .side-menu:not(.el-menu--collapse) {
     width: 15rem;
-    min-height: 20rem;
   }
 
   .menu-icon {

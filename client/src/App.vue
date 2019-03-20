@@ -6,7 +6,7 @@
     <el-container>
       <side-menu/>
       <el-main>
-        <dashboard/>
+        <router-view/>
       </el-main>
     </el-container>
   </el-container>
@@ -15,8 +15,8 @@
 <script lang="ts">
   import Vue from 'vue'
   import Component from 'vue-class-component'
-  import TopBar from './components/TopBar';
-  import Dashboard from './components/Dashboard';
+  import TopBar from './components/TopBar.vue';
+  import Dashboard from './components/Dashboard.vue';
   import SideMenu from './components/SideMenu.vue';
 
   @Component({

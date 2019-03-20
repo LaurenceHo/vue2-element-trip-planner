@@ -1,13 +1,23 @@
 <template>
   <div class="top-bar">
-    <img
-      src="../assets/vue-logo.png"
-      height="30"
-      alt="Vuejs"
+    <el-button type="info" circle @click="handleClick">
+      <img
+        src="../assets/vue-logo.png"
+        height="30"
+        alt="Vuejs"
+      />
+    </el-button>
+    <hamburger
+      :toggle-click="toggleSideBar"
+      :is-active="this.$store.state.toggle"
+      class="hamburger-container"
     />
-    <hamburger :toggle-click="toggleSideBar" :is-active="this.$store.state.toggle" class="hamburger-container"/>
     <div class="right-menu">
-      <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
+      <el-dropdown
+        class="avatar-container right-menu-item hover-effect"
+        trigger="click"
+        @command="handleSelect"
+      >
         <span class="avatar-wrapper">
           <img
             class="avatar"
@@ -17,19 +27,15 @@
           /> {{username}}
         </span>
         <el-dropdown-menu slot="dropdown">
-          <router-link to="/">
-            <el-dropdown-item>
-              <font-awesome-icon icon="user" class="menu-icon"/>
-              Your profile
-            </el-dropdown-item>
-          </router-link>
-          <router-link to="/">
-            <el-dropdown-item>
-              <font-awesome-icon icon="cog" class="menu-icon"/>
-              Setting
-            </el-dropdown-item>
-          </router-link>
-          <el-dropdown-item divided>
+          <el-dropdown-item command="profile">
+            <font-awesome-icon icon="user" class="menu-icon"/>
+            Your profile
+          </el-dropdown-item>
+          <el-dropdown-item command="setting">
+            <font-awesome-icon icon="cog" class="menu-icon"/>
+            Setting
+          </el-dropdown-item>
+          <el-dropdown-item divided command="logout">
             <font-awesome-icon icon="sign-out-alt" class="menu-icon"/>
             Logout
           </el-dropdown-item>
@@ -42,7 +48,7 @@
 <script lang="ts">
   import Vue from 'vue'
   import Component from 'vue-class-component'
-  import Hamburger from './Hamburger';
+  import Hamburger from './Hamburger.vue';
 
   @Component({
     components: {Hamburger},
@@ -58,13 +64,20 @@
     toggleSideBar() {
       this.$store.dispatch('toggleSideBar')
     }
+
+    handleClick() {
+      this.$router.push('/');
+    }
+
+    handleSelect(value: string) {
+      console.log(value);
+    }
   }
 
 </script>
 
 <style scoped>
   .top-bar {
-    position: fixed;
     z-index: 1;
     width: 100%;
   }

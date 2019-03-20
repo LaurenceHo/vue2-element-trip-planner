@@ -47,7 +47,6 @@
 
 <style scoped>
   .main-content {
-    min-height: 60rem;
     padding: 0 2rem;
   }
 

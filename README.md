@@ -1,7 +1,7 @@
 # Fullstack web application using Vue2, element-ui, Nodejs, Express, Mysql, Gulp4 and Webpack4.
 
 ## Introduction
-This project demonstrates the basic CRUD functions combining Vue2 (Typescript), element-ui, Nodejs (Typescript), Express, Mysql. 
+This project demonstrates the basic CRUD functions combining Vue2 (Typescript), Vuex, element-ui, Nodejs (Typescript), Express, Mysql. 
 It uses Gulp for running task and TSLint for the server side, and uses Webpack4 for bundling front-end code. 
 You can use this web application doing trip planning.
 
@@ -67,22 +67,28 @@ vue-trip-planner
     │    │    ├── webpack.prod.js
     │    ├── src
     │    │    ├── assets
+    │    │         ├── default-avatar.png
     │    │         ├── favicon.png
     │    │         ├── vue-logo.png
     │    │    ├── Components
-    │    │         ├── Home.vue
+    │    │         ├── Dashboard.vue
+    │    │         ├── Hamburger.vue
     │    │         ├── SiderMenu.vue
     │    │         ├── TopBar.vue
+    │    │         ├── TripForm.vue
     │    │    ├── models
     │    │    │    ├── category.ts
     │    │    │    ├── event.ts
     │    │    │    ├── trip.ts
     │    │    ├── services
     │    │    │    ├── trip-service.ts
+    │    │    ├── store
+    │    │    │    ├── store.ts    
     │    │    ├── style
     │    │    │    ├── style.css
     │    │    ├── App.vue
     │    │    ├── main.ts
+    │    │    ├── router.ts
     │    │    ├── vue-shims.d.ts
     │    ├── index.html
     │    ├── tsconfig.json
