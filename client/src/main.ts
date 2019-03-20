@@ -29,6 +29,7 @@ import 'whatwg-fetch';
 
 import App from './App.vue';
 import router from './router';
+import { store } from './store/store';
 import './style/style.css';
 
 library.add(faArchive, faCalendarAlt, faCog, faFilter, faPlus, faSignOutAlt, faUser);
@@ -50,5 +51,6 @@ Vue.use(Submenu);
 new Vue({
   el: '#app',
   router,
+  store,
   render: h => h(App)
 });

@@ -5,10 +5,10 @@
       height="30"
       alt="Vuejs"
     />
-
+    <hamburger :toggle-click="toggleSideBar" :is-active="this.$store.state.toggle" class="hamburger-container"/>
     <div class="right-menu">
-      <el-dropdown>
-        <span class="el-dropdown-link">
+      <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
+        <span class="avatar-wrapper">
           <img
             class="avatar"
             src="../assets/default-avatar.png"
@@ -55,7 +55,9 @@
   })
 
   export default class TopBar extends Vue {
-
+    toggleSideBar() {
+      this.$store.dispatch('toggleSideBar')
+    }
   }
 
 </script>
@@ -67,14 +69,44 @@
     width: 100%;
   }
 
+  .hamburger-container {
+    line-height: 3.5rem;
+    height: 100%;
+    float: left;
+    cursor: pointer;
+    transition: background .3s;
+  }
+
+  .hamburger-container:hover {
+    background: rgba(0, 0, 0, .1);
+  }
+
   .right-menu {
     float: right;
     height: 100%;
-    line-height: 4rem;
+    line-height: 3.8rem;
     padding-right: 2rem;
   }
 
-  .el-dropdown-link {
+  .right-menu-item {
+    display: inline-block;
+    padding: 0 0.4rem;
+    height: 100%;
+    font-size: 1rem;
+    color: #5a5e66;
+    vertical-align: text-bottom;
+  }
+
+  .hover-effect {
+    cursor: pointer;
+    transition: background .3s;
+  }
+
+  .hover-effect:hover {
+    background: rgba(0, 0, 0, .1)
+  }
+
+  .avatar-wrapper {
     cursor: pointer;
     color: #ffd04b;
   }
@@ -89,12 +121,6 @@
 
   .menu-icon {
     padding-right: 0.5rem
-  }
-
-  .github-button {
-    color: #fff;
-    font-size: 2rem;
-    padding: 1rem;
   }
 
 </style>

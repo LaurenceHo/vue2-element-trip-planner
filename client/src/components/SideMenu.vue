@@ -8,7 +8,7 @@
       default-active="current"
       @select="handleSelect"
       :default-openeds="['dateFilter']"
-      :collapse="isCollapse"
+      :collapse="!this.$store.state.toggle"
     >
       <el-menu-item index="create">
         <font-awesome-icon icon="plus" class="menu-icon"/>
@@ -47,12 +47,6 @@
   @Component({})
 
   export default class SideMenu extends Vue {
-    data() {
-      return {
-        isCollapse: false
-      };
-    }
-
     handleSelect(value: any) {
       console.log(value);
     }

@@ -37,5 +37,6 @@
     background-color: #545c64;
     color: #fff;
     line-height: 5rem;
+    padding: 0;
   }
 </style>
