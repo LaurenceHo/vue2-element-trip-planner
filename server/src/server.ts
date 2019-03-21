@@ -2,7 +2,7 @@ import * as bodyParser from 'body-parser';
 import * as express from 'express';
 import * as path from 'path';
 
-import { schema } from './database/database-schema';
+import { schema } from './database/schema';
 import * as eventRoute from './routes/event-route';
 import * as tripRoute from './routes/trip-route';
 
