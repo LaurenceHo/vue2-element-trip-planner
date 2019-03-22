@@ -1,31 +1,24 @@
 import DatabaseService from '../database/database-service';
+import { knex } from '../database/knex';
 import { Event } from '../models/event';
 import { BaseRepository } from './base-repository';
 
 const database = new DatabaseService();
 
-const queryByColumns = (columns: string[], query: string, options: any): string => {
-  if (columns) {
-    options.push(columns);
-    return query.replace('*', '??');
-  } else {
-    return query;
-  }
-};
-
 export class EventRepository implements BaseRepository<Event> {
-  retrieve(columns: string[], where: string, callback: any): void {
-    const options: any[] = [];
-    let query = 'SELECT * FROM event ';
-    query = queryByColumns(columns, query, options);
-    
-    if (where) {
-      query += 'WHERE' + where;
+  retrieve(columns: string[], whereClauses: object, callback: any): void {
+    if (columns) {
+      knex('event')
+        .columnInfo(columns)
+        .where(whereClauses)
+        .then((results: Event[]) => callback(results))
+        .catch((err: any) => callback(err));
+    } else {
+      knex('event')
+        .where(whereClauses)
+        .then((results: Event[]) => callback(results))
+        .catch((err: any) => callback(err));
     }
-    
-    database.query(query, options).then(
-      (results: Event[]) => callback(results)
-    ).catch(err => callback(err));
   }
   
   create(item: Event, callback: any): void {

@@ -1,48 +1,42 @@
 import DatabaseService from '../database/database-service';
-import { Event } from '../models/event';
+import { knex } from '../database/knex';
 import { Trip } from '../models/trip';
+import { TripDay } from '../models/trip-day';
 import { BaseRepository } from './base-repository';
 
 const database = new DatabaseService();
 
-const queryByColumns = (columns: string[], query: string, options: any): string => {
-  if (columns) {
-    options.push(columns);
-    return query.replace('*', '??');
-  } else {
-    return query;
-  }
-};
-
 export class TripRepository implements BaseRepository<Trip> {
   retrieveDetail(id: number, callback: any): void {
-    console.log(JSON.stringify(id));
     let trip: Trip = null;
-    database.query('SELECT * FROM trip WHERE id = ?', [ id ]).then(
-      (results: Trip[]) => {
+    knex('trip')
+      .where({id})
+      .then((results: Trip[]) => {
         trip = results[ 0 ];
-        database.query('SELECT * FROM event WHERE trip_id = ?', [ id ]).then(
-          (results: Event[]) => {
-            trip.events = results;
+        knex('trip_day')
+          .where({trip_id: id})
+          .then((results: TripDay[]) => {
+            // TODO, put TripDay object
             callback(trip);
-          }
-        ).catch(err => callback(err));
-      }
-    ).catch(err => callback(err));
+          })
+          .catch((err: any) => callback(err));
+      })
+      .catch((err: any) => callback(err));
   }
   
-  retrieve(columns: string[], where: string, callback: any): void {
-    const options: any[] = [];
-    let query = 'SELECT * FROM trip ';
-    query = queryByColumns(columns, query, options);
-    
-    if (where) {
-      query += 'WHERE' + where;
+  retrieve(columns: string[], whereClauses: object, callback: any): void {
+    if (columns) {
+      knex('trip')
+        .columnInfo(columns)
+        .where(whereClauses)
+        .then((results: Trip[]) => callback(results))
+        .catch((err: any) => callback(err));
+    } else {
+      knex('trip')
+        .where(whereClauses)
+        .then((results: Trip[]) => callback(results))
+        .catch((err: any) => callback(err));
     }
-    
-    database.query(query, options).then(
-      (results: Trip[]) => callback(results)
-    ).catch(err => callback(err));
   }
   
   create(item: Trip, callback: any): void {

@@ -111,6 +111,7 @@ vue-trip-planner
     │    │    │    ├── category.ts
     │    │    │    ├── event.ts
     │    │    │    ├── trip.ts
+    │    │    │    ├── trip-day.ts
     │    │    ├── repositories
     │    │    │    ├── base-repository.ts
     │    │    │    ├── event-repository.ts
