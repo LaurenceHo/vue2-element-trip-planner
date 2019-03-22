@@ -1,6 +1,7 @@
 import DatabaseService from '../database/database-service';
 import { Event } from '../models/event';
 import { BaseRepository } from './base-repository';
+import { knex } from '../database/knex';
 
 const database = new DatabaseService();
 
@@ -29,20 +30,27 @@ export class EventRepository implements BaseRepository<Event> {
   }
   
   create(item: Event, callback: any): void {
-    database.query('INSERT INTO event SET ?', item).then(
-      (result: any) => callback({event_id: result.insertId})
-    ).catch(err => callback(err));
+    knex('event')
+      .insert(item, 'id')
+      .then((returning: any) => callback({event_id: returning[ 0 ]}))
+      .catch((err: any) => callback(err));
   }
   
   update(item: Event, callback: any): void {
-    database.query('UPDATE event SET ? WHERE id = ?', [ item, item.id ]).then(
-      (result: any) => callback(result)
-    ).catch(err => callback(err));
+    item.updated_at = knex.fn.now();
+    
+    knex('event')
+      .where({id: item.id})
+      .update(item)
+      .then((result: any) => callback(result))
+      .catch((err: any) => callback(err));
   }
   
   delete(id: number, callback: any): void {
-    database.query('DELETE FROM event WHERE id = ?', [ id ]).then(
-      (result: any) => callback(result)
-    ).catch(err => callback(err));
+    knex('trip')
+      .where({id})
+      .del()
+      .then((result: any) => callback(result))
+      .catch((err: any) => callback(err));
   }
 }

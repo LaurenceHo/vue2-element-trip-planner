@@ -7,7 +7,8 @@ export const schema = () => {
         table.increments('id').primary();
         table.string('username').notNullable();
         table.string('password').notNullable();
-        table.timestamps();
+        table.timestamp('created_at').defaultTo(knex.fn.now());
+        table.timestamp('updated_at').defaultTo(knex.fn.now());
       }).catch((err: any) => console.error(err));
     }
   });
@@ -17,7 +18,8 @@ export const schema = () => {
       knex.schema.createTable('category', (table: any) => {
         table.increments('id').primary();
         table.string('name').notNullable();
-        table.timestamps();
+        table.timestamp('created_at').defaultTo(knex.fn.now());
+        table.timestamp('updated_at').defaultTo(knex.fn.now());
       }).catch((err: any) => console.error(err));
     }
   });
@@ -32,7 +34,8 @@ export const schema = () => {
         table.string('name');
         table.string('destination').notNullable();
         table.boolean('archived').notNullable();
-        table.timestamps();
+        table.timestamp('created_at').defaultTo(knex.fn.now());
+        table.timestamp('updated_at').defaultTo(knex.fn.now());
         table.foreign('user_id').references('id').inTable('user');
       }).catch((err: any) => console.error(err));
     }
@@ -44,7 +47,8 @@ export const schema = () => {
         table.increments('id').primary();
         table.integer('trip_id').unsigned().notNullable();
         table.date('trip_date').notNullable();
-        table.timestamps();
+        table.timestamp('created_at').defaultTo(knex.fn.now());
+        table.timestamp('updated_at').defaultTo(knex.fn.now());
         table.foreign('trip_id').references('id').inTable('trip');
       }).catch((err: any) => console.error(err));
     }
@@ -65,7 +69,8 @@ export const schema = () => {
         table.text('tag');
         table.integer('cost');
         table.string('currency');
-        table.timestamps();
+        table.timestamp('created_at').defaultTo(knex.fn.now());
+        table.timestamp('updated_at').defaultTo(knex.fn.now());
         table.foreign('trip_day_id').references('id').inTable('trip_day');
         table.foreign('category_id').references('id').inTable('category');
       }).catch((err: any) => console.error(err));

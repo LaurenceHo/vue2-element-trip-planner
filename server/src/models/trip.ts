@@ -6,5 +6,7 @@ export interface Trip {
   name: string;
   destination: string;
   archived: boolean;
-  events: object;
+  trip_day: object;
+  created_at: string;
+  updated_at: string;
 }

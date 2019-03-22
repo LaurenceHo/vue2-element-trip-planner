@@ -2,6 +2,7 @@ import DatabaseService from '../database/database-service';
 import { Event } from '../models/event';
 import { Trip } from '../models/trip';
 import { BaseRepository } from './base-repository';
+import { knex } from '../database/knex';
 
 const database = new DatabaseService();
 
@@ -46,20 +47,27 @@ export class TripRepository implements BaseRepository<Trip> {
   }
   
   create(item: Trip, callback: any): void {
-    database.query('INSERT INTO trip SET ?', item).then(
-      (result: any) => callback({trip_id: result.insertId})
-    ).catch(err => callback(err));
+    knex('trip')
+      .insert(item, 'id')
+      .then((returning: any) => callback({trip_id: returning[ 0 ]}))
+      .catch((err: any) => callback(err));
   }
   
   update(item: Trip, callback: any): void {
-    database.query('UPDATE trip SET ? WHERE id = ?', [ item, item.id ]).then(
-      (result: any) => callback(result)
-    ).catch(err => callback(err));
+    item.updated_at = knex.fn.now();
+    
+    knex('trip')
+      .where({id: item.id})
+      .update(item)
+      .then((result: any) => callback(result))
+      .catch((err: any) => callback(err));
   }
   
   delete(id: number, callback: any): void {
-    database.query('DELETE FROM trip WHERE id = ?', [ id ]).then(
-      (result: any) => callback(result)
-    ).catch(err => callback(err));
+    knex('trip')
+      .where({id})
+      .del()
+      .then((result: any) => callback(result))
+      .catch((err: any) => callback(err));
   }
 }

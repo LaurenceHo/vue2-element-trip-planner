@@ -1,13 +1,16 @@
 export interface Event {
   id: number;
-  trip_id: number;
+  trip_day_id: number;
   category_id: number;
-  title: string;
   start_time: string;
   end_time: string;
+  title: string;
   start_location: string;
   end_location: number;
-  note: number;
+  note: string;
+  tag: string[];
   cost: number;
   currency: string;
+  created_at: string;
+  updated_at: string;
 }
