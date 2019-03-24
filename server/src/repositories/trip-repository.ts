@@ -1,11 +1,7 @@
-import DatabaseService from '../database/database-service';
 import { knex } from '../database/knex';
 import { Trip } from '../models/trip';
 import { TripDay } from '../models/trip-day';
 import { BaseRepository } from './base-repository';
-import { knex } from '../database/knex';
-
-const database = new DatabaseService();
 
 export class TripRepository implements BaseRepository<Trip> {
   retrieveDetail(id: number, callback: any): void {
@@ -17,7 +13,7 @@ export class TripRepository implements BaseRepository<Trip> {
         knex('trip_day')
           .where({trip_id: id})
           .then((results: TripDay[]) => {
-            // TODO, put TripDay object
+            trip.trip_day = results;
             callback(trip);
           })
           .catch((err: any) => callback(err));

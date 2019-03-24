@@ -1,10 +1,6 @@
-import DatabaseService from '../database/database-service';
 import { knex } from '../database/knex';
 import { Event } from '../models/event';
 import { BaseRepository } from './base-repository';
-import { knex } from '../database/knex';
-
-const database = new DatabaseService();
 
 export class EventRepository implements BaseRepository<Event> {
   retrieve(columns: string[], whereClauses: object, callback: any): void {

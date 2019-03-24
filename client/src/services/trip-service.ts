@@ -9,7 +9,7 @@ const checkStatus = (response: any) => {
 const parseJSON = (response: any) => response.json();
 
 export const getAllTrips = () => {
-  return fetch('http://localhost:8080/api/trip', {
+  return fetch('http://localhost:3000/api/trip', {
     method: 'POST'
   }).then(checkStatus)
     .then(parseJSON)
