@@ -1,6 +1,6 @@
 export interface BaseRepository<T> {
   
-  retrieve(columns: string[], where: string, callback: any): void;
+  retrieve(columns: string[], whereClauses: object, callback: any): void;
   
   create(item: T, callback: any): void;
   

@@ -1,24 +1,19 @@
-import DatabaseService from '../database/database-service';
 import { knex } from '../database/knex';
-import { Trip } from '../models/trip';
 import { TripDay } from '../models/trip-day';
 import { BaseRepository } from './base-repository';
-import { knex } from '../database/knex';
 
-const database = new DatabaseService();
-
-export class TripRepository implements BaseRepository<Trip> {
+export class TripDayRepository implements BaseRepository<TripDay> {
   retrieveDetail(id: number, callback: any): void {
-    let trip: Trip = null;
-    knex('trip')
+    let tripDay: TripDay = null;
+    knex('trip_day')
       .where({id})
-      .then((results: Trip[]) => {
-        trip = results[ 0 ];
-        knex('trip_day')
-          .where({trip_id: id})
-          .then((results: TripDay[]) => {
-            // TODO, put TripDay object
-            callback(trip);
+      .then((results: TripDay[]) => {
+        tripDay = results[ 0 ];
+        knex('event')
+          .where({trip_day_id: id})
+          .then((results: Event[]) => {
+            tripDay.events = results;
+            callback(tripDay);
           })
           .catch((err: any) => callback(err));
       })
@@ -27,30 +22,30 @@ export class TripRepository implements BaseRepository<Trip> {
   
   retrieve(columns: string[], whereClauses: object, callback: any): void {
     if (columns) {
-      knex('trip')
+      knex('trip_day')
         .columnInfo(columns)
         .where(whereClauses)
-        .then((results: Trip[]) => callback(results))
+        .then((results: TripDay[]) => callback(results))
         .catch((err: any) => callback(err));
     } else {
-      knex('trip')
+      knex('trip_day')
         .where(whereClauses)
-        .then((results: Trip[]) => callback(results))
+        .then((results: TripDay[]) => callback(results))
         .catch((err: any) => callback(err));
     }
   }
   
-  create(item: Trip, callback: any): void {
-    knex('trip')
-      .insert(item, 'id')
-      .then((returning: any) => callback({trip_id: returning[ 0 ]}))
+  create(item: TripDay, callback: any): void {
+    knex('trip_day')
+      .insert(item)
+      .then((result: any) => callback(result))
       .catch((err: any) => callback(err));
   }
   
-  update(item: Trip, callback: any): void {
+  update(item: TripDay, callback: any): void {
     item.updated_at = knex.fn.now();
     
-    knex('trip')
+    knex('trip_day')
       .where({id: item.id})
       .update(item)
       .then((result: any) => callback(result))
@@ -58,7 +53,7 @@ export class TripRepository implements BaseRepository<Trip> {
   }
   
   delete(id: number, callback: any): void {
-    knex('trip')
+    knex('trip_day')
       .where({id})
       .del()
       .then((result: any) => callback(result))
