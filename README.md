@@ -46,15 +46,22 @@ npm run start-client
 ```
 ## API Document (from Express's view)
 ```
-1.  retrieve        (POST)   http://localhost:8080/api/trip
-2.  retrieveDetail  (GET)    http://localhost:8080/api/trip/:id
-3.  create          (POST)   http://localhost:8080/api/trip/create
-4.  update          (PUT)    http://localhost:8080/api/trip
-5.  delete          (DELETE) http://localhost:8080/api/trip/:id
-6.  retrieve        (POST)   http://localhost:8080/api/event
-7.  create          (POST)   http://localhost:8080/api/event/create
-8.  update          (PUT)    http://localhost:8080/api/event
-9.  delete          (DELETE) http://localhost:8080/api/event/:id
+1.  retrieveTrips         (POST)   http://localhost:8080/api/trip
+2.  retrieveTripDetail    (GET)    http://localhost:8080/api/trip/:trip_id
+3.  createTrip            (POST)   http://localhost:8080/api/trip/create
+4.  updateTrip            (PUT)    http://localhost:8080/api/trip/update
+5.  deleteTrip            (DELETE) http://localhost:8080/api/trip/:trip_id
+
+6.  retrieveTripDays      (GET)    http://localhost:8080/api/trip/:trip_id/day
+7.  retrieveTripDayDetail (GET)    http://localhost:8080/api/trip/:trip_id/day/:trip_day_id
+8.  createTripDay         (POST)   http://localhost:8080/api/trip/:trip_id/day/create
+9.  updateTripDay         (PUT)    http://localhost:8080/api/trip/:trip_id/day/update
+10. deleteTripDay         (DELETE) http://localhost:8080/api/trip/:trip_id/day/:trip_day_id
+
+11.  retrieveEvent        (POST)   http://localhost:8080/api/trip/:trip_id/day/:trip_day_id/event
+12.  createEvent          (POST)   http://localhost:8080/api/trip/:trip_id/day/:trip_day_id/event/create
+13.  updateEvent          (PUT)    http://localhost:8080/api/trip/:trip_id/day/:trip_day_id/event/update
+14.  deleteEvent          (DELETE) http://localhost:8080/api/trip/:trip_id/day/:trip_day_id/event/:event_id
 ```
 
 ## Directory Structure
@@ -104,6 +111,7 @@ vue-trip-planner
     │    │    │    ├── base-controller.ts
     │    │    │    ├── event-controller.ts
     │    │    │    ├── trip-controller.ts
+    │    │    │    ├── trip-day-controller.ts
     │    │    ├── database
     │    │    │    ├── database-schema.ts
     │    │    │    ├── database-service.ts
@@ -115,13 +123,16 @@ vue-trip-planner
     │    │    ├── repositories
     │    │    │    ├── base-repository.ts
     │    │    │    ├── event-repository.ts
+    │    │    │    ├── trip-day-repository.ts
     │    │    │    ├── trip-repository.ts
     │    │    ├── routes
     │    │    │    ├── event-route.ts
+    │    │    │    ├── trip-day-route.ts
     │    │    │    ├── trip-route.ts
     │    │    ├── services
     │    │    │    ├── base-service.ts
     │    │    │    ├── event-service.ts
+    │    │    │    ├── trip-day-service.ts
     │    │    │    ├── trip-service.ts
     │    │    ├── server.ts
     ├── .gitignore

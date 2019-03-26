@@ -1,18 +1,23 @@
 import express = require('express');
-import { Trip } from '../models/trip';
-import { TripService } from '../services/trip-service';
+import { TripDay } from '../models/trip-day';
+import { TripDayService } from '../services/trip-day-service';
 import { BaseController } from './base-controller';
 
-const tripService = new TripService();
+const tripDayService = new TripDayService();
 
-export class TripController implements BaseController<TripService> {
+export class TripDayController implements BaseController<TripDayService> {
   retrieveDetail(req: express.Request, res: express.Response): void {
     try {
-      const id: number = req.params.trip_id;
-      tripService.retrieveDetail(id, (result: Trip, error: any) => {
+      const trip_id: number = req.params.trip_id;
+      const trip_day_id: number = req.params.trip_day_id;
+      
+      tripDayService.retrieveDetail(trip_day_id, (result: TripDay, error: any) => {
         if (error) {
-          res.send({error});
+          res.status(500).send({error});
         } else {
+          if (result.trip_id !== trip_id) {
+            res.status(400).send({message: 'The data is not correct'});
+          }
           res.status(200).send(result);
         }
       });
@@ -24,8 +29,8 @@ export class TripController implements BaseController<TripService> {
   
   retrieve(req: express.Request, res: express.Response): void {
     try {
-      const where: object = req.body;
-      tripService.retrieve(where, (result: Trip[], error: any) => {
+      const trip_id: number = req.params.trip_id;
+      tripDayService.retrieve({trip_id}, (result: TripDay[], error: any) => {
         if (error) {
           res.send({error});
         } else {
@@ -40,8 +45,8 @@ export class TripController implements BaseController<TripService> {
   
   create(req: express.Request, res: express.Response): void {
     try {
-      const trip: Trip = req.body as Trip;
-      tripService.create(trip, (result: any, error: any) => {
+      const tripDay: TripDay = req.body as TripDay;
+      tripDayService.create(tripDay, (result: any, error: any) => {
         if (error) {
           res.send({error});
         } else {
@@ -56,8 +61,8 @@ export class TripController implements BaseController<TripService> {
   
   update(req: express.Request, res: express.Response): void {
     try {
-      const trip: Trip = req.body as Trip;
-      tripService.update(trip, (result: any, error: any) => {
+      const tripDay: TripDay = req.body as TripDay;
+      tripDayService.update(tripDay, (result: any, error: any) => {
         if (error) {
           res.send({error});
         } else {
@@ -72,8 +77,8 @@ export class TripController implements BaseController<TripService> {
   
   delete(req: express.Request, res: express.Response): void {
     try {
-      const id: number = req.params.trip_id;
-      tripService.delete(id, (result: any, error: any) => {
+      const trip_day_id: number = req.params.trip_day_id;
+      tripDayService.delete(trip_day_id, (result: any, error: any) => {
         if (error) {
           res.send({error});
         } else {
