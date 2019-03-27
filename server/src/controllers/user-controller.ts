@@ -15,7 +15,7 @@ export class UserController {
         if (error) {
           res.status(400).send({error});
         } else {
-          res.status(200).send(result);
+          res.status(200).send({success: true, result});
         }
       });
     } catch (e) {
@@ -35,13 +35,31 @@ export class UserController {
             res.status(401).json({message: 'Authentication failed. Email or password is wrong.'});
           } else {
             res.json({
+              success: true,
               token: jwt.sign({
                   email: user.email,
                   username: user.username
-                }, 'TripPlannerRestfulApis',
+                },
+                req.app.get('superSecret'),
                 {expiresIn: '1d'})
             });
           }
+        }
+      });
+    } catch (e) {
+      console.error(e);
+      res.status(400).send({error: 'error in your request'});
+    }
+  }
+  
+  update(req: express.Request, res: express.Response): void {
+    try {
+      const user: User = req.body;
+      userService.update(user, (result: any, error: any) => {
+        if (error) {
+          res.status(400).send({error});
+        } else {
+          res.status(200).send({success: true, result});
         }
       });
     } catch (e) {

@@ -17,6 +17,8 @@ export class UserService implements BaseService<User> {
   }
   
   update(item: User, callback: any): void {
+    item.password = bcrypt.hashSync(item.password, 10);
+    
     userRepository.update(item, callback);
   }
   

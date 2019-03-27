@@ -16,6 +16,7 @@ schema();
 
 const app = express();
 
+app.set('superSecret', 'TripPlannerRestfulApis');
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, '../client'), {index: false}));
@@ -34,22 +35,25 @@ const jwtAuthentication = (req: any, res: any, next: any) => {
   const token = req.body.token || req.query.token || req.headers[ 'x-access-token' ];
   
   if (token) {
-    jwt.verify(req.header.authorization.split(' ')[ 1 ], 'TripPlannerRestfulApis', (error: any, decode: any) => {
+    jwt.verify(token, app.get('superSecret'), (error: any, decode: any) => {
       if (error) {
-        req.user = undefined;
+        return res.status(401).send({
+          success: false,
+          message: 'Authentication failed.'
+        });
       } else {
         req.user = decode;
         next();
       }
     });
   } else {
-    req.user = undefined;
-    next();
+    return res.status(403).send({
+      success: false,
+      message: 'No token provided.'
+    });
   }
 };
-const authenticationRoute = express.Router();
-authenticationRoute.use(jwtAuthentication);
-app.use('/api', authenticationRoute);
+app.use('/api/trip', jwtAuthentication);
 
 app.use('/api/trip', tripRoute);
 app.use('/api/trip', tripDayRoute);

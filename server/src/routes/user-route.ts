@@ -6,6 +6,7 @@ const userController = new UserController();
 
 router.post('/register', userController.resister);
 router.post('/signin', userController.signIn);
+router.put('/update', userController.update);
 router.post('/logout', userController.logout);
 
 export = router;

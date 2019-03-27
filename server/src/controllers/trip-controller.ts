@@ -13,7 +13,7 @@ export class TripController implements BaseController<TripService> {
         if (error) {
           res.status(400).send({error});
         } else {
-          res.status(200).send(result);
+          res.status(200).send({success: true, result});
         }
       });
     } catch (e) {
@@ -29,7 +29,7 @@ export class TripController implements BaseController<TripService> {
         if (error) {
           res.status(400).send({error});
         } else {
-          res.status(200).send(result);
+          res.status(200).send({success: true, result});
         }
       });
     } catch (e) {
@@ -45,7 +45,7 @@ export class TripController implements BaseController<TripService> {
         if (error) {
           res.status(400).send({error});
         } else {
-          res.status(200).send({success: 'success', result});
+          res.status(200).send({success: true, result});
         }
       });
     } catch (e) {
@@ -61,7 +61,7 @@ export class TripController implements BaseController<TripService> {
         if (error) {
           res.status(400).send({error});
         } else {
-          res.status(200).send({success: 'success', result});
+          res.status(200).send({success: true, result});
         }
       });
     } catch (e) {
@@ -77,7 +77,7 @@ export class TripController implements BaseController<TripService> {
         if (error) {
           res.status(400).send({error});
         } else {
-          res.status(200).send({success: 'success', result});
+          res.status(200).send({success: true, result});
         }
       });
     } catch (e) {

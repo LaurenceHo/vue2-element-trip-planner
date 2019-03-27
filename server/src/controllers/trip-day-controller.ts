@@ -18,7 +18,7 @@ export class TripDayController implements BaseController<TripDayService> {
           if (result.trip_id !== trip_id) {
             res.status(400).send({message: 'The data is not correct'});
           }
-          res.status(200).send(result);
+          res.status(200).send({success: true, result});
         }
       });
     } catch (e) {
@@ -34,7 +34,7 @@ export class TripDayController implements BaseController<TripDayService> {
         if (error) {
           res.status(400).send({error});
         } else {
-          res.status(200).send(result);
+          res.status(200).send({success: true, result});
         }
       });
     } catch (e) {
@@ -50,7 +50,7 @@ export class TripDayController implements BaseController<TripDayService> {
         if (error) {
           res.status(400).send({error});
         } else {
-          res.status(200).send({success: 'success', result});
+          res.status(200).send({success: true, result});
         }
       });
     } catch (e) {
@@ -66,7 +66,7 @@ export class TripDayController implements BaseController<TripDayService> {
         if (error) {
           res.status(400).send({error});
         } else {
-          res.status(200).send({success: 'success', result});
+          res.status(200).send({success: true, result});
         }
       });
     } catch (e) {
@@ -82,7 +82,7 @@ export class TripDayController implements BaseController<TripDayService> {
         if (error) {
           res.status(400).send({error});
         } else {
-          res.status(200).send({success: 'success', result});
+          res.status(200).send({success: true, result});
         }
       });
     } catch (e) {

@@ -65,6 +65,7 @@ npm run start-client
 
 15. userRegister          (POST)   http://localhost:8080/api/user/register
 16. userSignin            (POST)   http://localhost:8080/api/user/signin
+16. userUpdate            (POST)   http://localhost:8080/api/user/update
 17. userLogout            (GET)    http://localhost:8080/api/user/logout
 ```
 
