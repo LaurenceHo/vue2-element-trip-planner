@@ -5,14 +5,14 @@ const router = express.Router();
 const tripController = new TripController();
 
 // Get trips
-router.post('/trip', tripController.retrieve);
+router.post('', tripController.retrieve);
 // Get trip detail
-router.get('/trip/:trip_id', tripController.retrieveDetail);
+router.get('/:trip_id', tripController.retrieveDetail);
 // Create trip
-router.post('/trip/create', tripController.create);
+router.post('/create', tripController.create);
 // Update trip
-router.put('/trip/update', tripController.update);
+router.put('/update', tripController.update);
 // Delete trip
-router.delete('/trip/:trip_id', tripController.delete);
+router.delete('/:trip_id', tripController.delete);
 
 export = router;

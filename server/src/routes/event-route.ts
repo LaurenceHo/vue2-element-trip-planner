@@ -4,13 +4,12 @@ import { EventController } from '../controllers/event-controller';
 const router = express.Router();
 const eventController = new EventController();
 
-// Get trips
-router.post('/event', eventController.retrieve);
-// Create trip
-router.post('/event/create', eventController.create);
-// Edit trip
-router.put('/event', eventController.update);
-// Delete trip
-router.delete('/event/:id', eventController.delete);
+router.post('/:trip_id/day/:trip_day_id/event', eventController.retrieve);
+
+router.post('/:trip_id/day/:trip_day_id/event/create', eventController.create);
+
+router.put('/:trip_id/day/:trip_day_id/event/update', eventController.update);
+
+router.delete('/:trip_id/day/:trip_day_id/event/:event_id', eventController.delete);
 
 export = router;
