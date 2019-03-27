@@ -7,6 +7,7 @@ export const schema = () => {
         table.increments('id').primary();
         table.string('username').notNullable();
         table.string('password').notNullable();
+        table.string('email').notNullable();
         table.timestamp('created_at').defaultTo(knex.fn.now());
         table.timestamp('updated_at').defaultTo(knex.fn.now());
       }).catch((err: any) => console.error(err));

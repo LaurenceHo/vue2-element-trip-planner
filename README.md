@@ -44,7 +44,7 @@ npm run start-server
 ```
 npm run start-client
 ```
-## API Document (from Express's view)
+## API Document (from Express server's view)
 ```
 1.  retrieveTrips         (POST)   http://localhost:8080/api/trip
 2.  retrieveTripDetail    (GET)    http://localhost:8080/api/trip/:trip_id
@@ -62,6 +62,10 @@ npm run start-client
 12.  createEvent          (POST)   http://localhost:8080/api/trip/:trip_id/day/:trip_day_id/event/create
 13.  updateEvent          (PUT)    http://localhost:8080/api/trip/:trip_id/day/:trip_day_id/event/update
 14.  deleteEvent          (DELETE) http://localhost:8080/api/trip/:trip_id/day/:trip_day_id/event/:event_id
+
+15. userRegister          (POST)   http://localhost:8080/api/user/register
+16. userSignin            (POST)   http://localhost:8080/api/user/signin
+17. userLogout            (GET)    http://localhost:8080/api/user/logout
 ```
 
 ## Directory Structure
@@ -112,28 +116,33 @@ vue-trip-planner
     │    │    │    ├── event-controller.ts
     │    │    │    ├── trip-controller.ts
     │    │    │    ├── trip-day-controller.ts
+    │    │    │    ├── user-controller.ts
     │    │    ├── database
-    │    │    │    ├── database-schema.ts
-    │    │    │    ├── database-service.ts
+    │    │    │    ├── knex.ts
+    │    │    │    ├── schema.ts
     │    │    ├── models
     │    │    │    ├── category.ts
     │    │    │    ├── event.ts
     │    │    │    ├── trip.ts
     │    │    │    ├── trip-day.ts
+    │    │    │    ├── user.ts
     │    │    ├── repositories
     │    │    │    ├── base-repository.ts
     │    │    │    ├── event-repository.ts
     │    │    │    ├── trip-day-repository.ts
     │    │    │    ├── trip-repository.ts
+    │    │    │    ├── user-repository.ts
     │    │    ├── routes
     │    │    │    ├── event-route.ts
     │    │    │    ├── trip-day-route.ts
     │    │    │    ├── trip-route.ts
+    │    │    │    ├── user-route.ts
     │    │    ├── services
     │    │    │    ├── base-service.ts
     │    │    │    ├── event-service.ts
     │    │    │    ├── trip-day-service.ts
     │    │    │    ├── trip-service.ts
+    │    │    │    ├── user-service.ts
     │    │    ├── server.ts
     ├── .gitignore
     ├── gulpfile.ts
