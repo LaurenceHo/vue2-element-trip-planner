@@ -1,18 +1,19 @@
 import * as express from 'express';
 import { TripController } from '../controllers/trip-controller';
+import { AuthenticationService } from '../services/authentication-service';
 
 const router = express.Router();
+const authenticationService = new AuthenticationService();
 const tripController = new TripController();
 
-// Get trips
 router.post('', tripController.retrieve);
-// Get trip detail
-router.get('/:trip_id', tripController.retrieveDetail);
-// Create trip
+
+router.get('/:trip_id', authenticationService.checkTripOwner, tripController.retrieveDetail);
+
 router.post('/create', tripController.create);
-// Update trip
+
 router.put('/update', tripController.update);
-// Delete trip
-router.delete('/:trip_id', tripController.delete);
+
+router.delete('/:trip_id', authenticationService.checkTripOwner, tripController.delete);
 
 export = router;
