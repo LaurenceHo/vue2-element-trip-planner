@@ -1,4 +1,4 @@
-import express = require('express');
+import * as express from 'express';
 import { Trip } from '../models/trip';
 import { TripService } from '../services/trip-service';
 import { BaseController } from './base-controller';
@@ -11,7 +11,7 @@ export class TripController implements BaseController<TripService> {
       const id: number = req.params.trip_id;
       tripService.retrieveDetail(id, (result: Trip, error: any) => {
         if (error) {
-          res.send({error});
+          res.status(400).send({error});
         } else {
           res.status(200).send(result);
         }
@@ -27,7 +27,7 @@ export class TripController implements BaseController<TripService> {
       const where: object = req.body;
       tripService.retrieve(where, (result: Trip[], error: any) => {
         if (error) {
-          res.send({error});
+          res.status(400).send({error});
         } else {
           res.status(200).send(result);
         }
@@ -43,7 +43,7 @@ export class TripController implements BaseController<TripService> {
       const trip: Trip = req.body as Trip;
       tripService.create(trip, (result: any, error: any) => {
         if (error) {
-          res.send({error});
+          res.status(400).send({error});
         } else {
           res.status(200).send({success: 'success', result});
         }
@@ -59,7 +59,7 @@ export class TripController implements BaseController<TripService> {
       const trip: Trip = req.body as Trip;
       tripService.update(trip, (result: any, error: any) => {
         if (error) {
-          res.send({error});
+          res.status(400).send({error});
         } else {
           res.status(200).send({success: 'success', result});
         }
@@ -75,7 +75,7 @@ export class TripController implements BaseController<TripService> {
       const id: number = req.params.trip_id;
       tripService.delete(id, (result: any, error: any) => {
         if (error) {
-          res.send({error});
+          res.status(400).send({error});
         } else {
           res.status(200).send({success: 'success', result});
         }

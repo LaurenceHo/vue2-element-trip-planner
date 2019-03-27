@@ -1,4 +1,4 @@
-import express = require('express');
+import * as express from 'express';
 import { TripDay } from '../models/trip-day';
 import { TripDayService } from '../services/trip-day-service';
 import { BaseController } from './base-controller';
@@ -13,7 +13,7 @@ export class TripDayController implements BaseController<TripDayService> {
       
       tripDayService.retrieveDetail(trip_day_id, (result: TripDay, error: any) => {
         if (error) {
-          res.status(500).send({error});
+          res.status(400).send({error});
         } else {
           if (result.trip_id !== trip_id) {
             res.status(400).send({message: 'The data is not correct'});
@@ -32,7 +32,7 @@ export class TripDayController implements BaseController<TripDayService> {
       const trip_id: number = req.params.trip_id;
       tripDayService.retrieve({trip_id}, (result: TripDay[], error: any) => {
         if (error) {
-          res.send({error});
+          res.status(400).send({error});
         } else {
           res.status(200).send(result);
         }
@@ -48,7 +48,7 @@ export class TripDayController implements BaseController<TripDayService> {
       const tripDay: TripDay = req.body as TripDay;
       tripDayService.create(tripDay, (result: any, error: any) => {
         if (error) {
-          res.send({error});
+          res.status(400).send({error});
         } else {
           res.status(200).send({success: 'success', result});
         }
@@ -64,7 +64,7 @@ export class TripDayController implements BaseController<TripDayService> {
       const tripDay: TripDay = req.body as TripDay;
       tripDayService.update(tripDay, (result: any, error: any) => {
         if (error) {
-          res.send({error});
+          res.status(400).send({error});
         } else {
           res.status(200).send({success: 'success', result});
         }
@@ -80,7 +80,7 @@ export class TripDayController implements BaseController<TripDayService> {
       const trip_day_id: number = req.params.trip_day_id;
       tripDayService.delete(trip_day_id, (result: any, error: any) => {
         if (error) {
-          res.send({error});
+          res.status(400).send({error});
         } else {
           res.status(200).send({success: 'success', result});
         }

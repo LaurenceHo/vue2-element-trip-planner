@@ -1,4 +1,4 @@
-import express = require('express');
+import * as express from 'express';
 import { Event } from '../models/event';
 import { EventService } from '../services/event-service';
 import { BaseController } from './base-controller';
@@ -12,7 +12,7 @@ export class EventController implements BaseController<EventService> {
       
       eventService.retrieve(where, (result: Event[], error: any) => {
         if (error) {
-          res.send({error});
+          res.status(400).send({error});
         } else {
           res.status(200).send(result);
         }
@@ -28,7 +28,7 @@ export class EventController implements BaseController<EventService> {
       const event: Event = req.body as Event;
       eventService.create(event, (result: any, error: any) => {
         if (error) {
-          res.send({error});
+          res.status(400).send({error});
         } else {
           res.status(200).send({success: 'success', result});
         }
@@ -44,7 +44,7 @@ export class EventController implements BaseController<EventService> {
       const event: Event = req.body as Event;
       eventService.update(event, (result: any, error: any) => {
         if (error) {
-          res.send({error});
+          res.status(400).send({error});
         } else {
           res.status(200).send({success: 'success', result});
         }
@@ -60,7 +60,7 @@ export class EventController implements BaseController<EventService> {
       const id: number = req.params.id;
       eventService.delete(id, (result: any, error: any) => {
         if (error) {
-          res.send({error});
+          res.status(400).send({error});
         } else {
           res.status(200).send({success: 'success', result});
         }
