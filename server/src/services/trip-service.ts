@@ -5,12 +5,12 @@ import { BaseService } from './base-service';
 const tripRepository = new TripRepository();
 
 export class TripService implements BaseService<Trip> {
-  retrieveDetail(id: number, callback: any): void {
-    tripRepository.retrieveDetail(id, callback);
+  retrieveDetail(whereClauses: any, callback: any): void {
+    tripRepository.retrieveDetail(whereClauses, callback);
   }
   
-  retrieve(where: object, callback: any): void {
-    tripRepository.retrieve(null, where, callback);
+  retrieve(whereClauses: any, callback: any): void {
+    tripRepository.retrieve(null, whereClauses, callback);
   }
   
   create(item: Trip, callback: any): void {

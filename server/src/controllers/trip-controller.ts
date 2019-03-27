@@ -6,41 +6,42 @@ import { BaseController } from './base-controller';
 const tripService = new TripService();
 
 export class TripController implements BaseController<TripService> {
-  retrieveDetail(req: express.Request, res: express.Response): void {
+  retrieveDetail(req: any, res: express.Response): void {
     try {
       const id: number = req.params.trip_id;
-      tripService.retrieveDetail(id, (result: Trip, error: any) => {
+      const user_id: number = req.user.id;
+      tripService.retrieveDetail({id, user_id}, (result: Trip, error: any) => {
         if (error) {
           res.status(400).send({error});
         } else {
           res.status(200).send({success: true, result});
         }
       });
-    } catch (e) {
-      console.error(e);
-      res.status(400).send({error: 'error in your request'});
+    } catch (error) {
+      res.status(400).send({error});
     }
   }
   
-  retrieve(req: express.Request, res: express.Response): void {
+  retrieve(req: any, res: express.Response): void {
     try {
-      const where: object = req.body;
-      tripService.retrieve(where, (result: Trip[], error: any) => {
+      const whereClauses: any = req.body;
+      whereClauses.user_id = req.user.id;
+      tripService.retrieve(whereClauses, (result: Trip[], error: any) => {
         if (error) {
           res.status(400).send({error});
         } else {
           res.status(200).send({success: true, result});
         }
       });
-    } catch (e) {
-      console.error(e);
-      res.status(400).send({error: 'error in your request'});
+    } catch (error) {
+      res.status(400).send({error});
     }
   }
   
-  create(req: express.Request, res: express.Response): void {
+  create(req: any, res: express.Response): void {
     try {
-      const trip: Trip = req.body as Trip;
+      const trip: Trip = req.body;
+      trip.user_id = req.user.id;
       tripService.create(trip, (result: any, error: any) => {
         if (error) {
           res.status(400).send({error});
@@ -48,15 +49,15 @@ export class TripController implements BaseController<TripService> {
           res.status(200).send({success: true, result});
         }
       });
-    } catch (e) {
-      console.error(e);
-      res.status(400).send({error: 'error in your request'});
+    } catch (error) {
+      res.status(400).send({error});
     }
   }
   
-  update(req: express.Request, res: express.Response): void {
+  update(req: any, res: express.Response): void {
     try {
-      const trip: Trip = req.body as Trip;
+      const trip: Trip = req.body;
+      trip.user_id = req.user.id;
       tripService.update(trip, (result: any, error: any) => {
         if (error) {
           res.status(400).send({error});
@@ -64,9 +65,8 @@ export class TripController implements BaseController<TripService> {
           res.status(200).send({success: true, result});
         }
       });
-    } catch (e) {
-      console.error(e);
-      res.status(400).send({error: 'error in your request'});
+    } catch (error) {
+      res.status(400).send({error});
     }
   }
   
@@ -80,9 +80,8 @@ export class TripController implements BaseController<TripService> {
           res.status(200).send({success: true, result});
         }
       });
-    } catch (e) {
-      console.error(e);
-      res.status(400).send({error: 'error in your request'});
+    } catch (error) {
+      res.status(400).send({error});
     }
   }
 }

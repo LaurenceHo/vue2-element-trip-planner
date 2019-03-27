@@ -4,24 +4,28 @@ import { TripDay } from '../models/trip-day';
 import { BaseRepository } from './base-repository';
 
 export class TripRepository implements BaseRepository<Trip> {
-  retrieveDetail(id: number, callback: any): void {
+  retrieveDetail(whereClauses: any, callback: any): void {
     let trip: Trip = null;
     knex('trip')
-      .where({id})
+      .where(whereClauses)
       .then((results: Trip[]) => {
         trip = results[ 0 ];
-        knex('trip_day')
-          .where({trip_id: id})
-          .then((results: TripDay[]) => {
-            trip.trip_day = results;
-            callback(trip);
-          })
-          .catch((err: any) => callback(err));
+        if (trip) {
+          knex('trip_day')
+            .where({trip_id: whereClauses.id})
+            .then((results: TripDay[]) => {
+              trip.trip_day = results;
+              callback(trip);
+            })
+            .catch((err: any) => callback(err));
+        } else {
+          callback();
+        }
       })
       .catch((err: any) => callback(err));
   }
   
-  retrieve(columns: string[], whereClauses: object, callback: any): void {
+  retrieve(columns: string[], whereClauses: any, callback: any): void {
     if (columns) {
       knex('trip')
         .columnInfo(columns)
@@ -45,9 +49,8 @@ export class TripRepository implements BaseRepository<Trip> {
   
   update(item: Trip, callback: any): void {
     item.updated_at = knex.fn.now();
-    
     knex('trip')
-      .where({id: item.id})
+      .where({id: item.id, user_id: item.user_id})
       .update(item)
       .then((result: any) => callback(result))
       .catch((err: any) => callback(err));

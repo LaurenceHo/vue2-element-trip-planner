@@ -32,10 +32,8 @@ const corsHeader = (req: any, res: any, next: any) => {
 app.use(corsHeader);
 
 const jwtAuthentication = (req: any, res: any, next: any) => {
-  const token = req.body.token || req.query.token || req.headers[ 'x-access-token' ];
-  
-  if (token) {
-    jwt.verify(token, app.get('superSecret'), (error: any, decode: any) => {
+  if (req.headers && req.headers.authorization && req.headers.authorization.split(' ')[ 0 ] === 'Bearer') {
+    jwt.verify(req.headers.authorization.split(' ')[ 1 ], app.get('superSecret'), (error: any, decode: any) => {
       if (error) {
         return res.status(401).send({
           success: false,
@@ -54,13 +52,16 @@ const jwtAuthentication = (req: any, res: any, next: any) => {
   }
 };
 app.use('/api/trip', jwtAuthentication);
+app.use('/api/user/update', jwtAuthentication);
 
 app.use('/api/trip', tripRoute);
 app.use('/api/trip', tripDayRoute);
 app.use('/api/trip', eventRoute);
 app.use('/api/user', userRoute);
 
-app.get('/*', (req: express.Request, res: express.Response) => res.sendFile(path.resolve(__dirname, '../client', 'index.html')));
+app.get('/*', (req: express.Request, res: express.Response) =>
+  res.sendFile(path.resolve(__dirname, '../client', 'index.html'))
+);
 
 // catch 404 and forward to error handler
 app.use((req: express.Request, res: express.Response, next) => {

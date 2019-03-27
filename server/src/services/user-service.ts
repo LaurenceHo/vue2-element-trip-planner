@@ -6,8 +6,8 @@ import { BaseService } from './base-service';
 const userRepository = new UserRepository();
 
 export class UserService implements BaseService<User> {
-  retrieve(where: object, callback: any): void {
-    userRepository.retrieve(null, where, callback);
+  retrieve(whereClauses: any, callback: any): void {
+    userRepository.retrieve(null, whereClauses, callback);
   }
   
   create(item: User, callback: any): void {

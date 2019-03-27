@@ -9,8 +9,8 @@ export class TripDayService implements BaseService<TripDay> {
     tripDayRepository.retrieveDetail(id, callback);
   }
   
-  retrieve(where: object, callback: any): void {
-    tripDayRepository.retrieve(null, where, callback);
+  retrieve(whereClauses: any, callback: any): void {
+    tripDayRepository.retrieve(null, whereClauses, callback);
   }
   
   create(item: TripDay, callback: any): void {

@@ -85,7 +85,7 @@ vue-trip-planner
     │    │    ├── Components
     │    │         ├── Dashboard.vue
     │    │         ├── Hamburger.vue
-    │    │         ├── SiderMenu.vue
+    │    │         ├── SideMenu.vue
     │    │         ├── TopBar.vue
     │    │         ├── TripForm.vue
     │    │    ├── models
@@ -139,6 +139,7 @@ vue-trip-planner
     │    │    │    ├── trip-route.ts
     │    │    │    ├── user-route.ts
     │    │    ├── services
+    │    │    │    ├── authentication-service.ts
     │    │    │    ├── base-service.ts
     │    │    │    ├── event-service.ts
     │    │    │    ├── trip-day-service.ts

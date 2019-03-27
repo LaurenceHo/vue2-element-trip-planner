@@ -8,22 +8,16 @@ const tripDayService = new TripDayService();
 export class TripDayController implements BaseController<TripDayService> {
   retrieveDetail(req: express.Request, res: express.Response): void {
     try {
-      const trip_id: number = req.params.trip_id;
       const trip_day_id: number = req.params.trip_day_id;
-      
       tripDayService.retrieveDetail(trip_day_id, (result: TripDay, error: any) => {
         if (error) {
           res.status(400).send({error});
         } else {
-          if (result.trip_id !== trip_id) {
-            res.status(400).send({message: 'The data is not correct'});
-          }
           res.status(200).send({success: true, result});
         }
       });
-    } catch (e) {
-      console.error(e);
-      res.status(400).send({error: 'error in your request'});
+    } catch (error) {
+      res.status(400).send({error});
     }
   }
   
@@ -37,15 +31,14 @@ export class TripDayController implements BaseController<TripDayService> {
           res.status(200).send({success: true, result});
         }
       });
-    } catch (e) {
-      console.error(e);
-      res.status(400).send({error: 'error in your request'});
+    } catch (error) {
+      res.status(400).send({error});
     }
   }
   
   create(req: express.Request, res: express.Response): void {
     try {
-      const tripDay: TripDay = req.body as TripDay;
+      const tripDay: TripDay = req.body;
       tripDayService.create(tripDay, (result: any, error: any) => {
         if (error) {
           res.status(400).send({error});
@@ -53,15 +46,14 @@ export class TripDayController implements BaseController<TripDayService> {
           res.status(200).send({success: true, result});
         }
       });
-    } catch (e) {
-      console.error(e);
-      res.status(400).send({error: 'error in your request'});
+    } catch (error) {
+      res.status(400).send({error});
     }
   }
   
   update(req: express.Request, res: express.Response): void {
     try {
-      const tripDay: TripDay = req.body as TripDay;
+      const tripDay: TripDay = req.body;
       tripDayService.update(tripDay, (result: any, error: any) => {
         if (error) {
           res.status(400).send({error});
@@ -69,9 +61,8 @@ export class TripDayController implements BaseController<TripDayService> {
           res.status(200).send({success: true, result});
         }
       });
-    } catch (e) {
-      console.error(e);
-      res.status(400).send({error: 'error in your request'});
+    } catch (error) {
+      res.status(400).send({error});
     }
   }
   
@@ -85,9 +76,8 @@ export class TripDayController implements BaseController<TripDayService> {
           res.status(200).send({success: true, result});
         }
       });
-    } catch (e) {
-      console.error(e);
-      res.status(400).send({error: 'error in your request'});
+    } catch (error) {
+      res.status(400).send({error});
     }
   }
 }

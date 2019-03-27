@@ -9,13 +9,17 @@ export class TripDayRepository implements BaseRepository<TripDay> {
       .where({id})
       .then((results: TripDay[]) => {
         tripDay = results[ 0 ];
-        knex('event')
-          .where({trip_day_id: id})
-          .then((results: Event[]) => {
-            tripDay.events = results;
-            callback(tripDay);
-          })
-          .catch((err: any) => callback(err));
+        if (tripDay) {
+          knex('event')
+            .where({trip_day_id: id})
+            .then((results: Event[]) => {
+              tripDay.events = results;
+              callback(tripDay);
+            })
+            .catch((err: any) => callback(err));
+        } else {
+          callback();
+        }
       })
       .catch((err: any) => callback(err));
   }
@@ -38,13 +42,12 @@ export class TripDayRepository implements BaseRepository<TripDay> {
   create(item: TripDay, callback: any): void {
     knex('trip_day')
       .insert(item)
-      .then((result: any) => callback(result))
+      .then((result: any) => callback({trip_day_id: result[ 0 ]}))
       .catch((err: any) => callback(err));
   }
   
   update(item: TripDay, callback: any): void {
     item.updated_at = knex.fn.now();
-    
     knex('trip_day')
       .where({id: item.id})
       .update(item)

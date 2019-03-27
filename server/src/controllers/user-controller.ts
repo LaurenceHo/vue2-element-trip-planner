@@ -18,9 +18,8 @@ export class UserController {
           res.status(200).send({success: true, result});
         }
       });
-    } catch (e) {
-      console.error(e);
-      res.status(400).send({error: 'error in your request'});
+    } catch (error) {
+      res.status(400).send({error});
     }
   }
   
@@ -29,14 +28,17 @@ export class UserController {
       const email = req.body.email;
       userService.retrieve({email}, (user: User, error: any) => {
         if (error) {
-          res.status(401).json({message: 'Authentication failed. Email or password is wrong.'});
-        } else if (user) {
+          res.status(400).send({error});
+        }
+        
+        if (user) {
           if (!userService.checkPassword(req.body.password, user.password)) {
             res.status(401).json({message: 'Authentication failed. Email or password is wrong.'});
           } else {
             res.json({
               success: true,
               token: jwt.sign({
+                  id: user.id,
                   email: user.email,
                   username: user.username
                 },
@@ -44,11 +46,12 @@ export class UserController {
                 {expiresIn: '1d'})
             });
           }
+        } else {
+          res.status(404).json({message: 'Cannot find user.'});
         }
       });
-    } catch (e) {
-      console.error(e);
-      res.status(400).send({error: 'error in your request'});
+    } catch (error) {
+      res.status(400).send({error});
     }
   }
   
@@ -62,9 +65,8 @@ export class UserController {
           res.status(200).send({success: true, result});
         }
       });
-    } catch (e) {
-      console.error(e);
-      res.status(400).send({error: 'error in your request'});
+    } catch (error) {
+      res.status(400).send({error});
     }
   }
   

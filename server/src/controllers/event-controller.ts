@@ -17,9 +17,8 @@ export class EventController implements BaseController<EventService> {
           res.status(200).send({success: true, result});
         }
       });
-    } catch (e) {
-      console.error(e);
-      res.send({error: 'error in your request'});
+    } catch (error) {
+      res.status(400).send({error});
     }
   }
   
@@ -33,9 +32,8 @@ export class EventController implements BaseController<EventService> {
           res.status(200).send({success: true, result});
         }
       });
-    } catch (e) {
-      console.error(e);
-      res.send({error: 'error in your request'});
+    } catch (error) {
+      res.status(400).send({error});
     }
   }
   
@@ -49,9 +47,8 @@ export class EventController implements BaseController<EventService> {
           res.status(200).send({success: true, result});
         }
       });
-    } catch (e) {
-      console.error(e);
-      res.send({error: 'error in your request'});
+    } catch (error) {
+      res.status(400).send({error});
     }
   }
   
@@ -65,9 +62,8 @@ export class EventController implements BaseController<EventService> {
           res.status(200).send({success: true, result});
         }
       });
-    } catch (e) {
-      console.error(e);
-      res.send({error: 'error in your request'});
+    } catch (error) {
+      res.status(400).send({error});
     }
   }
 }
