@@ -32,7 +32,7 @@ const createUser = () => {
   
   knex('user')
     .insert(user)
-    .then((returning: any) => console.log('user id: ' + returning[ 0 ]))
+    .then((returning: any) => console.log(returning))
     .catch((err: any) => console.error(err));
 };
 
@@ -47,10 +47,90 @@ const createTrip = () => {
   
   knex('trip')
     .insert(trip)
-    .then((returning: any) => console.log('trip id: ' + returning[ 0 ]))
+    .then((returning: any) => console.log(returning))
+    .catch((err: any) => console.error(err));
+};
+
+const createTripDay = () => {
+  const tripDay = [
+    {
+      user_id: 1,
+      trip_id: 1,
+      trip_date: '2019-05-01'
+    },
+    {
+      user_id: 1,
+      trip_id: 1,
+      trip_date: '2019-05-02'
+    },
+    {
+      user_id: 1,
+      trip_id: 1,
+      trip_date: '2019-05-03'
+    }
+  ];
+  
+  knex('trip_day')
+    .insert(tripDay)
+    .then((returning: any) => console.log(returning))
+    .catch((err: any) => console.error(err));
+};
+
+const createEvent = () => {
+  const events = [
+    {
+      user_id: 1,
+      trip_day_id: 1,
+      category_id: 4,
+      title: 'Hostel',
+      note: 'Cannot refund'
+    },
+    {
+      user_id: 1,
+      trip_day_id: 1,
+      category_id: 2,
+      start_time: '07:00',
+      end_time: '07:30',
+      title: 'Take the bus'
+    },
+    {
+      user_id: 1,
+      trip_day_id: 1,
+      category_id: 1,
+      start_time: '09:00',
+      end_time: '10:00',
+      title: 'sightseeing'
+    },
+    {
+      user_id: 1,
+      trip_day_id: 1,
+      category_id: 1,
+      start_time: '12:00',
+      end_time: '13:00',
+      title: 'Lunch',
+      cost: 50,
+      currency: 'NZD'
+    },
+    {
+      user_id: 1,
+      trip_day_id: 2,
+      category_id: 1,
+      start_time: '06:00',
+      end_time: '07:00',
+      title: 'Breakfast',
+      cost: 20,
+      currency: 'NZD'
+    },
+  ];
+  
+  knex('event')
+    .insert(events)
+    .then((returning: any) => console.log(returning))
     .catch((err: any) => console.error(err));
 };
 
 createCategory();
 createUser();
 createTrip();
+setTimeout(createTripDay, 3000);
+setTimeout(createEvent, 6000);
