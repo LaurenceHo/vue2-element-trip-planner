@@ -1,7 +1,7 @@
 # Fullstack web application using Vue2, element-ui, Nodejs, Express, Mysql, Gulp4 and Webpack4.
 
 ## Introduction
-This project demonstrates the basic CRUD functions combining Vue2 (Typescript), Vuex, element-ui, Nodejs (Typescript), Express, Mysql. 
+This project demonstrates the basic CRUD functions combining Vue2 (Typescript), Vuex, element-ui, Nodejs (Typescript), Express, Knex, Mysql. 
 It uses Gulp for running task and TSLint for the server side, and uses Webpack4 for bundling front-end code. 
 You can use this web application doing trip planning.
 
@@ -73,31 +73,14 @@ npm run start-client
 ```
 vue-trip-planner
     ├── client
-    │    ├── config
-    │    │    ├── webpack.common.js
-    │    │    ├── webpack.dev.js
-    │    │    ├── webpack.prod.js
+    │    ├── config => webpack config
     │    ├── src
     │    │    ├── assets
-    │    │         ├── default-avatar.png
-    │    │         ├── favicon.png
-    │    │         ├── vue-logo.png
     │    │    ├── Components
-    │    │         ├── Dashboard.vue
-    │    │         ├── Hamburger.vue
-    │    │         ├── SideMenu.vue
-    │    │         ├── TopBar.vue
-    │    │         ├── TripForm.vue
     │    │    ├── models
-    │    │    │    ├── category.ts
-    │    │    │    ├── event.ts
-    │    │    │    ├── trip.ts
     │    │    ├── services
-    │    │    │    ├── trip-service.ts
     │    │    ├── store
-    │    │    │    ├── store.ts    
     │    │    ├── style
-    │    │    │    ├── style.css
     │    │    ├── App.vue
     │    │    ├── main.ts
     │    │    ├── router.ts
@@ -111,40 +94,12 @@ vue-trip-planner
     ├── server
     │    ├── src
     │    │    ├── bin
-    │    │    │    ├── www
     │    │    ├── controllers
-    │    │    │    ├── base-controller.ts
-    │    │    │    ├── event-controller.ts
-    │    │    │    ├── trip-controller.ts
-    │    │    │    ├── trip-day-controller.ts
-    │    │    │    ├── user-controller.ts
     │    │    ├── database
-    │    │    │    ├── knex.ts
-    │    │    │    ├── schema.ts
     │    │    ├── models
-    │    │    │    ├── category.ts
-    │    │    │    ├── event.ts
-    │    │    │    ├── trip.ts
-    │    │    │    ├── trip-day.ts
-    │    │    │    ├── user.ts
     │    │    ├── repositories
-    │    │    │    ├── base-repository.ts
-    │    │    │    ├── event-repository.ts
-    │    │    │    ├── trip-day-repository.ts
-    │    │    │    ├── trip-repository.ts
-    │    │    │    ├── user-repository.ts
     │    │    ├── routes
-    │    │    │    ├── event-route.ts
-    │    │    │    ├── trip-day-route.ts
-    │    │    │    ├── trip-route.ts
-    │    │    │    ├── user-route.ts
     │    │    ├── services
-    │    │    │    ├── authentication-service.ts
-    │    │    │    ├── base-service.ts
-    │    │    │    ├── event-service.ts
-    │    │    │    ├── trip-day-service.ts
-    │    │    │    ├── trip-service.ts
-    │    │    │    ├── user-service.ts
     │    │    ├── server.ts
     ├── .gitignore
     ├── gulpfile.ts
