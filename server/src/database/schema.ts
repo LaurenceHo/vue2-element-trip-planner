@@ -47,10 +47,12 @@ export const schema = () => {
       knex.schema.createTable('trip_day', (table: any) => {
         table.increments('id').primary();
         table.integer('trip_id').unsigned().notNullable();
+        table.integer('user_id').unsigned().notNullable();
         table.date('trip_date').notNullable();
         table.timestamp('created_at').defaultTo(knex.fn.now());
         table.timestamp('updated_at').defaultTo(knex.fn.now());
         table.foreign('trip_id').references('id').inTable('trip');
+        table.foreign('user_id').references('id').inTable('user');
       }).catch((err: any) => console.error(err));
     }
   });
@@ -61,6 +63,7 @@ export const schema = () => {
         table.increments('id').primary();
         table.integer('trip_day_id').unsigned();
         table.integer('category_id').unsigned().notNullable();
+        table.integer('user_id').unsigned().notNullable();
         table.time('start_time');
         table.time('end_time');
         table.string('title');
@@ -74,6 +77,7 @@ export const schema = () => {
         table.timestamp('updated_at').defaultTo(knex.fn.now());
         table.foreign('trip_day_id').references('id').inTable('trip_day');
         table.foreign('category_id').references('id').inTable('category');
+        table.foreign('user_id').references('id').inTable('user');
       }).catch((err: any) => console.error(err));
     }
   });

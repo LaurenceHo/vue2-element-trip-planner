@@ -6,10 +6,11 @@ import { BaseController } from './base-controller';
 const tripDayService = new TripDayService();
 
 export class TripDayController implements BaseController<TripDayService> {
-  retrieveDetail(req: express.Request, res: express.Response): void {
+  retrieveDetail(req: any, res: express.Response): void {
     try {
       const trip_day_id: number = req.params.trip_day_id;
-      tripDayService.retrieveDetail(trip_day_id, (result: TripDay, error: any) => {
+      const user_id: number = req.user.id;
+      tripDayService.retrieveDetail({trip_day_id, user_id}, (result: TripDay, error: any) => {
         if (error) {
           res.status(400).send({error});
         } else {
@@ -21,10 +22,11 @@ export class TripDayController implements BaseController<TripDayService> {
     }
   }
   
-  retrieve(req: express.Request, res: express.Response): void {
+  retrieve(req: any, res: express.Response): void {
     try {
       const trip_id: number = req.params.trip_id;
-      tripDayService.retrieve({trip_id}, (result: TripDay[], error: any) => {
+      const user_id: number = req.user.id;
+      tripDayService.retrieve({trip_id, user_id}, (result: TripDay[], error: any) => {
         if (error) {
           res.status(400).send({error});
         } else {
@@ -36,9 +38,10 @@ export class TripDayController implements BaseController<TripDayService> {
     }
   }
   
-  create(req: express.Request, res: express.Response): void {
+  create(req: any, res: express.Response): void {
     try {
       const tripDay: TripDay = req.body;
+      tripDay.user_id = req.user.id;
       tripDayService.create(tripDay, (result: any, error: any) => {
         if (error) {
           res.status(400).send({error});
@@ -51,9 +54,10 @@ export class TripDayController implements BaseController<TripDayService> {
     }
   }
   
-  update(req: express.Request, res: express.Response): void {
+  update(req: any, res: express.Response): void {
     try {
       const tripDay: TripDay = req.body;
+      tripDay.user_id = req.user.id;
       tripDayService.update(tripDay, (result: any, error: any) => {
         if (error) {
           res.status(400).send({error});

@@ -3,7 +3,7 @@ import { Event } from '../models/event';
 import { BaseRepository } from './base-repository';
 
 export class EventRepository implements BaseRepository<Event> {
-  retrieve(columns: string[], whereClauses: object, callback: any): void {
+  retrieve(columns: string[], whereClauses: any, callback: any): void {
     if (columns) {
       knex('event')
         .columnInfo(columns)
@@ -20,23 +20,22 @@ export class EventRepository implements BaseRepository<Event> {
   
   create(item: Event, callback: any): void {
     knex('event')
-      .insert(item, 'id')
+      .insert(item)
       .then((returning: any) => callback({event_id: returning[ 0 ]}))
       .catch((err: any) => callback(err));
   }
   
   update(item: Event, callback: any): void {
     item.updated_at = knex.fn.now();
-    
     knex('event')
-      .where({id: item.id})
+      .where({id: item.id, user_id: item.user_id})
       .update(item)
       .then((result: any) => callback(result))
       .catch((err: any) => callback(err));
   }
   
   delete(id: number, callback: any): void {
-    knex('trip')
+    knex('event')
       .where({id})
       .del()
       .then((result: any) => callback(result))

@@ -3,7 +3,7 @@ import { User } from '../models/user';
 import { BaseRepository } from './base-repository';
 
 export class UserRepository implements BaseRepository<User> {
-  retrieve(columns: string[], whereClauses: object, callback: any): void {
+  retrieve(columns: string[], whereClauses: any, callback: any): void {
     knex('user')
       .where(whereClauses)
       .then((results: User[]) => callback(results[ 0 ]))
@@ -12,7 +12,7 @@ export class UserRepository implements BaseRepository<User> {
   
   create(item: User, callback: any): void {
     knex('user')
-      .insert(item, 'id')
+      .insert(item)
       .then((returning: any) => callback({user_id: returning[ 0 ]}))
       .catch((err: any) => callback(err));
   }

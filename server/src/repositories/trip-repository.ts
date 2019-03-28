@@ -42,7 +42,7 @@ export class TripRepository implements BaseRepository<Trip> {
   
   create(item: Trip, callback: any): void {
     knex('trip')
-      .insert(item, 'id')
+      .insert(item)
       .then((returning: any) => callback({trip_id: returning[ 0 ]}))
       .catch((err: any) => callback(err));
   }
