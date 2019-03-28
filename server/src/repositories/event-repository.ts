@@ -28,7 +28,7 @@ export class EventRepository implements BaseRepository<Event> {
   update(item: Event, callback: any): void {
     item.updated_at = knex.fn.now();
     knex('event')
-      .where({id: item.id, user_id: item.user_id})
+      .where({id: item.id, user_id: item.user_id, trip_day_id: item.trip_day_id})
       .update(item)
       .then((result: any) => callback(result))
       .catch((err: any) => callback(err));

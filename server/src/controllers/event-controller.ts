@@ -25,6 +25,7 @@ export class EventController implements BaseController<EventService> {
   create(req: any, res: express.Response): void {
     try {
       const event: Event = req.body;
+      event.trip_day_id = req.params.trip_day_id;
       event.user_id = req.user.id;
       eventService.create(event, (result: any, error: any) => {
         if (error) {
@@ -41,6 +42,7 @@ export class EventController implements BaseController<EventService> {
   update(req: any, res: express.Response): void {
     try {
       const event: Event = req.body;
+      event.trip_day_id = req.params.trip_day_id;
       event.user_id = req.user.id;
       eventService.update(event, (result: any, error: any) => {
         if (error) {
