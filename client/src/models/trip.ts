@@ -6,5 +6,5 @@ export interface Trip {
   name: string;
   destination: string;
   archived: boolean;
-  events: object;
+  trip_day: object;
 }
