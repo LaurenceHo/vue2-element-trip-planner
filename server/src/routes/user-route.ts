@@ -5,7 +5,7 @@ const router = express.Router();
 const userController = new UserController();
 
 router.post('/register', userController.resister);
-router.post('/signin', userController.signIn);
+router.post('/login', userController.login);
 router.put('/update', userController.update);
 router.post('/logout', userController.logout);
 

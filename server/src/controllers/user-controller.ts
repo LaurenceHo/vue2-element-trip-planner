@@ -23,7 +23,7 @@ export class UserController {
     }
   }
   
-  signIn(req: express.Request, res: express.Response): void {
+  login(req: express.Request, res: express.Response): void {
     try {
       const email = req.body.email;
       userService.retrieve({email}, (user: User, error: any) => {

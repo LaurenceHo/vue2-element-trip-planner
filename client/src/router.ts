@@ -1,9 +1,9 @@
 import * as _ from 'lodash';
 import Vue from 'vue';
 import Router from 'vue-router';
-import Layout from './components/Layout.vue';
-import SigninPage from './components/SigninPage.vue';
 import TripForm from './components/TripForm.vue';
+import Layout from './pages/Layout.vue';
+import Login from './pages/Login.vue';
 
 Vue.use(Router);
 
@@ -14,8 +14,8 @@ export const router = new Router({
       component: Layout
     },
     {
-      path: '/signin',
-      component: SigninPage
+      path: '/login',
+      component: Login
     },
     {
       path: '/create-trip',
@@ -29,12 +29,12 @@ export const router = new Router({
 });
 
 router.beforeEach((to, from, next) => {
-  const publicPages = [ '/user/signin' ];
+  const publicPages = [ '/login' ];
   const authRequired = !_.includes(publicPages, to.path);
   const loggedIn = localStorage.getItem('user');
   
   if (authRequired && !loggedIn) {
-    return next('/user/signin');
+    return next('/login');
   }
   
   next();
