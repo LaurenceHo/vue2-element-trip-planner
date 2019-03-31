@@ -24,18 +24,24 @@ app.use(expressSanitizer());
 app.use(morgan('dev'));
 
 const corsHeader = (req: any, res: any, next: any) => {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-  res.setHeader('Access-Control-Allow-Credentials', true);
-  next();
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Origin, Content-Type, Accept, Authorization, X-Requested-With');
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  
+  if ('OPTIONS' === req.method) {
+    res.send(200);
+  } else {
+    next();
+  }
 };
 app.use(corsHeader);
 
-const jwtAuthentication = (req: any, res: any, next: any) => {
+const jwtAuthentication = (req: any, res: express.Response, next: any) => {
   if (req.headers && req.headers.authorization && req.headers.authorization.split(' ')[ 0 ] === 'Bearer') {
     jwt.verify(req.headers.authorization.split(' ')[ 1 ], app.get('superSecret'), (error: any, decode: any) => {
       if (error) {
-        return res.status(401).send({
+        return res.status(403).send({
           success: false,
           message: 'Authentication failed.'
         });
