@@ -31,7 +31,7 @@ import Vue from 'vue';
 import 'whatwg-fetch';
 
 import App from './App.vue';
-import router from './router';
+import { router } from './router';
 import { store } from './store/store';
 import './style/style.css';
 
