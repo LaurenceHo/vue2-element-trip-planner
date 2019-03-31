@@ -15,9 +15,9 @@
 <script lang="ts">
   import Vue from 'vue'
   import Component from 'vue-class-component'
-  import TopBar from './TopBar.vue';
-  import Dashboard from './Dashboard.vue';
-  import SideMenu from './SideMenu.vue';
+  import TopBar from '../components/TopBar.vue';
+  import Dashboard from '../components/Dashboard.vue';
+  import SideMenu from '../components/SideMenu.vue';
 
   @Component({
     components: {SideMenu, TopBar, Dashboard}
@@ -27,14 +27,18 @@
 
     constructor() {
       super();
-      this.username = 'Laurence Ho';
+      this.username = JSON.parse(localStorage.getItem('user')).username;
     }
   }
 </script>
 
 <style scoped>
+  .el-container {
+    min-height: 100%;
+  }
+
   .el-header {
-    background-color: #545c64;
+    background-color: #2d3a4b;
     color: #fff;
     line-height: 5rem;
     padding: 0;

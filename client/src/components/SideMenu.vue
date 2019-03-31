@@ -2,7 +2,7 @@
   <div style="background-color: #545c64">
     <el-menu
       class="side-menu"
-      background-color="#545c64"
+      background-color="#2d3a4b"
       text-color="#fff"
       active-text-color="#ffd04b"
       default-active="current"
@@ -58,7 +58,7 @@
 <style scoped>
   .side-menu {
     border: none;
-    min-height: 55rem;
+    min-height: 100%;
   }
 
   .side-menu:not(.el-menu--collapse) {

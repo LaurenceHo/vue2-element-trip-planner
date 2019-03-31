@@ -1,6 +1,6 @@
 <template>
   <div class="login-container">
-    <el-form class="login-form" label-position="left" label-width="7rem">
+    <el-form class="login-form" label-position="right" label-width="7rem">
       <div class="title-container">
         <h3 class="title">
           Login
@@ -25,7 +25,7 @@
   import { UserService } from '../services/user-service';
 
   @Component({})
-  export default class SigninPage extends Vue {
+  export default class Login extends Vue {
     userService = new UserService();
     user = {
       email: '',
@@ -33,9 +33,10 @@
     };
 
     submitForm(user: any) {
-      this.userService.signin(user).then((result: any) => {
+      this.userService.login(user).then((result: any) => {
         if (result.success) {
           localStorage.setItem('user', JSON.stringify(result.user));
+          this.$router.push('/');
         }
       });
     }

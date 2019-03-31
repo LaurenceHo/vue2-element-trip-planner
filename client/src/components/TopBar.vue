@@ -49,6 +49,7 @@
   import Vue from 'vue'
   import Component from 'vue-class-component'
   import Hamburger from './Hamburger.vue';
+  import { UserService } from '../services/user-service';
 
   @Component({
     components: {Hamburger},
@@ -61,17 +62,22 @@
   })
 
   export default class TopBar extends Vue {
-    toggleSideBar() {
+    userService = new UserService();
+
+    toggleSideBar = () => {
       this.$store.dispatch('toggleSideBar')
-    }
+    };
 
-    handleClick() {
+    handleClick = () => {
       this.$router.push('/');
-    }
+    };
 
-    handleSelect(value: string) {
-      console.log(value);
-    }
+    handleSelect = (value: string) => {
+      if (value === 'logout') {
+        this.userService.logout();
+        this.$router.push('/login');
+      }
+    };
   }
 
 </script>
