@@ -37,13 +37,17 @@ export class UserController {
           } else {
             res.json({
               success: true,
-              token: jwt.sign({
-                  id: user.id,
-                  email: user.email,
-                  username: user.username
-                },
-                req.app.get('superSecret'),
-                {expiresIn: '1d'})
+              user: {
+                email: user.email,
+                username: user.username,
+                token: jwt.sign({
+                    id: user.id,
+                    email: user.email,
+                    username: user.username
+                  },
+                  req.app.get('superSecret'),
+                  {expiresIn: '1d'})
+              }
             });
           }
         } else {
