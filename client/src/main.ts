@@ -10,12 +10,15 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import {
+  Alert,
   Button,
   Card,
   Container,
   Dropdown,
   DropdownItem,
   DropdownMenu,
+  Form,
+  FormItem,
   Header,
   Input,
   Main,
@@ -35,12 +38,15 @@ import './style/style.css';
 library.add(faArchive, faCalendarAlt, faCog, faFilter, faPlus, faSignOutAlt, faUser);
 
 Vue.component('font-awesome-icon', FontAwesomeIcon);
+Vue.use(Alert);
 Vue.use(Button);
 Vue.use(Card);
 Vue.use(Container);
 Vue.use(Dropdown);
 Vue.use(DropdownItem);
 Vue.use(DropdownMenu);
+Vue.use(Form);
+Vue.use(FormItem);
 Vue.use(Header);
 Vue.use(Input);
 Vue.use(Main);

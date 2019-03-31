@@ -1,27 +1,41 @@
+import * as _ from 'lodash';
 import Vue from 'vue';
 import Router from 'vue-router';
-import Dashboard from './components/Dashboard.vue';
+import Layout from './components/Layout.vue';
+import SigninPage from './components/SigninPage.vue';
 import TripForm from './components/TripForm.vue';
 
 Vue.use(Router);
 
-export default new Router({
+export const router = new Router({
   routes: [
     {
       path: '/',
-      name: 'dashboard',
-      component: Dashboard,
-      meta: {
-        title: 'Dashboard',
-      }
+      component: Layout
+    },
+    {
+      path: '/signin',
+      component: SigninPage
     },
     {
       path: '/create-trip',
-      name: 'create trip',
-      component: TripForm,
-      meta: {
-        title: 'Create trip',
-      }
+      component: TripForm
+    },
+    {
+      path: '*',
+      redirect: '/'
     }
   ]
+});
+
+router.beforeEach((to, from, next) => {
+  const publicPages = [ '/user/signin' ];
+  const authRequired = !_.includes(publicPages, to.path);
+  const loggedIn = localStorage.getItem('user');
+  
+  if (authRequired && !loggedIn) {
+    return next('/user/signin');
+  }
+  
+  next();
 });
