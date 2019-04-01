@@ -1,31 +1,40 @@
 # Fullstack web application using Vue2, element-ui, Nodejs, Express, Mysql, Gulp4 and Webpack4.
 
 ## Introduction
-This project demonstrates the basic CRUD functions combining Vue2 (Typescript), Vuex, element-ui, Nodejs (Typescript), Express, Knex, Mysql. 
-It uses Gulp for running task and TSLint for the server side, and uses Webpack4 for bundling front-end code. 
-You can use this web application doing trip planning.
+This project demonstrates the basic fullstack development including frontend and backend.
+The frontend stack is including Vue2 (Typescript), Vuex, vue-router, element-ui, as well as using Webpack4 for bundling frontend code.
+The backend stack is including Nodejs (Typescript), Express, JWT, Knex, Mysql, as well as using Gulp4 for running task and TSLint.
+This project's purpose is for trip planning and management, which is also my personal interest.
 
 ## Prerequisites
-1. The latest version of Nodejs need to be installed.
+1. The latest version of Nodejs and git need to be installed.
 2. Docker MySQL5 container
 
 ### Docker MySQL container preparation
-1. Run `docker pull mysql:5`
-2. Run `docker volume create mysqldata`
-3. Run `docker run --name mysql5 -p 3306:3306 -v mysqldata:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=my-secret-pw -d mysql:5`
-4. Run `docker run -it --link mysql5:mysql --rm mysql:5 sh -c 'exec mysql -h"$MYSQL_PORT_3306_TCP_ADDR" -P"$MYSQL_PORT_3306_TCP_PORT" -uroot -p"$MYSQL_ENV_MYSQL_ROOT_PASSWORD"'`
-5. Setup database and user
+* Preparing docker container
+```
+docker pull mysql:5
+docker volume create mysqldata
+docker run --name mysql5 -p 3306:3306 -v mysqldata:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=my-secret-pw -d mysql:5
+docker run -it --link mysql5:mysql --rm mysql:5 sh -c 'exec mysql -h"$MYSQL_PORT_3306_TCP_ADDR" -P"$MYSQL_PORT_3306_TCP_PORT" -uroot -p"$MYSQL_ENV_MYSQL_ROOT_PASSWORD"'
+```
+* Setup database and user
 ```
 mysql> CREATE DATABASE tripplanner;
 mysql> CREATE USER 'sa'@'172.17.0.1' IDENTIFIED BY '(IJN8uhb';
 mysql> GRANT ALL ON tripplanner.* TO 'sa'@'172.17.0.1';
 mysql> FLUSH PRIVILEGES;
 ```
-6. Check privileges `mysql> SHOW GRANTS FOR 'sa'@'172.17.0.1';`
-7. If you want to rerun docker container, run `docker run mysql5`
+* Check privileges `mysql> SHOW GRANTS FOR 'sa'@'172.17.0.1';`
+* If you want to rerun docker container, run `docker run mysql5`
+* If you cannot run above command, you may need to remove the container and recreate it again.
+Example:
+```
+docker rm  ${CONTAINER_ID_IN_YOUR_MACHINE}
+docker run --name mysql5 -p 3306:3306 -v mysqldata:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=my-secret-pw -d mysql:5
+```
 
-## How do I get set up? ###
-
+## Getting started
 * Clone the repo: 
 ```
 git clone https://github.com/LaurenceHo/vue-trip-planner.git
@@ -34,15 +43,24 @@ git clone https://github.com/LaurenceHo/vue-trip-planner.git
 ```
 npm install
 ```
-* Launch the whole web application: 
+* Launch the express server: 
 ```
 npm run start-server
 ```
-* Visit in your browser: `http://localhost:8080`
+* Bundle frontend code
+```
+npm run build-client
+```
+* Visit in your browser: `http://localhost:3000`
 
-* If you want to start client only
+* If you want to start client using webpack dev server:
 ```
 npm run start-client
+```
+* Visit in your browser: `http://localhost:8080`
+* Lint the project
+```
+npm run lint
 ```
 ## API Document (from Express server's view)
 ```
@@ -78,6 +96,7 @@ vue-trip-planner
     │    │    ├── assets
     │    │    ├── Components
     │    │    ├── models
+    │    │    ├── pages
     │    │    ├── services
     │    │    ├── store
     │    │    ├── style
@@ -110,8 +129,96 @@ vue-trip-planner
     ├── tsconfig.json
     ├── tslint.json
 ```
-### TypeScript / Javascript Naming rule
+## TypeScript / Javascript Naming rule
 https://google.github.io/styleguide/jsguide.html
+
+## CORS setting for JWT authentication
+```
+server.ts
+
+const corsHeader = (req: any, res: any, next: any) => {
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Origin, Content-Type, Accept, Authorization, X-Requested-With');
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  
+  if ('OPTIONS' === req.method) {
+    res.send(200);
+  } else {
+    next();
+  }
+};
+app.use(corsHeader);
+```
+
+## JWT (JSON web token)
+### Generate JWT when user do login)
+```
+user-controller.ts
+
+login(req: express.Request, res: express.Response): void {
+    try {
+      const email = req.body.email;
+      userService.retrieve({email}, (user: User, error: any) => {
+        if (error) {
+          res.status(400).send({error});
+        }
+        
+        if (user) {
+          if (!userService.checkPassword(req.body.password, user.password)) {
+            res.status(401).json({message: 'Authentication failed. Email or password is wrong.'});
+          } else {
+            res.json({
+              success: true,
+              user: {
+                email: user.email,
+                username: user.username,
+                token: jwt.sign({
+                    id: user.id,
+                    email: user.email,
+                    username: user.username
+                  },
+                  req.app.get('superSecret'),
+                  {expiresIn: '1d'})
+              }
+            });
+          }
+        } else {
+          res.status(404).json({message: 'Cannot find user.'});
+        }
+      });
+    } catch (error) {
+      res.status(400).send({error});
+    }
+  }
+```
+### Verify JWT when user do any API call
+```
+server.ts
+
+const jwtAuthentication = (req: any, res: express.Response, next: any) => {
+  if (req.headers && req.headers.authorization && req.headers.authorization.split(' ')[ 0 ] === 'Bearer') {
+    jwt.verify(req.headers.authorization.split(' ')[ 1 ], app.get('superSecret'), (error: any, decode: any) => {
+      if (error) {
+        return res.status(403).send({
+          success: false,
+          message: 'Authentication failed.'
+        });
+      } else {
+        req.user = decode;
+        next();
+      }
+    });
+  } else {
+    return res.status(403).send({
+      success: false,
+      message: 'No token provided.'
+    });
+  }
+};
+app.use('/api/trip', jwtAuthentication);
+app.use('/api/user/update', jwtAuthentication);
+``` 
 
 ## License
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
