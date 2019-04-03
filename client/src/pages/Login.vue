@@ -33,11 +33,9 @@
 <script lang="ts">
   import Vue from 'vue'
   import Component from 'vue-class-component'
-  import { UserService } from '../services/user-service';
 
   @Component({})
   export default class Login extends Vue {
-    userService = new UserService();
     user = {
       email: '',
       password: ''
