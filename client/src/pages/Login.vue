@@ -1,6 +1,12 @@
 <template>
   <div class="login-container">
     <el-form class="login-form" label-position="right" label-width="7rem">
+      <el-alert
+        v-if="alert.message"
+        :title="alert.message"
+        :type="alert.type"
+        show-icon>
+      </el-alert>
       <div class="title-container">
         <h3 class="title">
           Login
@@ -13,7 +19,12 @@
         <el-input v-model="user.password" type="password"></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="submitForm(user)">Login</el-button>
+        <el-button
+          type="primary"
+          @click="handleSubmit(user)"
+          :disabled="loggingIn || !user.email || !user.password">
+          Login
+        </el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -32,13 +43,16 @@
       password: ''
     };
 
-    submitForm(user: any) {
-      this.userService.login(user).then((result: any) => {
-        if (result.success) {
-          localStorage.setItem('user', JSON.stringify(result.user));
-          this.$router.push('/');
-        }
-      });
+    get alert() {
+      return this.$store.state.alert;
+    }
+
+    get loggingIn() {
+      return this.$store.state.authentication.status.loggingIn;
+    }
+
+    handleSubmit(user: any) {
+      this.$store.dispatch('authentication/login', user);
     }
   }
 </script>

@@ -1,5 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import { alert } from './alert-module';
+import { authentication } from './authentication-module';
 
 Vue.use(Vuex);
 
@@ -7,8 +9,11 @@ export const store = new Vuex.Store({
   state: {
     toggle: true,
     isLoading: false,
-    errorMessage: '',
     trips: []
+  },
+  modules: {
+    alert,
+    authentication,
   },
   mutations: {
     toggleSideBar(state: any) {
@@ -16,9 +21,6 @@ export const store = new Vuex.Store({
     },
     isLoading(state, payload: any) {
       state.isLoading = payload.isLoading;
-    },
-    errorMessage(state, payload: any) {
-      state.errorMessage = payload.errorMessage;
     },
     setTrips(state, payload: any) {
       state.trips = payload.trips;
@@ -30,9 +32,6 @@ export const store = new Vuex.Store({
     },
     isLoading(context: any, payload: any) {
       context.commit('isLoading', payload);
-    },
-    errorMessage(context: any, payload: any) {
-      context.commit('errorMessage', payload);
     },
     setTrips(context: any, payload: any) {
       context.commit('setTrips', payload);

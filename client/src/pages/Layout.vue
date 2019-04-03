@@ -1,7 +1,7 @@
 <template>
   <el-container>
     <el-header>
-      <top-bar :username="this.username"/>
+      <top-bar :username="user.username"/>
     </el-header>
     <el-container>
       <side-menu/>
@@ -23,11 +23,12 @@
     components: {SideMenu, TopBar, Dashboard}
   })
   export default class Layout extends Vue {
-    username: string = '';
+    created() {
+      this.$store.dispatch('alert/clear');
+    }
 
-    constructor() {
-      super();
-      this.username = JSON.parse(localStorage.getItem('user')).username;
+    get user() {
+      return this.$store.state.authentication.user;
     }
   }
 </script>

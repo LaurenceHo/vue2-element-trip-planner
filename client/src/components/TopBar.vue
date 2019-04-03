@@ -74,8 +74,7 @@
 
     handleSelect = (value: string) => {
       if (value === 'logout') {
-        this.userService.logout();
-        this.$router.push('/login');
+        this.$store.dispatch('authentication/logout');
       }
     };
   }
