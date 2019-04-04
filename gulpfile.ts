@@ -8,6 +8,15 @@ const tsProject: any = tsc.createProject('tsconfig.json');
 const tslint = require('gulp-tslint');
 const nodemon = require('gulp-nodemon');
 
+const buildServer = () => {
+  const tsResult = gulp.src('server/src/**/*.ts')
+    .pipe(sourcemaps.init())
+    .pipe(tsProject());
+  return tsResult.js
+    .pipe(sourcemaps.write())
+    .pipe(gulp.dest('dist/server'));
+};
+
 /**
  * Remove build directory.
  */
@@ -27,14 +36,7 @@ gulp.task('tslint', () =>
 /**
  * Build Express server
  */
-gulp.task('build:server', () => {
-  const tsResult = gulp.src('server/src/**/*.ts')
-    .pipe(sourcemaps.init())
-    .pipe(tsProject());
-  return tsResult.js
-    .pipe(sourcemaps.write())
-    .pipe(gulp.dest('dist/server'));
-});
+gulp.task('build:server', buildServer);
 
 /**
  * Copy bin directory for www
@@ -53,7 +55,17 @@ gulp.task('start', () =>
     ext: 'html js',
     ignore: [ 'ignored.js' ],
     tasks: [ 'tslint' ]
-  }));
+  }).on('restart', () => {
+    console.log('restarted!');
+  })
+);
+
+/**
+ * Watch for changes in TypeScript files.
+ */
+gulp.task('watch', () => {
+  gulp.watch([ 'server/src/**/*.ts' ]).on('change', buildServer);
+});
 
 /**
  * Build the project.
