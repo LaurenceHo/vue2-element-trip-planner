@@ -6,7 +6,7 @@
   "scripts": {
     "start-client": "cd client && webpack-dev-server --config ./config/webpack.dev.js --progress --profile --watch --open",
     "build-client": "cd client && npm run lint && webpack --config ./config/webpack.prod.js --progress --profile --bail",
-    "start-server": "gulp build && gulp start && gulp watch ",
+    "start-server": "gulp build && gulp start",
     "lint": "cd client && tslint './src/**/*.ts' && gulp tslint"
   },
   "author": "Laurence Ho",
