@@ -14,6 +14,7 @@ import {
   Button,
   Card,
   Container,
+  Dialog,
   Dropdown,
   DropdownItem,
   DropdownMenu,
@@ -42,6 +43,7 @@ Vue.use(Alert);
 Vue.use(Button);
 Vue.use(Card);
 Vue.use(Container);
+Vue.use(Dialog);
 Vue.use(Dropdown);
 Vue.use(DropdownItem);
 Vue.use(DropdownMenu);

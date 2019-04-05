@@ -49,7 +49,7 @@
   export default class SideMenu extends Vue {
     handleSelect(value: string) {
       if (value === 'create') {
-        this.$router.push('/create-trip');
+        this.$store.dispatch('openCreateTripDialog', true);
       }
     }
   }

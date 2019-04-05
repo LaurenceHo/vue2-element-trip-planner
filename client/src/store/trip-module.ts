@@ -11,7 +11,7 @@ export const trip = {
     trips
   },
   actions: {
-    isLoading(context: any, payload: any) {
+    isLoading(context: any, payload: boolean) {
       context.commit('isLoading', payload);
     },
     getTrips(context: any, payload: any) {
@@ -32,7 +32,7 @@ export const trip = {
     }
   },
   mutations: {
-    isLoading(state: any, payload: any) {
+    isLoading(state: any, payload: boolean) {
       state.isLoading = payload;
     },
     setTrips(state: any, payload: any) {

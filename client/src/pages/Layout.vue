@@ -6,7 +6,9 @@
     <el-container>
       <side-menu/>
       <el-main>
-        <dashboard/>
+        <keep-alive>
+          <router-view></router-view>
+        </keep-alive>
       </el-main>
     </el-container>
   </el-container>
@@ -16,11 +18,10 @@
   import Vue from 'vue'
   import Component from 'vue-class-component'
   import TopBar from '../components/TopBar.vue';
-  import Dashboard from '../components/Dashboard.vue';
   import SideMenu from '../components/SideMenu.vue';
 
   @Component({
-    components: {SideMenu, TopBar, Dashboard}
+    components: {SideMenu, TopBar}
   })
   export default class Layout extends Vue {
     created() {

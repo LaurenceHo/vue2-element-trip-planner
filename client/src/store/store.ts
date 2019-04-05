@@ -9,22 +9,27 @@ Vue.use(Vuex);
 export const store = new Vuex.Store({
   state: {
     toggle: true,
-    isLoading: false,
-    trips: []
+    openCreateTripDialog: false
   },
   modules: {
     alert,
     authentication,
     trip
   },
-  mutations: {
-    toggleSideBar(state: any) {
-      state.toggle = !state.toggle;
-    }
-  },
   actions: {
     toggleSideBar(context: any) {
       context.commit('toggleSideBar');
+    },
+    openCreateTripDialog(context: any, payload: boolean) {
+      context.commit('openCreateTripDialog', payload);
+    }
+  },
+  mutations: {
+    toggleSideBar(state: any) {
+      state.toggle = !state.toggle;
+    },
+    openCreateTripDialog(state: any, payload: boolean) {
+      state.openCreateTripDialog = payload;
     }
   }
 });
