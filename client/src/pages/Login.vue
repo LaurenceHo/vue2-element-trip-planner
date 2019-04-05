@@ -1,6 +1,6 @@
 <template>
-  <div class="login-container">
-    <el-form class="login-form" label-position="right" label-width="7rem">
+  <div class="container">
+    <el-form class="login-form" :model="user" ref="user" label-position="top" label-width="5rem">
       <el-alert
         v-if="alert.message"
         :title="alert.message"
@@ -12,20 +12,24 @@
           Login
         </h3>
       </div>
-      <el-form-item label="Email Address">
-        <el-input v-model="user.email"></el-input>
+      <el-form-item label="Email" :rules="emailRules" prop="email">
+        <el-input v-model="user.email"/>
       </el-form-item>
       <el-form-item label="Password">
-        <el-input v-model="user.password" type="password"></el-input>
+        <el-input v-model="user.password" type="password"/>
       </el-form-item>
       <el-form-item>
         <el-button
+          class="login-button"
           type="primary"
           @click="handleSubmit(user)"
           :disabled="loggingIn || !user.email || !user.password">
           Login
         </el-button>
       </el-form-item>
+      <div class="register-text">
+        or you want to <router-link to="/register">register</router-link>?
+      </div>
     </el-form>
   </div>
 </template>
@@ -36,10 +40,17 @@
 
   @Component({})
   export default class Login extends Vue {
+    emailRules = [
+      {type: 'email', message: 'Please input correct email address', trigger: [ 'blur', 'change' ]}
+    ];
     user = {
       email: '',
       password: ''
     };
+
+    created() {
+      this.$store.dispatch('alert/clear');
+    }
 
     get alert() {
       return this.$store.state.alert;
@@ -56,13 +67,6 @@
 </script>
 
 <style scoped>
-  .login-container {
-    min-height: 100%;
-    width: 100%;
-    background-color: #2d3a4b;
-    overflow: hidden;
-  }
-
   .login-form {
     position: relative;
     width: 30rem;
@@ -81,5 +85,13 @@
     color: #eee;
     text-align: center;
     font-weight: bold;
+  }
+
+  .login-button {
+    width: 100%;
+  }
+  .register-text {
+    float: right;
+    color: #eee;
   }
 </style>

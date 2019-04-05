@@ -6,3 +6,10 @@ body {
     font-size: 1rem;
     font-family: 'Roboto', sans-serif;
 }
+
+.container {
+    min-height: 100%;
+    width: 100%;
+    background-color: #2d3a4b;
+    overflow: hidden;
+}
