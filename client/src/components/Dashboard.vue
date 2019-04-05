@@ -1,6 +1,6 @@
 <template>
   <div class="main-content">
-    <div v-if="this.$store.state.isLoading" :style="{width: '100%', textAlign: 'center'}">
+    <div v-if="isLoading" :style="{width: '100%', textAlign: 'center'}">
       <i class="el-icon-loading loading-spinner"></i>
       Loading...
     </div>
@@ -12,7 +12,7 @@
         :closable=false
         show-icon>
       </el-alert>
-      <div v-if="this.$store.state.trips.size === 0">
+      <div v-if="trips.size === 0">
         <el-alert
           title="You have no trip..."
           type="info"
@@ -20,7 +20,7 @@
         </el-alert>
       </div>
       <div v-else>
-        <el-card class="box-card" v-for="trip in this.$store.state.trips" :title="trip.name">
+        <el-card class="box-card" v-for="trip in trips" :title="trip.name">
           <div slot="header" class="clearfix">
             <span>{{trip.name}}</span>
             <el-button style="float: right; padding: 3px 0" type="text">Detail</el-button>
@@ -39,28 +39,26 @@
 <script lang="ts">
   import Vue from 'vue'
   import Component from 'vue-class-component'
-  import { TripService } from '../services/trip-service';
 
   @Component({})
 
   export default class Dashboard extends Vue {
-    tripService = new TripService();
-
     beforeMount() {
+      // TODO: use date as filter in the request body
       const requestBody = {};
-      this.$store.dispatch('isLoading', {isLoading: true});
-
-      this.tripService.getAllTrips(requestBody).then((result: any) => {
-        this.$store.dispatch('setTrips', {trips: result.result});
-        this.$store.dispatch('isLoading', {isLoading: false});
-      }).catch((error: any) => {
-        this.$store.dispatch('isLoading', {isLoading: false});
-        this.$store.dispatch('alert/error', error.message);
-      });
+      this.$store.dispatch('trip/getTrips', requestBody);
     }
 
     get alert() {
       return this.$store.state.alert;
+    }
+
+    get trips() {
+      return this.$store.state.trip.trips;
+    }
+
+    get isLoading() {
+      return this.$store.state.trip.isLoading;
     }
   }
 </script>
