@@ -15,19 +15,20 @@ export const authentication = {
   actions: {
     login(context: any, payload: any) {
       userService.login(payload)
-        .then(
-          (result: any) => {
-            if (result.success) {
-              localStorage.setItem('user', JSON.stringify(result.user));
-              context.commit('loginSuccess', result.user);
-              router.push('/');
-            }
-          },
-          (error: any) => {
-            context.commit('loginFailure', error);
-            context.dispatch('alert/error', error.message, {root: true});
+        .then((result: any) => {
+          if (result.success) {
+            localStorage.setItem('user', JSON.stringify(result.user));
+            context.commit('loginSuccess', result.user);
+            router.push('/');
+          } else {
+            context.commit('loginFailure', result);
+            context.dispatch('alert/error', result.error, {root: true});
           }
-        );
+        })
+        .catch((error: any) => {
+          context.commit('loginFailure', error);
+          context.dispatch('alert/error', error.error, {root: true});
+        });
     },
     logout(context: any) {
       userService.logout();

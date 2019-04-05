@@ -35,17 +35,8 @@ export class ApiService {
     requestOptions.headers = headers;
     
     return fetch(urlPath, requestOptions)
-      .then(this.checkStatus)
       .then(this.parseResponse)
       .then(data => data);
-  }
-  
-  private checkStatus = (response: Response) => {
-    if (response.status >= 200 && response.status < 300) {
-      return response;
-    } else {
-      throw new Error(response.statusText);
-    }
   }
   
   private parseResponse = (response: Response) => response.json();

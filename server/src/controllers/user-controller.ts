@@ -33,7 +33,7 @@ export class UserController {
         
         if (user) {
           if (!userService.checkPassword(req.body.password, user.password)) {
-            res.status(401).json({message: 'Authentication failed. Email or password is wrong.'});
+            res.status(401).json({error: 'Authentication failed. Email or password is wrong.'});
           } else {
             res.json({
               success: true,
@@ -51,7 +51,7 @@ export class UserController {
             });
           }
         } else {
-          res.status(404).json({message: 'Cannot find user.'});
+          res.status(404).json({error: 'Cannot find user.'});
         }
       });
     } catch (error) {

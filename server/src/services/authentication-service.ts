@@ -21,7 +21,7 @@ export class AuthenticationService {
             }
             if (!_.isEmpty(result)) {
               if (result[ 0 ].user_id !== req.user.id) {
-                res.status(403).send({message: 'You have no permission'});
+                res.status(403).send({error: 'You have no permission'});
               } else {
                 next();
               }
@@ -31,11 +31,10 @@ export class AuthenticationService {
           });
         }
       } catch (error) {
-        console.error(error);
         res.status(400).send({error});
       }
     } else {
-      res.status(401).send({message: 'Please login first'});
+      res.status(401).send({error: 'Please login first'});
     }
   }
   
@@ -49,7 +48,7 @@ export class AuthenticationService {
             }
             if (!_.isEmpty(result)) {
               if (result[ 0 ].user_id !== req.user.id) {
-                res.status(403).send({message: 'You have no permission'});
+                res.status(403).send({error: 'You have no permission'});
               } else {
                 next();
               }
@@ -59,11 +58,10 @@ export class AuthenticationService {
           });
         }
       } catch (error) {
-        console.error(error);
         res.status(400).send({error});
       }
     } else {
-      res.status(401).send({message: 'Please login first'});
+      res.status(401).send({error: 'Please login first'});
     }
   }
   
@@ -77,7 +75,7 @@ export class AuthenticationService {
             }
             if (!_.isEmpty(result)) {
               if (result[ 0 ].user_id !== req.user.id) {
-                res.status(403).send({message: 'You have no permission'});
+                res.status(403).send({error: 'You have no permission'});
               } else {
                 next();
               }
@@ -87,11 +85,10 @@ export class AuthenticationService {
           });
         }
       } catch (error) {
-        console.error(error);
         res.status(400).send({error});
       }
     } else {
-      res.status(401).send({message: 'Please login first'});
+      res.status(401).send({error: 'Please login first'});
     }
   }
 }
