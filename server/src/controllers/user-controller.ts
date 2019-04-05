@@ -38,6 +38,7 @@ export class UserController {
             res.json({
               success: true,
               user: {
+                id: user.id,
                 email: user.email,
                 username: user.username,
                 token: jwt.sign({
@@ -51,7 +52,7 @@ export class UserController {
             });
           }
         } else {
-          res.status(404).json({error: 'Cannot find user.'});
+          res.status(401).json({error: 'Authentication failed. Email or password is wrong.'});
         }
       });
     } catch (error) {

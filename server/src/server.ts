@@ -41,9 +41,9 @@ const jwtAuthentication = (req: any, res: express.Response, next: any) => {
   if (req.headers && req.headers.authorization && req.headers.authorization.split(' ')[ 0 ] === 'Bearer') {
     jwt.verify(req.headers.authorization.split(' ')[ 1 ], app.get('superSecret'), (error: any, decode: any) => {
       if (error) {
-        return res.status(403).send({
+        return res.status(401).send({
           success: false,
-          message: 'Authentication failed.'
+          error: 'Authentication failed. Please login.'
         });
       } else {
         req.user = decode;
@@ -51,9 +51,9 @@ const jwtAuthentication = (req: any, res: express.Response, next: any) => {
       }
     });
   } else {
-    return res.status(403).send({
+    return res.status(401).send({
       success: false,
-      message: 'No token provided.'
+      error: 'No authentication token provided.'
     });
   }
 };
