@@ -1,3 +1,4 @@
+import { Trip } from '../models/trip';
 import { ApiService } from './api-service';
 
 const SERVER_URL = 'http://localhost:3000/api';
@@ -5,10 +6,17 @@ const SERVER_URL = 'http://localhost:3000/api';
 export class TripService {
   apiService = new ApiService();
   
-  getAllTrips = (requestBody: any): any => {
+  getTrips = (requestBody: any): any => {
     const searchParams = {};
     const formParams = {};
     
     return this.apiService.perform('POST', `${SERVER_URL}/trip`, requestBody, searchParams, formParams);
+  }
+  
+  createTrip = (requestBody: Trip): any => {
+    const searchParams = {};
+    const formParams = {};
+    
+    return this.apiService.perform('POST', `${SERVER_URL}/trip/create`, requestBody, searchParams, formParams);
   }
 }

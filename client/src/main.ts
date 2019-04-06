@@ -13,7 +13,9 @@ import {
   Alert,
   Button,
   Card,
+  Col,
   Container,
+  DatePicker,
   Dialog,
   Dropdown,
   DropdownItem,
@@ -42,7 +44,9 @@ Vue.component('font-awesome-icon', FontAwesomeIcon);
 Vue.use(Alert);
 Vue.use(Button);
 Vue.use(Card);
+Vue.use(Col);
 Vue.use(Container);
+Vue.use(DatePicker);
 Vue.use(Dialog);
 Vue.use(Dropdown);
 Vue.use(DropdownItem);

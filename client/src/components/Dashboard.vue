@@ -1,5 +1,6 @@
 <template>
   <div class="main-content">
+    <create-trip-dialog/>
     <div v-if="isLoading" :style="{width: '100%', textAlign: 'center'}">
       <i class="el-icon-loading loading-spinner"></i>
       Loading...
@@ -39,9 +40,11 @@
 <script lang="ts">
   import Vue from 'vue'
   import Component from 'vue-class-component'
+  import CreateTripDialog from './CreateTripDialog.vue';
 
-  @Component({})
-
+  @Component({
+    components: {CreateTripDialog}
+  })
   export default class Dashboard extends Vue {
     beforeMount() {
       // TODO: use date as filter in the request body
@@ -60,6 +63,7 @@
     get isLoading() {
       return this.$store.state.trip.isLoading;
     }
+
   }
 </script>
 
