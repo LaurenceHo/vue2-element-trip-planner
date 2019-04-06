@@ -1,6 +1,7 @@
+/* tslint:disable */
 const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 
 module.exports = {
@@ -23,7 +24,7 @@ module.exports = {
         loader: 'ts-loader',
         exclude: /node_modules|vue\/src/,
         options: {
-          appendTsSuffixTo: [/\.vue$/]
+          appendTsSuffixTo: [ /\.vue$/ ]
         }
       },
       {
@@ -39,6 +40,10 @@ module.exports = {
       {
         test: /\.css$/,
         use: [ 'style-loader', 'css-loader' ]
+      },
+      {
+        test: /\.s(a|c)ss$/,
+        use: [ 'style-loader', 'css-loader', 'sass-loader' ]
       },
       {
         test: /\.(jpe?g|png|gif|ico)$/i,

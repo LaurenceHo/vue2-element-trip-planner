@@ -1,3 +1,4 @@
+/* tslint:disable */
 const merge = require('webpack-merge');
 const DefinePlugin = require('webpack/lib/DefinePlugin');
 const common = require('./webpack.common.js');
