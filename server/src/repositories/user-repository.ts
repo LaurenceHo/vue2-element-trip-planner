@@ -7,14 +7,14 @@ export class UserRepository implements BaseRepository<User> {
     knex('user')
       .where(whereClauses)
       .then((results: User[]) => callback(results[ 0 ]))
-      .catch((err: any) => callback(err));
+      .catch((err: any) => callback(null, err));
   }
   
   create(item: User, callback: any): void {
     knex('user')
       .insert(item)
       .then((returning: any) => callback({user_id: returning[ 0 ]}))
-      .catch((err: any) => callback(err));
+      .catch((err: any) => callback(null, err));
   }
   
   update(item: User, callback: any): void {
@@ -24,7 +24,7 @@ export class UserRepository implements BaseRepository<User> {
       .where({id: item.id})
       .update(item)
       .then((result: any) => callback(result))
-      .catch((err: any) => callback(err));
+      .catch((err: any) => callback(null, err));
   }
   
   delete(id: number, callback: any): void {

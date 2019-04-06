@@ -12,7 +12,7 @@ export class EventController implements BaseController<EventService> {
       whereClauses.user_id = req.user.id;
       eventService.retrieve(whereClauses, (result: Event[], error: any) => {
         if (error) {
-          res.status(400).send({error});
+          res.status(400).send({error: error.sqlMessage});
         } else {
           res.status(200).send({success: true, result});
         }
@@ -29,7 +29,7 @@ export class EventController implements BaseController<EventService> {
       event.user_id = req.user.id;
       eventService.create(event, (result: any, error: any) => {
         if (error) {
-          res.status(400).send({error});
+          res.status(400).send({error: error.sqlMessage});
         } else {
           res.status(200).send({success: true, result});
         }
@@ -46,7 +46,7 @@ export class EventController implements BaseController<EventService> {
       event.user_id = req.user.id;
       eventService.update(event, (result: any, error: any) => {
         if (error) {
-          res.status(400).send({error});
+          res.status(400).send({error: error.sqlMessage});
         } else {
           res.status(200).send({success: true, result});
         }
@@ -61,7 +61,7 @@ export class EventController implements BaseController<EventService> {
       const id: number = req.params.event_id;
       eventService.delete(id, (result: any, error: any) => {
         if (error) {
-          res.status(400).send({error});
+          res.status(400).send({error: error.sqlMessage});
         } else {
           res.status(200).send({success: true, result});
         }

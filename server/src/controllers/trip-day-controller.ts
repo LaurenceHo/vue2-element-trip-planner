@@ -12,7 +12,7 @@ export class TripDayController implements BaseController<TripDayService> {
       const user_id: number = req.user.id;
       tripDayService.retrieveDetail({trip_day_id, user_id}, (result: TripDay, error: any) => {
         if (error) {
-          res.status(400).send({error});
+          res.status(400).send({error: error.sqlMessage});
         } else {
           res.status(200).send({success: true, result});
         }
@@ -28,7 +28,7 @@ export class TripDayController implements BaseController<TripDayService> {
       const user_id: number = req.user.id;
       tripDayService.retrieve({trip_id, user_id}, (result: TripDay[], error: any) => {
         if (error) {
-          res.status(400).send({error});
+          res.status(400).send({error: error.sqlMessage});
         } else {
           res.status(200).send({success: true, result});
         }
@@ -45,7 +45,7 @@ export class TripDayController implements BaseController<TripDayService> {
       tripDay.user_id = req.user.id;
       tripDayService.create(tripDay, (result: any, error: any) => {
         if (error) {
-          res.status(400).send({error});
+          res.status(400).send({error: error.sqlMessage});
         } else {
           res.status(200).send({success: true, result});
         }
@@ -62,7 +62,7 @@ export class TripDayController implements BaseController<TripDayService> {
       tripDay.user_id = req.user.id;
       tripDayService.update(tripDay, (result: any, error: any) => {
         if (error) {
-          res.status(400).send({error});
+          res.status(400).send({error: error.sqlMessage});
         } else {
           res.status(200).send({success: true, result});
         }
@@ -77,7 +77,7 @@ export class TripDayController implements BaseController<TripDayService> {
       const trip_day_id: number = req.params.trip_day_id;
       tripDayService.delete(trip_day_id, (result: any, error: any) => {
         if (error) {
-          res.status(400).send({error});
+          res.status(400).send({error: error.sqlMessage});
         } else {
           res.status(200).send({success: true, result});
         }

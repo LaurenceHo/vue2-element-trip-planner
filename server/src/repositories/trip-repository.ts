@@ -17,12 +17,12 @@ export class TripRepository implements BaseRepository<Trip> {
               trip.trip_day = results;
               callback(trip);
             })
-            .catch((err: any) => callback(err));
+            .catch((err: any) => callback(null, err));
         } else {
           callback();
         }
       })
-      .catch((err: any) => callback(err));
+      .catch((err: any) => callback(null, err));
   }
   
   retrieve(columns: string[], whereClauses: any, callback: any): void {
@@ -31,12 +31,12 @@ export class TripRepository implements BaseRepository<Trip> {
         .columnInfo(columns)
         .where(whereClauses)
         .then((results: Trip[]) => callback(results))
-        .catch((err: any) => callback(err));
+        .catch((err: any) => callback(null, err));
     } else {
       knex('trip')
         .where(whereClauses)
         .then((results: Trip[]) => callback(results))
-        .catch((err: any) => callback(err));
+        .catch((err: any) => callback(null, err));
     }
   }
   
@@ -44,7 +44,7 @@ export class TripRepository implements BaseRepository<Trip> {
     knex('trip')
       .insert(item)
       .then((returning: any) => callback({trip_id: returning[ 0 ]}))
-      .catch((err: any) => callback(err));
+      .catch((err: any) => callback(null, err));
   }
   
   update(item: Trip, callback: any): void {
@@ -53,7 +53,7 @@ export class TripRepository implements BaseRepository<Trip> {
       .where({id: item.id, user_id: item.user_id})
       .update(item)
       .then((result: any) => callback(result))
-      .catch((err: any) => callback(err));
+      .catch((err: any) => callback(null, err));
   }
   
   delete(id: number, callback: any): void {
@@ -61,6 +61,6 @@ export class TripRepository implements BaseRepository<Trip> {
       .where({id})
       .del()
       .then((result: any) => callback(result))
-      .catch((err: any) => callback(err));
+      .catch((err: any) => callback(null, err));
   }
 }

@@ -13,7 +13,7 @@ export class UserController {
       
       userService.create(newUser, (result: any, error: any) => {
         if (error) {
-          res.status(400).send({error});
+          res.status(400).send({error: error.sqlMessage});
         } else {
           res.status(200).send({success: true, result});
         }
@@ -28,7 +28,7 @@ export class UserController {
       const email = req.body.email;
       userService.retrieve({email}, (user: User, error: any) => {
         if (error) {
-          res.status(400).send({error});
+          res.status(400).send({error: error.sqlMessage});
         }
         
         if (user) {
@@ -65,7 +65,7 @@ export class UserController {
       const user: User = req.body;
       userService.update(user, (result: any, error: any) => {
         if (error) {
-          res.status(400).send({error});
+          res.status(400).send({error: error.sqlMessage});
         } else {
           res.status(200).send({success: true, result});
         }
@@ -76,6 +76,6 @@ export class UserController {
   }
   
   logout(req: express.Request, res: express.Response): void {
-    // TODO
+    // TODO, remove jwt?
   }
 }

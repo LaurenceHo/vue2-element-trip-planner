@@ -9,12 +9,12 @@ export class EventRepository implements BaseRepository<Event> {
         .columnInfo(columns)
         .where(whereClauses)
         .then((results: Event[]) => callback(results))
-        .catch((err: any) => callback(err));
+        .catch((err: any) => callback(null, err));
     } else {
       knex('event')
         .where(whereClauses)
         .then((results: Event[]) => callback(results))
-        .catch((err: any) => callback(err));
+        .catch((err: any) => callback(null, err));
     }
   }
   
@@ -22,7 +22,7 @@ export class EventRepository implements BaseRepository<Event> {
     knex('event')
       .insert(item)
       .then((returning: any) => callback({event_id: returning[ 0 ]}))
-      .catch((err: any) => callback(err));
+      .catch((err: any) => callback(null, err));
   }
   
   update(item: Event, callback: any): void {
@@ -31,7 +31,7 @@ export class EventRepository implements BaseRepository<Event> {
       .where({id: item.id, user_id: item.user_id, trip_day_id: item.trip_day_id})
       .update(item)
       .then((result: any) => callback(result))
-      .catch((err: any) => callback(err));
+      .catch((err: any) => callback(null, err));
   }
   
   delete(id: number, callback: any): void {
@@ -39,6 +39,6 @@ export class EventRepository implements BaseRepository<Event> {
       .where({id})
       .del()
       .then((result: any) => callback(result))
-      .catch((err: any) => callback(err));
+      .catch((err: any) => callback(null, err));
   }
 }
