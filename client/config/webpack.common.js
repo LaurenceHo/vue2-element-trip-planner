@@ -1,6 +1,7 @@
 /* tslint:disable */
 const path = require('path');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const NormalModuleReplacementPlugin = require('webpack/lib/NormalModuleReplacementPlugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 
@@ -83,7 +84,8 @@ module.exports = {
         from: 'src/assets',
         to: 'assets'
       }
-    ])
+    ]),
+    new NormalModuleReplacementPlugin(/element-ui[\/\\]lib[\/\\]locale[\/\\]lang[\/\\]zh-CN/, 'element-ui/lib/locale/lang/en')
   ]
 };
 
