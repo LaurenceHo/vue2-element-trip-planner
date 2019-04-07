@@ -24,7 +24,7 @@
         <el-card class="box-card" v-for="trip in trips" :title="trip.name">
           <div slot="header" class="clearfix">
             <span>{{trip.name}}</span>
-            <el-button style="float: right; padding: 3px 0" type="text">Detail</el-button>
+            <el-button class="detail-button" type="text" @click="goToDetail(trip.id)">Detail</el-button>
           </div>
           <div>
             <p>Start date: {{trip.start_date}}</p>
@@ -64,6 +64,9 @@
       return this.$store.state.trip.isLoading;
     }
 
+    goToDetail(tripId: number) {
+      this.$router.push(`trip/${tripId}`);
+    }
   }
 </script>
 
@@ -80,6 +83,11 @@
   .box-card {
     width: 42rem;
     margin: 1rem 0;
+  }
+
+  .detail-button {
+    float: right;
+    padding: 3px 0
   }
 
   .clearfix:before,

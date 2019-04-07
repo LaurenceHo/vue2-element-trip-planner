@@ -45,4 +45,8 @@
     line-height: 5rem;
     padding: 0;
   }
+
+  .el-main {
+    padding: 0;
+  }
 </style>
