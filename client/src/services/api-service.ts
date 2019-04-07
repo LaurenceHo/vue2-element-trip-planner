@@ -1,7 +1,7 @@
 import * as _ from 'lodash';
 
 export class ApiService {
-  perform(method: string, urlPath: string, requestBody: any, searchParams: any, formParams: any) {
+  perform(method: string, urlPath: string, requestBody: any, searchParams: any, formParams: any): any {
     const requestOptions: any = {};
     requestOptions.mode = 'cors';
     requestOptions.credentials = 'include';
@@ -41,7 +41,7 @@ export class ApiService {
   
   private parseResponse = (response: Response) => response.json();
   
-  private authHeader = (headers: Headers) => {
+  private authHeader(headers: Headers): any {
     const user = JSON.parse(localStorage.getItem('user'));
     
     if (user && user.token) {
