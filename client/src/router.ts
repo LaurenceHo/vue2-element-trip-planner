@@ -1,10 +1,11 @@
 import * as _ from 'lodash';
 import Vue from 'vue';
 import Router from 'vue-router';
-import Dashboard from './components/Dashboard.vue';
 import Layout from './pages/Layout.vue';
 import Login from './pages/Login.vue';
 import Register from './pages/Register.vue';
+import TripDashboard from './pages/TripDashboard.vue';
+import TripDetailDashboard from './pages/TripDetailDashboard.vue';
 
 Vue.use(Router);
 
@@ -21,11 +22,16 @@ export const router = new Router({
     {
       path: '/',
       component: Layout,
-      children: [ {
-        path: '',
-        component: Dashboard,
-        meta: [],
-      } ]
+      children: [
+        {
+          path: '',
+          component: TripDashboard
+        },
+        {
+          path: 'trip/:trip_id',
+          component: TripDetailDashboard
+        }
+      ]
     },
     {
       path: '*',

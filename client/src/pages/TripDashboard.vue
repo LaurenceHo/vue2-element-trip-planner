@@ -40,12 +40,12 @@
 <script lang="ts">
   import Vue from 'vue'
   import Component from 'vue-class-component'
-  import CreateTripDialog from './CreateTripDialog.vue';
+  import CreateTripDialog from '../components/CreateTripDialog.vue';
 
   @Component({
     components: {CreateTripDialog}
   })
-  export default class Dashboard extends Vue {
+  export default class TripDashboard extends Vue {
     beforeMount() {
       // TODO: use date as filter in the request body
       const requestBody = {};
@@ -66,6 +66,7 @@
 
     goToDetail(tripId: number) {
       this.$router.push(`trip/${tripId}`);
+      this.$store.dispatch('trip/getTripDays', {trip_id: this.$route.params.trip_id, isInitial: true});
     }
   }
 </script>
