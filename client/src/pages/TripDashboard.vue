@@ -21,27 +21,29 @@
           show-icon />
       </div>
       <div v-else>
-        <el-card
-          v-for="trip in trips"
-          :title="trip.name"
-          class="box-card">
-          <div
-            slot="header"
-            class="clearfix">
-            <span>{{ trip.name }}</span>
-            <el-button
-              @click="goToDetail(trip.id)"
-              class="detail-button"
-              type="text">
-              Detail
-            </el-button>
-          </div>
-          <div>
-            <p>Start date: {{ trip.start_date }}</p>
-            <p>End date: {{ trip.end_date }}</p>
-            <p>Destination: {{ trip.destination }}</p>
-          </div>
-        </el-card>
+        <div v-for="trip in trips">
+          <el-card
+            :key="trip.id"
+            :title="trip.name"
+            class="box-card">
+            <div
+              slot="header"
+              class="clearfix">
+              <span>{{ trip.name }}</span>
+              <el-button
+                @click="goToDetail(trip.id)"
+                class="detail-button"
+                type="text">
+                Detail
+              </el-button>
+            </div>
+            <div>
+              <p>Start date: {{ trip.start_date }}</p>
+              <p>End date: {{ trip.end_date }}</p>
+              <p>Destination: {{ trip.destination }}</p>
+            </div>
+          </el-card>
+        </div>
       </div>
     </div>
   </div>
