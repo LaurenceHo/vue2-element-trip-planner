@@ -1,4 +1,4 @@
-import * as _ from 'lodash';
+import { includes } from 'lodash';
 import Vue from 'vue';
 import Router from 'vue-router';
 import Layout from './pages/Layout.vue';
@@ -42,7 +42,7 @@ export const router = new Router({
 
 router.beforeEach((to, from, next) => {
   const publicPages = ['/login', '/register'];
-  const authRequired = !_.includes(publicPages, to.path);
+  const authRequired = !includes(publicPages, to.path);
   const loggedIn = localStorage.getItem('user');
 
   if (authRequired && !loggedIn) {

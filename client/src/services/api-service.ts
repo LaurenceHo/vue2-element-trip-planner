@@ -1,4 +1,4 @@
-import * as _ from 'lodash';
+import { isEmpty } from 'lodash';
 
 export class ApiService {
   perform(method: string, urlPath: string, requestBody: any, searchParams: any, formParams: any): any {
@@ -11,7 +11,7 @@ export class ApiService {
     this.authHeader(headers);
 
     // Construct request body
-    if (!_.isEmpty(formParams)) {
+    if (!isEmpty(formParams)) {
       // Form submit
       headers.append('Content-Type', 'application/x-www-form-urlencoded');
       const formData = new FormData();
@@ -19,11 +19,11 @@ export class ApiService {
         formData.append(formParam, formParams[formParam]);
       }
       requestOptions.body = formData;
-    } else if (!_.isEmpty(requestBody)) {
+    } else if (!isEmpty(requestBody)) {
       // JSON content
       headers.append('Content-Type', 'application/json');
       requestOptions.body = JSON.stringify(requestBody);
-    } else if (!_.isEmpty(searchParams)) {
+    } else if (!isEmpty(searchParams)) {
       const urlSearchParams = new URLSearchParams();
       for (const param of Object.keys(searchParams)) {
         urlSearchParams.append(param, searchParams[param]);
