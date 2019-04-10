@@ -1,0 +1,31 @@
+{
+  "parser": "vue-eslint-parser",
+  "parserOptions": {
+    "parser": "@typescript-eslint/parser"
+  },
+  "plugins": [
+    "@typescript-eslint",
+    "prettier",
+    "vue"
+  ],
+  "extends": [
+    "plugin:@typescript-eslint/recommended",
+    "prettier",
+    "prettier/standard",
+    "plugin:vue/recommended"
+  ],
+  "rules": {
+    "@typescript-eslint/camelcase": "off",
+    "@typescript-eslint/explicit-function-return-type": "off",
+    "@typescript-eslint/explicit-member-accessibility": "off",
+    "@typescript-eslint/indent": "off",
+    "@typescript-eslint/no-explicit-any": "off",
+    "indent": "off",
+    "vue/html-closing-bracket-newline": ["error", {
+      "multiline": "never"
+    }],
+    "vue/max-attributes-per-line": ["error", {
+      "singleline": 1
+    }]
+  }
+}

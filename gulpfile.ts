@@ -5,24 +5,12 @@ const del = require('del');
 const tsc = require('gulp-typescript');
 const sourcemaps = require('gulp-sourcemaps');
 const tsProject: any = tsc.createProject('tsconfig.json');
-const tslint = require('gulp-tslint');
 const nodemon = require('gulp-nodemon');
 
 /**
  * Remove build directory.
  */
 gulp.task('clean', (cb: any) => del([ 'dist/server' ], cb));
-
-/**
- * Lint all custom TypeScript files.
- */
-gulp.task('tslint', () =>
-  gulp.src('server/src/**/*.ts')
-    .pipe(tslint({
-      formatter: 'prose'
-    }))
-    .pipe(tslint.report())
-);
 
 /**
  * Build Express server
@@ -67,7 +55,6 @@ gulp.task(
   'build',
   gulp.series(
     'clean',
-    'tslint',
     'compile',
     'serverResources',
   )
