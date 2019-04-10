@@ -8,19 +8,19 @@ export class TripService implements BaseService<Trip> {
   retrieveDetail(whereClauses: any, callback: any): void {
     tripRepository.retrieveDetail(whereClauses, callback);
   }
-  
+
   retrieve(whereClauses: any, callback: any): void {
     tripRepository.retrieve(null, whereClauses, callback);
   }
-  
+
   create(item: Trip, callback: any): void {
     tripRepository.create(item, callback);
   }
-  
+
   update(item: Trip, callback: any): void {
     tripRepository.update(item, callback);
   }
-  
+
   delete(id: number, callback: any): void {
     tripRepository.delete(id, callback);
   }

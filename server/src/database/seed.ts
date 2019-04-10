@@ -4,19 +4,19 @@ import { knex } from './knex';
 const createCategory = () => {
   const categories = [
     {
-      name: 'activity'
+      name: 'activity',
     },
     {
-      name: 'transportation'
+      name: 'transportation',
     },
     {
-      name: 'info'
+      name: 'info',
     },
     {
-      name: 'accommodation'
-    }
+      name: 'accommodation',
+    },
   ];
-  
+
   knex('category')
     .insert(categories)
     .then((returning: any) => console.log(returning))
@@ -27,9 +27,9 @@ const createUser = () => {
   const user = {
     username: 'laurence.ho',
     password: bcrypt.hashSync('abc123', 10),
-    email: 'laurence.ho@test.co.nz'
+    email: 'laurence.ho@test.co.nz',
   };
-  
+
   knex('user')
     .insert(user)
     .then((returning: any) => console.log(returning))
@@ -42,9 +42,9 @@ const createTrip = () => {
     start_date: '2019-05-01',
     end_date: '2019-05-15',
     destination: 'New Zealand',
-    archived: false
+    archived: false,
   };
-  
+
   knex('trip')
     .insert(trip)
     .then((returning: any) => console.log(returning))
@@ -56,20 +56,20 @@ const createTripDay = () => {
     {
       user_id: 1,
       trip_id: 1,
-      trip_date: '2019-05-01'
+      trip_date: '2019-05-01',
     },
     {
       user_id: 1,
       trip_id: 1,
-      trip_date: '2019-05-02'
+      trip_date: '2019-05-02',
     },
     {
       user_id: 1,
       trip_id: 1,
-      trip_date: '2019-05-03'
-    }
+      trip_date: '2019-05-03',
+    },
   ];
-  
+
   knex('trip_day')
     .insert(tripDay)
     .then((returning: any) => console.log(returning))
@@ -83,7 +83,7 @@ const createEvent = () => {
       trip_day_id: 1,
       category_id: 4,
       title: 'Hostel',
-      note: 'Cannot refund'
+      note: 'Cannot refund',
     },
     {
       user_id: 1,
@@ -91,7 +91,7 @@ const createEvent = () => {
       category_id: 2,
       start_time: '07:00',
       end_time: '07:30',
-      title: 'Take the bus'
+      title: 'Take the bus',
     },
     {
       user_id: 1,
@@ -99,7 +99,7 @@ const createEvent = () => {
       category_id: 1,
       start_time: '09:00',
       end_time: '10:00',
-      title: 'sightseeing'
+      title: 'sightseeing',
     },
     {
       user_id: 1,
@@ -109,7 +109,7 @@ const createEvent = () => {
       end_time: '13:00',
       title: 'Lunch',
       cost: 50,
-      currency: 'NZD'
+      currency: 'NZD',
     },
     {
       user_id: 1,
@@ -119,10 +119,10 @@ const createEvent = () => {
       end_time: '07:00',
       title: 'Breakfast',
       cost: 20,
-      currency: 'NZD'
+      currency: 'NZD',
     },
   ];
-  
+
   knex('event')
     .insert(events)
     .then((returning: any) => console.log(returning))

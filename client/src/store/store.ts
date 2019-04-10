@@ -9,12 +9,12 @@ Vue.use(Vuex);
 export const store = new Vuex.Store({
   state: {
     toggle: true,
-    openCreateTripDialog: false
+    openCreateTripDialog: false,
   },
   modules: {
     alert,
     authentication,
-    trip
+    trip,
   },
   actions: {
     toggleSideBar(context: any) {
@@ -22,7 +22,7 @@ export const store = new Vuex.Store({
     },
     openCreateTripDialog(context: any, payload: boolean) {
       context.commit('openCreateTripDialog', payload);
-    }
+    },
   },
   mutations: {
     toggleSideBar(state: any) {
@@ -30,6 +30,6 @@ export const store = new Vuex.Store({
     },
     openCreateTripDialog(state: any, payload: boolean) {
       state.openCreateTripDialog = payload;
-    }
-  }
+    },
+  },
 });

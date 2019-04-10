@@ -6,25 +6,33 @@ const router = express.Router();
 const authenticationService = new AuthenticationService();
 const eventController = new EventController();
 
-router.post('/:trip_id/day/:trip_day_id/event',
+router.post(
+  '/:trip_id/day/:trip_day_id/event',
   authenticationService.checkTripOwner,
   authenticationService.checkTripDayOwner,
-  eventController.retrieve);
+  eventController.retrieve
+);
 
-router.post('/:trip_id/day/:trip_day_id/event/create',
+router.post(
+  '/:trip_id/day/:trip_day_id/event/create',
   authenticationService.checkTripOwner,
   authenticationService.checkTripDayOwner,
-  eventController.create);
+  eventController.create
+);
 
-router.put('/:trip_id/day/:trip_day_id/event/update',
+router.put(
+  '/:trip_id/day/:trip_day_id/event/update',
   authenticationService.checkTripOwner,
   authenticationService.checkTripDayOwner,
-  eventController.update);
+  eventController.update
+);
 
-router.delete('/:trip_id/day/:trip_day_id/event/:event_id',
+router.delete(
+  '/:trip_id/day/:trip_day_id/event/:event_id',
   authenticationService.checkTripOwner,
   authenticationService.checkTripDayOwner,
   authenticationService.checkEventOwner,
-  eventController.delete);
+  eventController.delete
+);
 
 export = router;

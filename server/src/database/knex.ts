@@ -4,9 +4,9 @@ export const knex = require('knex')({
     host: 'localhost',
     user: 'sa',
     password: '(IJN8uhb',
-    database: 'tripplanner'
+    database: 'tripplanner',
   },
-  pool: {min: 0, max: 7},
+  pool: { min: 0, max: 7 },
   acquireConnectionTimeout: 10000,
-  debug: true
+  debug: true,
 });

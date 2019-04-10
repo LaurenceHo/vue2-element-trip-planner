@@ -3,6 +3,7 @@ import * as express from 'express';
 import * as jwt from 'jsonwebtoken';
 import * as morgan from 'morgan';
 import * as path from 'path';
+import * as expressSanitizer from 'express-sanitizer';
 
 import { schema } from './database/schema';
 import * as eventRoute from './routes/event-route';
@@ -10,16 +11,14 @@ import * as tripDayRoute from './routes/trip-day-route';
 import * as tripRoute from './routes/trip-route';
 import * as userRoute from './routes/user-route';
 
-const expressSanitizer = require('express-sanitizer');
-
 schema();
 
 const app = express();
 
 app.set('superSecret', 'TripPlannerRestfulApis');
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-app.use(express.static(path.join(__dirname, '../client'), {index: false}));
+app.use(express.static(path.join(__dirname, '../client'), { index: false }));
 app.use(expressSanitizer());
 app.use(morgan('dev'));
 
@@ -28,7 +27,7 @@ const corsHeader = (req: any, res: any, next: any) => {
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Origin, Content-Type, Accept, Authorization, X-Requested-With');
   res.setHeader('Access-Control-Allow-Credentials', 'true');
-  
+
   if ('OPTIONS' === req.method) {
     res.send(200);
   } else {
@@ -38,12 +37,12 @@ const corsHeader = (req: any, res: any, next: any) => {
 app.use(corsHeader);
 
 const jwtAuthentication = (req: any, res: express.Response, next: any) => {
-  if (req.headers && req.headers.authorization && req.headers.authorization.split(' ')[ 0 ] === 'Bearer') {
-    jwt.verify(req.headers.authorization.split(' ')[ 1 ], app.get('superSecret'), (error: any, decode: any) => {
+  if (req.headers && req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
+    jwt.verify(req.headers.authorization.split(' ')[1], app.get('superSecret'), (error: any, decode: any) => {
       if (error) {
         return res.status(401).send({
           success: false,
-          error: 'Authentication failed. Please login.'
+          error: 'Authentication failed. Please login.',
         });
       } else {
         req.user = decode;
@@ -53,7 +52,7 @@ const jwtAuthentication = (req: any, res: express.Response, next: any) => {
   } else {
     return res.status(401).send({
       success: false,
-      error: 'No authentication token provided.'
+      error: 'No authentication token provided.',
     });
   }
 };

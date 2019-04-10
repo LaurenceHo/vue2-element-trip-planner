@@ -8,15 +8,15 @@ export class EventService implements BaseService<Event> {
   retrieve(whereClauses: any, callback: any): void {
     eventRepository.retrieve(null, whereClauses, callback);
   }
-  
+
   create(item: Event, callback: any): void {
     eventRepository.create(item, callback);
   }
-  
+
   update(item: Event, callback: any): void {
     eventRepository.update(item, callback);
   }
-  
+
   delete(id: number, callback: any): void {
     eventRepository.delete(id, callback);
   }

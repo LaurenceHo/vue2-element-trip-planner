@@ -15,14 +15,15 @@ const tripDetail: Trip = {
   name: '',
   destination: '',
   archived: false,
-  trip_day: []
+  trip_day: [],
 };
 const tripDayDetail: TripDay = {
   id: 0,
+  name: '',
   trip_id: 0,
   user_id: 0,
   trip_date: '',
-  events: []
+  events: [],
 };
 
 export const trip = {
@@ -33,7 +34,7 @@ export const trip = {
     trip_day_id: 0,
     trips,
     tripDetail,
-    tripDayDetail
+    tripDayDetail,
   },
   actions: {
     isLoading(context: any, payload: boolean) {
@@ -41,72 +42,74 @@ export const trip = {
     },
     getTrips(context: any, payload: any) {
       context.commit('isLoading', true);
-      tripService.getTrips(payload)
+      tripService
+        .getTrips(payload)
         .then((result: any) => {
           context.commit('isLoading', false);
           if (result.success) {
             context.commit('getTrips', result.result);
           } else {
-            context.dispatch('alert/error', result.error, {root: true});
+            context.dispatch('alert/error', result.error, { root: true });
           }
         })
         .catch((error: any) => {
           context.commit('isLoading', false);
-          context.dispatch('alert/error', error.error, {root: true});
+          context.dispatch('alert/error', error.error, { root: true });
         });
     },
     createTrip(context: any, payload: Trip) {
       context.commit('isLoading', true);
       payload.start_date = moment(payload.start_date).format('YYYY-MM-DD');
       payload.end_date = moment(payload.end_date).format('YYYY-MM-DD');
-      tripService.createTrip(payload)
+      tripService
+        .createTrip(payload)
         .then((result: any) => {
           if (result.success) {
-            context.dispatch('trip/getTrips', {}, {root: true});
+            context.dispatch('trip/getTrips', {}, { root: true });
           } else {
-            context.dispatch('alert/error', result.error, {root: true});
+            context.dispatch('alert/error', result.error, { root: true });
           }
         })
         .catch((error: any) => {
           context.commit('isLoading', false);
-          context.dispatch('alert/error', error.error, {root: true});
+          context.dispatch('alert/error', error.error, { root: true });
         });
     },
     getTripDays(context: any, payload: any) {
       context.commit('isLoading', true);
-      tripService.getTripDays(payload.trip_id)
-        .then((result: any) => {
-          if (result.success) {
-            context.commit('getTripDays', result.result);
-            if (!payload.isInitial) {
-              context.commit('isLoading', false);
-            } else {
-              if (!_.isEmpty(result.result.trip_day)) {
-                context.dispatch('trip/getTripEvents',
-                  {trip_id: payload.trip_id, trip_day_id: result.result.trip_day[ 0 ].id},
-                  {root: true});
-              } else {
-                context.commit('getTripEvents', {});
-                context.commit('isLoading', false);
-              }
-            }
+      tripService.getTripDays(payload.trip_id).then((result: any) => {
+        if (result.success) {
+          context.commit('getTripDays', result.result);
+          if (!payload.isInitial) {
+            context.commit('isLoading', false);
           } else {
-            context.dispatch('alert/error', result.error, {root: true});
+            if (!_.isEmpty(result.result.trip_day)) {
+              context.dispatch(
+                'trip/getTripEvents',
+                { trip_id: payload.trip_id, trip_day_id: result.result.trip_day[0].id },
+                { root: true }
+              );
+            } else {
+              context.commit('getTripEvents', {});
+              context.commit('isLoading', false);
+            }
           }
-        });
+        } else {
+          context.dispatch('alert/error', result.error, { root: true });
+        }
+      });
     },
     getTripEvents(context: any, payload: any) {
       context.commit('isLoading', true);
-      tripService.getTripEvents(payload.trip_id, payload.trip_day_id)
-        .then((result: any) => {
-          context.commit('isLoading', false);
-          if (result.success) {
-            context.commit('getTripEvents', result.result);
-          } else {
-            context.dispatch('alert/error', result.error, {root: true});
-          }
-        });
-    }
+      tripService.getTripEvents(payload.trip_id, payload.trip_day_id).then((result: any) => {
+        context.commit('isLoading', false);
+        if (result.success) {
+          context.commit('getTripEvents', result.result);
+        } else {
+          context.dispatch('alert/error', result.error, { root: true });
+        }
+      });
+    },
   },
   mutations: {
     isLoading(state: any, payload: boolean) {
@@ -148,6 +151,6 @@ export const trip = {
         });
       }
       state.tripDayDetail = payload;
-    }
-  }
+    },
+  },
 };

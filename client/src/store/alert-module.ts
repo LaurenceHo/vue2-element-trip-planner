@@ -2,7 +2,7 @@ export const alert = {
   namespaced: true,
   state: {
     type: '',
-    message: ''
+    message: '',
   },
   actions: {
     success(context: any, message: any) {
@@ -16,7 +16,7 @@ export const alert = {
     },
     clear(context: any) {
       context.commit('clear');
-    }
+    },
   },
   mutations: {
     success(state: any, message: any) {
@@ -34,6 +34,6 @@ export const alert = {
     clear(state: any) {
       state.type = null;
       state.message = null;
-    }
-  }
+    },
+  },
 };

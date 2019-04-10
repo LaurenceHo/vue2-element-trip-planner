@@ -3,9 +3,7 @@ import { router } from '../router';
 import { UserService } from '../services/user-service';
 
 const user: User = JSON.parse(localStorage.getItem('user'));
-const initialState = user
-  ? {status: {loggedIn: true}, user}
-  : {status: {}, user};
+const initialState = user ? { status: { loggedIn: true }, user } : { status: {}, user };
 
 const userService = new UserService();
 
@@ -14,7 +12,8 @@ export const authentication = {
   state: initialState,
   actions: {
     login(context: any, payload: any) {
-      userService.login(payload)
+      userService
+        .login(payload)
         .then((result: any) => {
           if (result.success) {
             localStorage.setItem('user', JSON.stringify(result.user));
@@ -22,23 +21,23 @@ export const authentication = {
             router.push('/');
           } else {
             context.commit('loginFailure', result);
-            context.dispatch('alert/error', result.error, {root: true});
+            context.dispatch('alert/error', result.error, { root: true });
           }
         })
         .catch((error: any) => {
           context.commit('loginFailure', error);
-          context.dispatch('alert/error', error.error, {root: true});
+          context.dispatch('alert/error', error.error, { root: true });
         });
     },
     logout(context: any) {
       userService.logout();
       context.commit('logout');
       router.push('/login');
-    }
+    },
   },
   mutations: {
     loginSuccess(state: any, user: User) {
-      state.status = {loggedIn: true};
+      state.status = { loggedIn: true };
       state.user = user;
     },
     loginFailure(state: any) {
@@ -48,6 +47,6 @@ export const authentication = {
     logout(state: any) {
       state.status = {};
       state.user = null;
-    }
-  }
+    },
+  },
 };

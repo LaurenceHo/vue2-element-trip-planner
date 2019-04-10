@@ -15,80 +15,80 @@ export class AuthenticationService {
     if (req.user) {
       try {
         if (req.params.trip_id) {
-          tripRepository.retrieve(null, {id: req.params.trip_id}, (result: Trip[], error: any) => {
+          tripRepository.retrieve(null, { id: req.params.trip_id }, (result: Trip[], error: any) => {
             if (error) {
-              res.status(400).send({error});
+              res.status(400).send({ error });
             }
             if (!_.isEmpty(result)) {
-              if (result[ 0 ].user_id !== req.user.id) {
-                res.status(403).send({error: 'You have no permission'});
+              if (result[0].user_id !== req.user.id) {
+                res.status(403).send({ error: 'You have no permission' });
               } else {
                 next();
               }
             } else {
-              res.status(404).send({error: 'Not found'});
+              res.status(404).send({ error: 'Not found' });
             }
           });
         }
       } catch (error) {
-        res.status(400).send({error});
+        res.status(400).send({ error });
       }
     } else {
-      res.status(401).send({error: 'Please login first'});
+      res.status(401).send({ error: 'Please login first' });
     }
   }
-  
+
   checkTripDayOwner(req: any, res: any, next: any): void {
     if (req.user) {
       try {
         if (req.params.trip_day_id) {
-          tripDayRepository.retrieve(null, {id: req.params.trip_day_id}, (result: TripDay[], error: any) => {
+          tripDayRepository.retrieve(null, { id: req.params.trip_day_id }, (result: TripDay[], error: any) => {
             if (error) {
-              res.status(400).send({error});
+              res.status(400).send({ error });
             }
             if (!_.isEmpty(result)) {
-              if (result[ 0 ].user_id !== req.user.id) {
-                res.status(403).send({error: 'You have no permission'});
+              if (result[0].user_id !== req.user.id) {
+                res.status(403).send({ error: 'You have no permission' });
               } else {
                 next();
               }
             } else {
-              res.status(404).send({error: 'Not found'});
+              res.status(404).send({ error: 'Not found' });
             }
           });
         }
       } catch (error) {
-        res.status(400).send({error});
+        res.status(400).send({ error });
       }
     } else {
-      res.status(401).send({error: 'Please login first'});
+      res.status(401).send({ error: 'Please login first' });
     }
   }
-  
+
   checkEventOwner(req: any, res: any, next: any): void {
     if (req.user) {
       try {
         if (req.params.event_id) {
-          eventRepository.retrieve(null, {id: req.params.event_id}, (result: Event[], error: any) => {
+          eventRepository.retrieve(null, { id: req.params.event_id }, (result: Event[], error: any) => {
             if (error) {
-              res.status(400).send({error});
+              res.status(400).send({ error });
             }
             if (!_.isEmpty(result)) {
-              if (result[ 0 ].user_id !== req.user.id) {
-                res.status(403).send({error: 'You have no permission'});
+              if (result[0].user_id !== req.user.id) {
+                res.status(403).send({ error: 'You have no permission' });
               } else {
                 next();
               }
             } else {
-              res.status(404).send({error: 'Not found'});
+              res.status(404).send({ error: 'Not found' });
             }
           });
         }
       } catch (error) {
-        res.status(400).send({error});
+        res.status(400).send({ error });
       }
     } else {
-      res.status(401).send({error: 'Please login first'});
+      res.status(401).send({ error: 'Please login first' });
     }
   }
 }

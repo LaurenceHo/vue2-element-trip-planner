@@ -13,11 +13,11 @@ export const router = new Router({
   routes: [
     {
       path: '/login',
-      component: Login
+      component: Login,
     },
     {
       path: '/register',
-      component: Register
+      component: Register,
     },
     {
       path: '/',
@@ -25,29 +25,29 @@ export const router = new Router({
       children: [
         {
           path: '',
-          component: TripDashboard
+          component: TripDashboard,
         },
         {
           path: 'trip/:trip_id',
-          component: TripDetailDashboard
-        }
-      ]
+          component: TripDetailDashboard,
+        },
+      ],
     },
     {
       path: '*',
-      redirect: '/'
-    }
-  ]
+      redirect: '/',
+    },
+  ],
 });
 
 router.beforeEach((to, from, next) => {
-  const publicPages = [ '/login', '/register' ];
+  const publicPages = ['/login', '/register'];
   const authRequired = !_.includes(publicPages, to.path);
   const loggedIn = localStorage.getItem('user');
-  
+
   if (authRequired && !loggedIn) {
     return next('/login');
   }
-  
+
   next();
 });

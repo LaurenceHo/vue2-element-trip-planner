@@ -6,7 +6,7 @@ import {
   faFilter,
   faPlus,
   faSignOutAlt,
-  faUser
+  faUser,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import {
@@ -27,7 +27,7 @@ import {
   Main,
   Menu,
   MenuItem,
-  Submenu
+  Submenu,
 } from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import Vue from 'vue';
@@ -64,5 +64,5 @@ new Vue({
   el: '#app',
   router,
   store,
-  render: h => h(App)
+  render: h => h(App),
 });
