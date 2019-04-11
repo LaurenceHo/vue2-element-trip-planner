@@ -9,10 +9,11 @@
     "vue"
   ],
   "extends": [
-    "plugin:@typescript-eslint/recommended",
     "prettier",
-    "prettier/standard",
-    "plugin:vue/recommended"
+    "prettier/vue",
+    "prettier/@typescript-eslint",
+    "plugin:vue/recommended",
+    "plugin:@typescript-eslint/recommended"
   ],
   "rules": {
     "@typescript-eslint/camelcase": "off",

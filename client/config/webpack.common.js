@@ -1,4 +1,4 @@
-/* tslint:disable */
+/*eslint-disable*/
 const path = require('path');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const NormalModuleReplacementPlugin = require('webpack/lib/NormalModuleReplacementPlugin');

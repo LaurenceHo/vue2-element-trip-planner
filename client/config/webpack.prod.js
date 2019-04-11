@@ -1,4 +1,4 @@
-/* tslint:disable */
+/*eslint-disable*/
 const CompressionPlugin = require('compression-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const merge = require('webpack-merge');
