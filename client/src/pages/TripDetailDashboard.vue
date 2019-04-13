@@ -1,12 +1,14 @@
 <template>
   <div>
     <trip-banner />
-    <el-col :span="5">
-      <trip-day />
-    </el-col>
-    <el-col :span="19">
-      <trip-event />
-    </el-col>
+    <div style="padding-top: 1rem">
+      <el-col :span="5">
+        <trip-day />
+      </el-col>
+      <el-col :span="19">
+        <trip-event />
+      </el-col>
+    </div>
   </div>
 </template>
 
@@ -22,7 +24,9 @@ import TripBanner from '../components/TripBanner.vue';
 })
 export default class TripDetailDashboard extends Vue {
   beforeMount() {
-    this.$store.dispatch('trip/getTripDays', { trip_id: this.$route.params.trip_id, isInitial: true });
+    if (this.$store.state.trip.tripDetail.id === 0) {
+      this.$store.dispatch('trip/getTripDetailWithDays', this.$route.params.trip_id);
+    }
   }
 }
 </script>

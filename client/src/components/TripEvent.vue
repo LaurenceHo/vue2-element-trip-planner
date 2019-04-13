@@ -21,9 +21,13 @@
       </div>
       <div v-else>
         <div v-for="event in tripDayDetail.events">
-          <div>Title: {{ event.title }}</div>
-          <div>Start time: {{ event.start_time }}</div>
-          <div>End time: {{ event.end_time }}</div>
+          <el-card class="box-card">
+            <div>
+              <div>Title: {{ event.title }}</div>
+              <div>Start time: {{ event.start_time }}</div>
+              <div>End time: {{ event.end_time }}</div>
+            </div>
+          </el-card>
         </div>
       </div>
     </div>
@@ -50,4 +54,8 @@ export default class TripEvent extends Vue {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.box-card {
+  width: 30rem;
+}
+</style>

@@ -9,7 +9,6 @@
     "vue"
   ],
   "extends": [
-    "prettier",
     "prettier/vue",
     "prettier/@typescript-eslint",
     "plugin:vue/recommended",

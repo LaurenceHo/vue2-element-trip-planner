@@ -14,14 +14,14 @@
         :type="alert.type"
         :closable="false"
         show-icon />
-      <div v-if="trips.size === 0">
+      <div v-if="tripList.size === 0">
         <el-alert
           title="You have no trip..."
           type="info"
           show-icon />
       </div>
       <div v-else>
-        <div v-for="trip in trips">
+        <div v-for="trip in tripList">
           <el-card
             :key="trip.id"
             :title="trip.name"
@@ -31,7 +31,7 @@
               class="clearfix">
               <span>{{ trip.name }}</span>
               <el-button
-                @click="goToDetail(trip.id)"
+                @click="goToTripDetail(trip.id)"
                 class="detail-button"
                 type="text">
                 Detail
@@ -61,24 +61,24 @@ export default class TripDashboard extends Vue {
   beforeMount() {
     // TODO: use date as filter in the request body
     const requestBody = {};
-    this.$store.dispatch('trip/getTrips', requestBody);
+    this.$store.dispatch('trip/getTripList', requestBody);
   }
 
   get alert() {
     return this.$store.state.alert;
   }
 
-  get trips() {
-    return this.$store.state.trip.trips;
+  get tripList() {
+    return this.$store.state.trip.tripList;
   }
 
   get isLoading() {
     return this.$store.state.trip.isLoading;
   }
 
-  goToDetail(tripId: number) {
+  goToTripDetail(tripId: number) {
     this.$router.push(`trip/${tripId}`);
-    this.$store.dispatch('trip/getTripDays', { trip_id: tripId, isInitial: true });
+    this.$store.dispatch('trip/getTripDetailWithDays', tripId);
   }
 }
 </script>

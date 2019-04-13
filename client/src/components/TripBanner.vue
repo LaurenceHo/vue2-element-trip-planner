@@ -1,10 +1,16 @@
 <template>
-  <div style="height: 5rem">
-    {{ tripDetail.name }}
-    {{ tripDetail.destination }}
-    {{ tripDetail.start_date }}
-    {{ tripDetail.end_date }}
-  </div>
+  <el-card class="box-card">
+    <div
+      slot="header"
+      class="clearfix">
+      <span>{{ tripDetail.name }}</span>
+    </div>
+    <div>
+      {{ tripDetail.destination }}
+      {{ tripDetail.start_date }}
+      {{ tripDetail.end_date }}
+    </div>
+  </el-card>
 </template>
 
 <script lang="ts">
@@ -19,4 +25,8 @@ export default class TripBanner extends Vue {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.box-card {
+  width: 50rem;
+}
+</style>

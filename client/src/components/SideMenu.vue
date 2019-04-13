@@ -78,7 +78,7 @@ export default class SideMenu extends Vue {
 }
 
 .side-menu:not(.el-menu--collapse) {
-  width: 15rem;
+  width: 13rem;
 }
 
 .menu-icon {

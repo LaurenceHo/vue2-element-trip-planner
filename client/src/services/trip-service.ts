@@ -6,7 +6,7 @@ const SERVER_URL = 'http://localhost:3000/api';
 export class TripService {
   apiService = new ApiService();
 
-  getTrips(requestBody: any): any {
+  getTripList(requestBody: any): any {
     const searchParams = {};
     const formParams = {};
 
@@ -20,7 +20,7 @@ export class TripService {
     return this.apiService.perform('POST', `${SERVER_URL}/trip/create`, requestBody, searchParams, formParams);
   }
 
-  getTripDays(tripId: number): any {
+  getTripDetailWithDays(tripId: number): any {
     const requestBody = {};
     const searchParams = {};
     const formParams = {};
@@ -28,7 +28,7 @@ export class TripService {
     return this.apiService.perform('GET', `${SERVER_URL}/trip/${tripId}`, requestBody, searchParams, formParams);
   }
 
-  getTripEvents(tripId: number, tripDayId: number): any {
+  getTripDayWithEvents(tripId: number, tripDayId: number): any {
     const requestBody = {};
     const searchParams = {};
     const formParams = {};

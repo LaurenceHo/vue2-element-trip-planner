@@ -1,9 +1,14 @@
 <template>
   <el-menu
-    @open="handleOpen"
-    @close="handleClose"
+    @select="handleSelect"
     class="trip-day-menu"
     default-active="0">
+    <el-button class="create-button">
+      <font-awesome-icon
+        icon="plus"
+        class="menu-icon" />
+      Create new day
+    </el-button>
     <div v-for="(tripDay, index) in tripDetail.trip_day">
       <el-menu-item :index="String(index)">
         <span>{{ tripDay.trip_date }}</span>
@@ -23,23 +28,24 @@ export default class TripDay extends Vue {
     return this.$store.state.trip.tripDetail;
   }
 
-  handleOpen(key: any, keyPath: any) {
-    console.log(key, keyPath);
-  }
-
-  handleClose(key: any, keyPath: any) {
-    console.log(key, keyPath);
+  handleSelect(value: string) {
+    const payload = {
+      trip_id: this.$store.state.trip.tripDetail.id,
+      trip_day_id: this.tripDetail.trip_day[Number(value)].id,
+    };
+    this.$store.dispatch('trip/getTripDayWithEvents', payload);
   }
 }
 </script>
 
 <style scoped>
+.el-button {
+  margin-left: 1rem;
+}
+
 .trip-day-menu {
   border: none;
   min-height: 100%;
 }
 
-/*.trip-day-menu:not(.el-menu--collapse) {*/
-/*  width: 10rem;*/
-/*}*/
 </style>
