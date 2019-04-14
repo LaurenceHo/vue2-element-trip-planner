@@ -15,4 +15,11 @@ export class UserService {
   logout() {
     localStorage.removeItem('user');
   }
+
+  register(requestBody: any) {
+    const searchParams = {};
+    const formParams = {};
+
+    return this.apiService.perform('POST', `${SERVER_URL}/user/register`, requestBody, searchParams, formParams);
+  }
 }

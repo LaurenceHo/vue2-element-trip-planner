@@ -27,6 +27,7 @@ import {
   Main,
   Menu,
   MenuItem,
+  Row,
   Submenu,
 } from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
@@ -58,6 +59,7 @@ Vue.use(Input);
 Vue.use(Main);
 Vue.use(Menu);
 Vue.use(MenuItem);
+Vue.use(Row);
 Vue.use(Submenu);
 
 new Vue({

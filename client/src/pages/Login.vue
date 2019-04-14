@@ -1,9 +1,22 @@
 <template>
   <div class="container">
+    <el-row
+      type="flex"
+      class="row-bg"
+      justify="end"
+      style="padding-top: 1rem">
+      <el-col :span="2">
+        <el-button
+          @click="goToRegisterPage"
+          type="primary">
+          Sign Up
+        </el-button>
+      </el-col>
+    </el-row>
     <el-form
       ref="user"
       :model="user"
-      class="login-form"
+      class="user-form"
       label-position="top"
       label-width="5rem">
       <el-alert
@@ -11,9 +24,9 @@
         :title="alert.message"
         :type="alert.type"
         show-icon />
-      <div class="title-container">
-        <h3 class="title">
-          Login
+      <div class="user-form-title-container">
+        <h3 class="user-form-title ">
+          Sign In
         </h3>
       </div>
       <el-form-item
@@ -31,17 +44,11 @@
         <el-button
           @click="handleSubmit(user)"
           :disabled="loggingIn || !user.email || !user.password"
-          class="login-button"
+          class="user-form-button"
           type="primary">
           Login
         </el-button>
       </el-form-item>
-      <div class="register-text">
-        or you want to
-        <router-link to="/register">
-          register
-        </router-link>?
-      </div>
     </el-form>
   </div>
 </template>
@@ -73,35 +80,11 @@ export default class Login extends Vue {
   handleSubmit(user: any) {
     this.$store.dispatch('authentication/login', user);
   }
+
+  goToRegisterPage() {
+    this.$router.push('/register');
+  }
 }
 </script>
 
-<style scoped>
-.login-form {
-  position: relative;
-  width: 30rem;
-  max-width: 100%;
-  padding: 12rem 3rem 0;
-  margin: 0 auto;
-  overflow: hidden;
-}
-
-.title-container {
-  position: relative;
-}
-
-.title {
-  font-size: 2rem;
-  color: #eee;
-  text-align: center;
-  font-weight: bold;
-}
-
-.login-button {
-  width: 100%;
-}
-.register-text {
-  float: right;
-  color: #eee;
-}
-</style>
+<style scoped></style>

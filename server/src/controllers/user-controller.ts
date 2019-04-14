@@ -7,7 +7,7 @@ import { UserService } from '../services/user-service';
 const userService = new UserService();
 
 export class UserController {
-  resister(req: express.Request, res: express.Response): void {
+  register(req: express.Request, res: express.Response): void {
     try {
       const newUser: User = req.body;
 

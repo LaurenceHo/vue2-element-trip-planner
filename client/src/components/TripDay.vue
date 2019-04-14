@@ -47,5 +47,4 @@ export default class TripDay extends Vue {
   border: none;
   min-height: 100%;
 }
-
 </style>

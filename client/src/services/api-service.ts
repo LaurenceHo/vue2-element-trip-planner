@@ -35,9 +35,17 @@ export class ApiService {
     requestOptions.headers = headers;
 
     return fetch(urlPath, requestOptions)
+      .then(this.checkStatus)
       .then(this.parseResponse)
       .then(data => data);
   }
+
+  private checkStatus = (response: Response) => {
+    if (response.status === 401 || response.status === 403) {
+      localStorage.removeItem('user');
+    }
+    return response;
+  };
 
   private parseResponse = (response: Response) => response.json();
 

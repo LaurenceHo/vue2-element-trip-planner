@@ -1,8 +1,60 @@
 <template>
   <div class="container">
-    <h1 style="color: #eee">
-      Hello World
-    </h1>
+    <el-row
+      type="flex"
+      class="row-bg"
+      justify="end"
+      style="padding-top: 1rem">
+      <el-col :span="2">
+        <el-button
+          @click="goToLoginPage"
+          type="primary">
+          Sign In
+        </el-button>
+      </el-col>
+    </el-row>
+    <el-form
+      ref="user"
+      :model="user"
+      class="user-form"
+      label-position="top"
+      label-width="5rem">
+      <el-alert
+        v-if="alert.message"
+        :title="alert.message"
+        :type="alert.type"
+        show-icon />
+      <div class="user-form-title-container">
+        <h3 class="user-form-title ">
+          Sign Up
+        </h3>
+      </div>
+      <el-form-item
+        :rules="emailRules"
+        label="Email"
+        prop="email">
+        <el-input v-model="user.email" />
+      </el-form-item>
+      <el-form-item label="Username">
+        <el-input
+          v-model="user.username"
+          type="text" />
+      </el-form-item>
+      <el-form-item label="Password">
+        <el-input
+          v-model="user.password"
+          type="password" />
+      </el-form-item>
+      <el-form-item>
+        <el-button
+          @click="handleSubmit(user)"
+          :disabled="!user.email || !user.username || !user.password"
+          class="user-form-button"
+          type="primary">
+          Register
+        </el-button>
+      </el-form-item>
+    </el-form>
   </div>
 </template>
 
@@ -12,7 +64,24 @@ import Component from 'vue-class-component';
 
 @Component({})
 export default class Register extends Vue {
-  // TODO - register a new user
+  emailRules = [{ type: 'email', message: 'Please input correct email address', trigger: ['blur', 'change'] }];
+  user = {
+    email: '',
+    username: '',
+    password: '',
+  };
+
+  get alert() {
+    return this.$store.state.alert;
+  }
+
+  goToLoginPage() {
+    this.$router.push('/login');
+  }
+
+  handleSubmit(user: any) {
+    this.$store.dispatch('user/register', user);
+  }
 }
 </script>
 
