@@ -4,52 +4,36 @@
     :show-close="false"
     custom-class="create-trip-dialog"
     title="Create trip"
-    width="40%">
+    width="40%"
+  >
     <el-form
       ref="tripForm"
       :rules="requiredRules"
       :model="trip"
       class="create-trip-form"
       label-position="top"
-      label-width="3rem">
+      label-width="3rem"
+    >
       <el-form-item label="Name">
         <el-input v-model="trip.name" />
       </el-form-item>
-      <el-form-item
-        label="Destination"
-        prop="destination">
+      <el-form-item label="Destination" prop="destination">
         <el-input v-model="trip.destination" />
       </el-form-item>
       <el-col :span="12">
-        <el-form-item
-          label="Start date"
-          prop="start_date">
-          <el-date-picker
-            v-model="trip.start_date"
-            style="width: 90%;"
-            type="date"
-            placeholder="Pick a day" />
+        <el-form-item label="Start date" prop="start_date">
+          <el-date-picker v-model="trip.start_date" style="width: 90%;" type="date" placeholder="Pick a day" />
         </el-form-item>
       </el-col>
       <el-col :span="12">
-        <el-form-item
-          label="End date"
-          prop="end_date">
-          <el-date-picker
-            v-model="trip.end_date"
-            style="width: 90%;"
-            type="date"
-            placeholder="Pick a day" />
+        <el-form-item label="End date" prop="end_date">
+          <el-date-picker v-model="trip.end_date" style="width: 90%;" type="date" placeholder="Pick a day" />
         </el-form-item>
       </el-col>
     </el-form>
-    <span
-      slot="footer"
-      class="dialog-footer">
+    <span slot="footer" class="dialog-footer">
       <el-button @click="closeDialog">Cancel</el-button>
-      <el-button
-        @click="createTrip()"
-        type="primary">Confirm</el-button>
+      <el-button @click="createTrip()" type="primary">Confirm</el-button>
     </span>
   </el-dialog>
 </template>

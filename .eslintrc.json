@@ -4,28 +4,22 @@
     "parser": "@typescript-eslint/parser"
   },
   "plugins": [
-    "@typescript-eslint",
     "prettier",
-    "vue"
+    "vue",
+    "@typescript-eslint"
   ],
   "extends": [
-    "prettier/vue",
-    "prettier/@typescript-eslint",
+    "plugin:@typescript-eslint/recommended",
     "plugin:vue/recommended",
-    "plugin:@typescript-eslint/recommended"
+    "prettier",
+    "prettier/@typescript-eslint",
+    "prettier/vue"
   ],
   "rules": {
+    "prettier/prettier": "error",
     "@typescript-eslint/camelcase": "off",
     "@typescript-eslint/explicit-function-return-type": "off",
     "@typescript-eslint/explicit-member-accessibility": "off",
-    "@typescript-eslint/indent": "off",
-    "@typescript-eslint/no-explicit-any": "off",
-    "indent": "off",
-    "vue/html-closing-bracket-newline": ["error", {
-      "multiline": "never"
-    }],
-    "vue/max-attributes-per-line": ["error", {
-      "singleline": 1
-    }]
+    "@typescript-eslint/no-explicit-any": "off"
   }
 }

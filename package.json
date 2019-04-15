@@ -7,8 +7,7 @@
     "start-client": "cd client && webpack-dev-server --config ./config/webpack.dev.js --progress --profile --watch --open",
     "build-client": "cd client && webpack --config ./config/webpack.prod.js --progress --profile --bail",
     "start-server": "gulp build && gulp start",
-    "lint-server": "eslint \"server/src/**/*.ts\" --fix",
-    "lint-client": "eslint \"client/src/**/*.{ts,vue}\" --fix"
+    "lint": "eslint --ext .ts,.vue client/src server/src --fix"
   },
   "author": "Laurence Ho",
   "license": "MIT",
@@ -24,6 +23,24 @@
     "MySQL",
     "Gulp"
   ],
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "linters": {
+      ".": [
+        "npm run lint",
+        "git add"
+      ]
+    },
+    "ignore": [
+      "node_modules",
+      "dist",
+      "package-lock.json"
+    ]
+  },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.17",
     "@fortawesome/free-solid-svg-icons": "^5.8.1",
@@ -73,6 +90,8 @@
     "gulp-sourcemaps": "^2.6.5",
     "gulp-typescript": "^5.0.1",
     "html-webpack-plugin": "^3.2.0",
+    "husky": "^1.3.1",
+    "lint-staged": "^8.1.5",
     "sass-loader": "^7.1.0",
     "source-map-loader": "^0.2.4",
     "style-loader": "^0.23.1",

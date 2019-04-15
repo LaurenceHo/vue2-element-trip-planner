@@ -1,8 +1,6 @@
 <template>
   <el-card class="box-card">
-    <div
-      slot="header"
-      class="clearfix">
+    <div slot="header" class="clearfix">
       <span>{{ tripDetail.name }}</span>
     </div>
     <div>

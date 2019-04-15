@@ -1,39 +1,21 @@
 <template>
   <div class="main-content">
     <create-trip-dialog />
-    <div
-      v-if="isLoading"
-      :style="{ width: '100%', textAlign: 'center' }">
+    <div v-if="isLoading" :style="{ width: '100%', textAlign: 'center' }">
       <i class="el-icon-loading loading-spinner" />
       Loading...
     </div>
     <div v-else>
-      <el-alert
-        v-if="alert.message"
-        :title="alert.message"
-        :type="alert.type"
-        :closable="false"
-        show-icon />
+      <el-alert v-if="alert.message" :title="alert.message" :type="alert.type" :closable="false" show-icon />
       <div v-if="tripList.size === 0">
-        <el-alert
-          title="You have no trip..."
-          type="info"
-          show-icon />
+        <el-alert title="You have no trip..." type="info" show-icon />
       </div>
       <div v-else>
         <div v-for="trip in tripList">
-          <el-card
-            :key="trip.id"
-            :title="trip.name"
-            class="box-card">
-            <div
-              slot="header"
-              class="clearfix">
+          <el-card :key="trip.id" :title="trip.name" class="box-card">
+            <div slot="header" class="clearfix">
               <span>{{ trip.name }}</span>
-              <el-button
-                @click="goToTripDetail(trip.id)"
-                class="detail-button"
-                type="text">
+              <el-button @click="goToTripDetail(trip.id)" class="detail-button" type="text">
                 Detail
               </el-button>
             </div>

@@ -1,23 +1,13 @@
 <template>
   <div>
-    <div
-      v-if="isLoading"
-      :style="{ width: '100%', textAlign: 'center' }">
+    <div v-if="isLoading" :style="{ width: '100%', textAlign: 'center' }">
       <i class="el-icon-loading loading-spinner" />
       Loading...
     </div>
     <div v-else>
-      <el-alert
-        v-if="alert.message"
-        :title="alert.message"
-        :type="alert.type"
-        :closable="false"
-        show-icon />
+      <el-alert v-if="alert.message" :title="alert.message" :type="alert.type" :closable="false" show-icon />
       <div v-if="!tripDayDetail.events">
-        <el-alert
-          title="You have no event..."
-          type="info"
-          show-icon />
+        <el-alert title="You have no event..." type="info" show-icon />
       </div>
       <div v-else>
         <div v-for="event in tripDayDetail.events">

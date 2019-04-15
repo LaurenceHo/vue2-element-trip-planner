@@ -1,49 +1,25 @@
 <template>
   <div class="top-bar">
-    <el-button
-      @click="handleClick"
-      type="info"
-      circle>
-      <img
-        src="../assets/vue-logo.png"
-        height="30"
-        alt="Vuejs">
+    <el-button @click="handleClick" type="info" circle>
+      <img src="../assets/vue-logo.png" height="30" alt="Vuejs" />
     </el-button>
-    <hamburger
-      :toggle-click="toggleSideBar"
-      :is-active="this.$store.state.toggle"
-      class="hamburger-container" />
+    <hamburger :toggle-click="toggleSideBar" :is-active="this.$store.state.toggle" class="hamburger-container" />
     <div class="right-menu">
-      <el-dropdown
-        @command="handleSelect"
-        class="avatar-container right-menu-item hover-effect"
-        trigger="click">
+      <el-dropdown @command="handleSelect" class="avatar-container right-menu-item hover-effect" trigger="click">
         <span class="avatar-wrapper">
-          <img
-            class="avatar"
-            src="../assets/default-avatar.png"
-            height="10"
-            alt="avatar"> {{ username }}
+          <img class="avatar" src="../assets/default-avatar.png" height="10" alt="avatar" /> {{ username }}
         </span>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item command="profile">
-            <font-awesome-icon
-              icon="user"
-              class="menu-icon" />
+            <font-awesome-icon icon="user" class="menu-icon" />
             Your profile
           </el-dropdown-item>
           <el-dropdown-item command="setting">
-            <font-awesome-icon
-              icon="cog"
-              class="menu-icon" />
+            <font-awesome-icon icon="cog" class="menu-icon" />
             Setting
           </el-dropdown-item>
-          <el-dropdown-item
-            divided
-            command="logout">
-            <font-awesome-icon
-              icon="sign-out-alt"
-              class="menu-icon" />
+          <el-dropdown-item divided command="logout">
+            <font-awesome-icon icon="sign-out-alt" class="menu-icon" />
             Logout
           </el-dropdown-item>
         </el-dropdown-menu>
