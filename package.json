@@ -30,7 +30,7 @@
   },
   "lint-staged": {
     "linters": {
-      ".": [
+      "*.{ts,vue}": [
         "npm run lint",
         "git add"
       ]
