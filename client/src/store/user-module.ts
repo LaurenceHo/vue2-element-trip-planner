@@ -11,12 +11,14 @@ export const user = {
     username: '',
     password: '',
   },
-  action: {
+  actions: {
     register(context: any, payload: User) {
       userService.register(payload).then((result: any) => {
         if (result.success) {
-          context.dispatch('alert/info', 'Sign up successful, please do sign in.', { root: true });
-          router.push('/');
+          context.dispatch('alert/info', 'Sign up successful, will be going to redirect to login page.', {
+            root: true,
+          });
+          setTimeout(() => router.push('/login'), 4000);
         } else {
           context.dispatch('alert/error', result.error, { root: true });
         }

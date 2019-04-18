@@ -29,6 +29,7 @@
           :disabled="!user.email || !user.username || !user.password"
           class="user-form-button"
           type="primary"
+          native-type="submit"
         >
           Register
         </el-button>

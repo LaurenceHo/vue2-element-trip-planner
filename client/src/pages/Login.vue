@@ -26,6 +26,7 @@
           :disabled="loggingIn || !user.email || !user.password"
           class="user-form-button"
           type="primary"
+          native-type="submit"
         >
           Login
         </el-button>
