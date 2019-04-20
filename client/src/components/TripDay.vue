@@ -1,6 +1,6 @@
 <template>
   <el-menu @select="handleSelect" class="trip-day-menu" default-active="0">
-    <el-button class="create-button">
+    <el-button @click="openCreateDialog()" class="create-button">
       <font-awesome-icon icon="plus" class="menu-icon" />
       Create new day
     </el-button>
@@ -21,6 +21,10 @@ import Component from 'vue-class-component';
 export default class TripDay extends Vue {
   get tripDetail() {
     return this.$store.state.trip.tripDetail;
+  }
+
+  openCreateDialog() {
+    this.$store.dispatch('openCreateTripDayDialog', true);
   }
 
   handleSelect(value: string) {

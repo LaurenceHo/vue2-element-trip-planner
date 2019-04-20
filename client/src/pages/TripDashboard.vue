@@ -61,6 +61,7 @@ export default class TripDashboard extends Vue {
   goToTripDetail(tripId: number) {
     this.$router.push(`trip/${tripId}`);
     this.$store.dispatch('trip/getTripDetailWithDays', tripId);
+    this.$store.dispatch('openTripDetail', true);
   }
 }
 </script>

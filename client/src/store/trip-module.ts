@@ -119,6 +119,24 @@ export const trip = {
           context.dispatch('alert/error', error.error, { root: true });
         });
     },
+    createTripDay(context: any, payload: TripDay) {
+      context.commit('isLoading', true);
+
+      payload.trip_date = moment(payload.trip_date).format(DATE_FORMAT);
+      tripService
+        .createTripDay(payload)
+        .then((result: any) => {
+          if (result.success) {
+            context.dispatch('trip/getTripDetailWithDays', payload.trip_id, { root: true });
+          } else {
+            context.dispatch('alert/error', result.error, { root: true });
+          }
+        })
+        .catch((error: any) => {
+          context.commit('isLoading', false);
+          context.dispatch('alert/error', error.error, { root: true });
+        });
+    },
   },
   mutations: {
     isLoading(state: any, payload: boolean) {
