@@ -1,6 +1,5 @@
 <template>
   <div>
-    <create-trip-day-dialog />
     <el-row>
       <el-col :span="24">
         <trip-banner />
@@ -22,13 +21,12 @@
 <script lang="ts">
 import Vue from 'vue';
 import Component from 'vue-class-component';
-import CreateTripDayDialog from '../components/CreateTripDayDialog.vue';
 import TripDay from '../components/TripDay.vue';
 import TripEvent from '../components/TripEvent.vue';
 import TripBanner from '../components/TripBanner.vue';
 
 @Component({
-  components: { CreateTripDayDialog, TripBanner, TripDay, TripEvent },
+  components: { TripBanner, TripDay, TripEvent },
 })
 export default class TripDetailDashboard extends Vue {
   beforeMount() {

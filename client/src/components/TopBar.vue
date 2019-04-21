@@ -1,5 +1,7 @@
 <template>
   <div class="top-bar">
+    <create-trip-dialog />
+    <create-trip-day-dialog />
     <el-button @click="handleClick" type="info" circle>
       <img src="../assets/vue-logo.png" height="30" alt="Vuejs" />
     </el-button>
@@ -32,9 +34,11 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import Hamburger from './Hamburger.vue';
+import CreateTripDialog from '../components/CreateTripDialog.vue';
+import CreateTripDayDialog from '../components/CreateTripDayDialog.vue';
 
 @Component({
-  components: { Hamburger },
+  components: { CreateTripDialog, CreateTripDayDialog, Hamburger },
   props: {
     username: {
       type: String,

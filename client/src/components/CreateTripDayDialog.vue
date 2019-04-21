@@ -16,7 +16,7 @@
       label-width="3rem"
     >
       <el-col :span="12">
-        <el-form-item label="Date" prop="trip_date">
+        <el-form-item label="Trip date" prop="trip_date">
           <el-date-picker v-model="tripDay.trip_date" style="width: 90%;" type="date" placeholder="Pick a day" />
         </el-form-item>
       </el-col>
@@ -55,7 +55,7 @@ export default class CreateTripDayDialog extends Vue {
         this.$store.dispatch('openCreateTripDayDialog', false);
         this.tripDay.trip_id = this.$store.state.trip.tripDetail.id;
         this.tripDay.user_id = this.$store.state.authentication.user.id;
-        this.$store.dispatch('trip/createTrip', this.tripDay);
+        this.$store.dispatch('trip/createTripDay', this.tripDay);
         tripForm.resetFields();
       } else {
         return false;

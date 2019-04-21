@@ -121,7 +121,6 @@ export const trip = {
     },
     createTripDay(context: any, payload: TripDay) {
       context.commit('isLoading', true);
-
       payload.trip_date = moment(payload.trip_date).format(DATE_FORMAT);
       tripService
         .createTripDay(payload)

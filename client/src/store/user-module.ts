@@ -25,7 +25,5 @@ export const user = {
       });
     },
   },
-  mutations: {
-    register(state: any) {},
-  },
+  mutations: {},
 };
