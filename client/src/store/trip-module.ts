@@ -168,10 +168,10 @@ export const trip = {
       if (!isEmpty(payload.events)) {
         map(payload.events, (tripEvent: Event) => {
           if (!isEmpty(tripEvent.start_time)) {
-            tripEvent.start_time = moment(tripEvent.start_time).format('hh:mm');
+            tripEvent.start_time = tripEvent.start_time.slice(0, 5);
           }
           if (!isEmpty(tripEvent.end_time)) {
-            tripEvent.end_time = moment(tripEvent.end_time).format('hh:mm');
+            tripEvent.end_time = tripEvent.end_time.slice(0, 5);
           }
           return tripEvent;
         });
