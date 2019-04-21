@@ -15,11 +15,16 @@
       label-position="top"
       label-width="3rem"
     >
-      <el-col :span="12">
-        <el-form-item label="Trip date" prop="trip_date">
-          <el-date-picker v-model="tripDay.trip_date" style="width: 90%;" type="date" placeholder="Pick a day" />
-        </el-form-item>
-      </el-col>
+      <el-form-item label="Name">
+        <el-input v-model="tripDay.name" />
+      </el-form-item>
+      <el-row>
+        <el-col :span="12">
+          <el-form-item label="Trip date" prop="trip_date">
+            <el-date-picker v-model="tripDay.trip_date" style="width: 90%;" type="date" placeholder="Pick a day" />
+          </el-form-item>
+        </el-col>
+      </el-row>
     </el-form>
     <span slot="footer" class="dialog-footer">
       <el-button @click="closeDialog">Cancel</el-button>
@@ -42,6 +47,7 @@ export default class CreateTripDayDialog extends Vue {
     trip_id: 0,
     user_id: 0,
     trip_date: '',
+    name: '',
   };
 
   closeDialog() {

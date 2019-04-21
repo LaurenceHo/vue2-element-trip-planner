@@ -8,9 +8,12 @@
     <hamburger :toggle-click="toggleSideBar" :is-active="this.$store.state.toggle" class="hamburger-container" />
     <div class="right-menu">
       <el-dropdown @command="handleSelect" class="avatar-container right-menu-item hover-effect" trigger="click">
-        <span class="avatar-wrapper">
-          <img class="avatar" src="../assets/default-avatar.png" height="10" alt="avatar" /> {{ username }}
-        </span>
+        <div class="avatar-wrapper">
+          <div class="avatar-outer">
+            <img class="avatar" src="../assets/default-avatar.png" height="10" alt="avatar" />
+          </div>
+          <div style="float: right">{{ username }}</div>
+        </div>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item command="profile">
             <font-awesome-icon icon="user" class="menu-icon" />
@@ -109,6 +112,11 @@ export default class TopBar extends Vue {
 .avatar-wrapper {
   cursor: pointer;
   color: #ffd04b;
+}
+
+.avatar-outer {
+  float: left;
+  margin-top: 0.5rem;
 }
 
 .avatar {

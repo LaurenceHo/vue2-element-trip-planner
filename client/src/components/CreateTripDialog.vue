@@ -20,16 +20,18 @@
       <el-form-item label="Destination" prop="destination">
         <el-input v-model="trip.destination" />
       </el-form-item>
-      <el-col :span="12">
-        <el-form-item label="Start date" prop="start_date">
-          <el-date-picker v-model="trip.start_date" style="width: 90%;" type="date" placeholder="Pick a day" />
-        </el-form-item>
-      </el-col>
-      <el-col :span="12">
-        <el-form-item label="End date" prop="end_date">
-          <el-date-picker v-model="trip.end_date" style="width: 90%;" type="date" placeholder="Pick a day" />
-        </el-form-item>
-      </el-col>
+      <el-row>
+        <el-col :span="12">
+          <el-form-item label="Start date" prop="start_date">
+            <el-date-picker v-model="trip.start_date" style="width: 90%;" type="date" placeholder="Pick a day" />
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="End date" prop="end_date">
+            <el-date-picker v-model="trip.end_date" style="width: 90%;" type="date" placeholder="Pick a day" />
+          </el-form-item>
+        </el-col>
+      </el-row>
     </el-form>
     <span slot="footer" class="dialog-footer">
       <el-button @click="closeDialog">Cancel</el-button>
