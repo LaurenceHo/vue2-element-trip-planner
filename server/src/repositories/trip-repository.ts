@@ -13,6 +13,7 @@ export class TripRepository implements BaseRepository<Trip> {
         if (trip) {
           knex('trip_day')
             .where({ trip_id: whereClauses.id })
+            .orderBy('trip_date')
             .then((results: TripDay[]) => {
               trip.trip_day = results;
               callback(trip);
@@ -27,14 +28,18 @@ export class TripRepository implements BaseRepository<Trip> {
 
   retrieve(columns: string[], whereClauses: any, callback: any): void {
     if (columns) {
-      knex('trip')
-        .columnInfo(columns)
+      knex
+        .column(columns)
+        .select()
+        .from('trip')
         .where(whereClauses)
+        .orderBy('start_date')
         .then((results: Trip[]) => callback(results))
         .catch((err: any) => callback(null, err));
     } else {
       knex('trip')
         .where(whereClauses)
+        .orderBy('start_date')
         .then((results: Trip[]) => callback(results))
         .catch((err: any) => callback(null, err));
     }

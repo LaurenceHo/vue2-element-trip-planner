@@ -5,14 +5,18 @@ import { BaseRepository } from './base-repository';
 export class EventRepository implements BaseRepository<Event> {
   retrieve(columns: string[], whereClauses: any, callback: any): void {
     if (columns) {
-      knex('event')
-        .columnInfo(columns)
+      knex
+        .column(columns)
+        .select()
+        .from('event')
         .where(whereClauses)
+        .orderBy('start_time')
         .then((results: Event[]) => callback(results))
         .catch((err: any) => callback(null, err));
     } else {
       knex('event')
         .where(whereClauses)
+        .orderBy('start_time')
         .then((results: Event[]) => callback(results))
         .catch((err: any) => callback(null, err));
     }
