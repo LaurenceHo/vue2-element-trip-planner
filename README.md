@@ -2,13 +2,13 @@
 
 ## Introduction
 This project demonstrates the basic fullstack development including frontend and backend.
-The frontend stack is including Vue2 (Typescript), Vuex, vue-router, element-ui, as well as using Webpack4 for bundling frontend code.
-The backend stack is including Nodejs (Typescript), Express, JWT, Knex, Mysql, as well as using Gulp4 for running task and TSLint.
+The frontend stack is including [Vue2](https://vuejs.org/v2/guide/) (TypeScript), Vuex, vue-router, [element-ui](https://element.eleme.io), as well as using Webpack4 for bundling frontend code.
+The backend stack is including Nodejs (TypeScript), Express, JWT, [Knex](https://knexjs.org/), Mysql, as well as using Gulp4 for running task and ESLint.
 This project's purpose is for trip planning and management, which is also my personal interest.
 
 ## Prerequisites
 1. The latest version of Nodejs and git need to be installed.
-2. Docker MySQL5 container
+2. Docker
 
 ### Docker MySQL container preparation
 * Preparing docker container
@@ -30,6 +30,7 @@ mysql> FLUSH PRIVILEGES;
 * If you cannot run above command, you may need to remove the container and recreate it again.
 Example:
 ```
+docker ps -a
 docker rm  ${CONTAINER_ID_IN_YOUR_MACHINE}
 docker run --name mysql5 -p 3306:3306 -v mysqldata:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=my-secret-pw -d mysql:5
 ```
@@ -111,13 +112,12 @@ vue-trip-planner
     ├── tsconfig.json
     ├── tslint.json
 ```
-## TypeScript / Javascript Naming rule
+## TypeScript / JavaScript Naming rule
 https://google.github.io/styleguide/jsguide.html
 
 ## CORS setting for JWT authentication
+[server.ts](server/src/server.ts):
 ```
-server.ts
-
 const corsHeader = (req: any, res: any, next: any) => {
   res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
@@ -135,9 +135,8 @@ app.use(corsHeader);
 
 ## JWT (JSON web token)
 ### Generate JWT when user do login)
+[user-controller.ts](server/src/controllers/user-controller.ts):
 ```
-user-controller.ts
-
 login(req: express.Request, res: express.Response): void {
     try {
       const email = req.body.email;
@@ -175,9 +174,8 @@ login(req: express.Request, res: express.Response): void {
   }
 ```
 ### Verify JWT when user do any API call
+[server.ts](server/src/server.ts):
 ```
-server.ts
-
 const jwtAuthentication = (req: any, res: express.Response, next: any) => {
   if (req.headers && req.headers.authorization && req.headers.authorization.split(' ')[ 0 ] === 'Bearer') {
     jwt.verify(req.headers.authorization.split(' ')[ 1 ], app.get('superSecret'), (error: any, decode: any) => {
@@ -201,6 +199,83 @@ const jwtAuthentication = (req: any, res: express.Response, next: any) => {
 app.use('/api/trip', jwtAuthentication);
 app.use('/api/user/update', jwtAuthentication);
 ``` 
+
+## Write Vue using TypeScript
+### Class-Style Vue Components
+You can use the officially maintained `vue-class-component` decorator:
+```
+<script lang="ts">
+import Vue from 'vue';
+import Component from 'vue-class-component';
+import Hamburger from './Hamburger.vue';
+import CreateTripDialog from '../components/CreateTripDialog.vue';
+
+// The @Component decorator indicates the class is a Vue component
+@Component({
+  components: { CreateTripDialog, CreateTripDayDialog, Hamburger },
+  // Define props type here
+  props: {
+    username: {
+      type: String,
+      default: '',
+    },
+  },
+})
+export default class TopBar extends Vue {
+  // Initial data can be declared as instance properties
+  message: string = 'Hello!'
+  
+  // Instance lifecycle hooks method
+  beforeCreate() {
+    ......
+  }
+
+  beforeMount() {
+    ......
+  }
+
+  // Component methods can be declared as instance methods
+  toggleSideBar() {
+    ......
+  }
+  
+  // Computed property
+  get tripList() {
+    return this.$store.state.trip.tripList;
+  }
+}
+</script>
+```
+
+## element-ui usage
+### Only import components on demand
+In [main.ts](client/src/main.ts):
+```
+import {
+  Alert,
+  Button,
+  Card,
+  Col,
+  Container
+} from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
+Vue.use(Alert);
+Vue.use(Button);
+Vue.use(Card);
+Vue.use(Col);
+Vue.use(Container);
+```
+### Internationalization
+In [webpack.common.js](client/config/webpack.common.js):
+```
+const NormalModuleReplacementPlugin = require('webpack/lib/NormalModuleReplacementPlugin');
+
+module.exports = {
+  plugins: [
+    new NormalModuleReplacementPlugin(/element-ui[\/\\]lib[\/\\]locale[\/\\]lang[\/\\]zh-CN/, 'element-ui/lib/locale/lang/en')
+  ]
+};
+```
 
 ## License
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details

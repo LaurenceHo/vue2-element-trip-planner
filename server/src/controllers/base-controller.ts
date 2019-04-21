@@ -1,4 +1,4 @@
-import express = require('express');
+import * as express from 'express';
 import { BaseService } from '../services/base-service';
 
 export interface BaseController<T extends BaseService<object>> {

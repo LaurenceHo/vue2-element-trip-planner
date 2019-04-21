@@ -57,16 +57,19 @@ const createTripDay = () => {
       user_id: 1,
       trip_id: 1,
       trip_date: '2019-05-01',
+      name: 'Trip day 1',
     },
     {
       user_id: 1,
       trip_id: 1,
       trip_date: '2019-05-02',
+      name: 'Trip day 2',
     },
     {
       user_id: 1,
       trip_id: 1,
       trip_date: '2019-05-03',
+      name: 'Trip day 3',
     },
   ];
 

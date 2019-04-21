@@ -165,6 +165,7 @@ export const trip = {
       state.tripDetail = payload;
     },
     getTripDayWithEvents(state: any, payload: TripDay) {
+      payload.trip_date = moment(payload.trip_date).format(DATE_FORMAT);
       if (!isEmpty(payload.events)) {
         map(payload.events, (tripEvent: Event) => {
           if (!isEmpty(tripEvent.start_time)) {
