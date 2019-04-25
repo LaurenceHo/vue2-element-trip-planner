@@ -1,6 +1,6 @@
 <template>
   <el-menu @select="handleSelect" class="trip-day-menu" default-active="0">
-    <el-button @click="openCreateDialog()" class="create-button">
+    <el-button @click="openCreateDialog()" class="create-button" type="primary">
       <font-awesome-icon icon="plus" class="menu-icon" />
       Create new day
     </el-button>

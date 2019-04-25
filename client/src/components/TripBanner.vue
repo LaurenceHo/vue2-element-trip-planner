@@ -1,9 +1,7 @@
 <template>
-  <el-card class="box-card">
-    <div slot="header" class="clearfix">
-      <span>{{ tripDetail.name }}</span>
-    </div>
+  <el-card class="box-card" shadow="never">
     <div>
+      {{ tripDetail.name }}
       {{ tripDetail.destination }}
       {{ tripDetail.start_date }}
       {{ tripDetail.end_date }}
@@ -25,6 +23,6 @@ export default class TripBanner extends Vue {
 
 <style scoped>
 .box-card {
-  width: 50rem;
+  min-height: 10rem;
 }
 </style>

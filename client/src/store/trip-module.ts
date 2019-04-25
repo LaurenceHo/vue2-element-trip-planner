@@ -88,11 +88,11 @@ export const trip = {
                 { root: true }
               );
             } else {
-              context.commit('getTripDayWithEvents', {});
+              context.commit('getTripDayWithEvents', null);
               context.commit('isLoading', false);
             }
           } else {
-            context.commit('getTripDetailWithDays', {});
+            context.commit('getTripDetailWithDays', null);
             context.dispatch('alert/error', result.error, { root: true });
           }
         })
@@ -150,32 +150,36 @@ export const trip = {
       state.tripList = payload;
     },
     getTripDetailWithDays(state: any, payload: Trip) {
-      if (!isEmpty(payload.start_date)) {
-        payload.start_date = moment(payload.start_date).format(DATE_FORMAT);
-      }
-      if (!isEmpty(payload.end_date)) {
-        payload.end_date = moment(payload.end_date).format(DATE_FORMAT);
-      }
-      if (!isEmpty(payload.trip_day)) {
-        map(payload.trip_day, (tripDay: TripDay) => {
-          tripDay.trip_date = moment(tripDay.trip_date).format(DATE_FORMAT);
-          return tripDay;
-        });
+      if (payload) {
+        if (!isEmpty(payload.start_date)) {
+          payload.start_date = moment(payload.start_date).format(DATE_FORMAT);
+        }
+        if (!isEmpty(payload.end_date)) {
+          payload.end_date = moment(payload.end_date).format(DATE_FORMAT);
+        }
+        if (!isEmpty(payload.trip_day)) {
+          map(payload.trip_day, (tripDay: TripDay) => {
+            tripDay.trip_date = moment(tripDay.trip_date).format(DATE_FORMAT);
+            return tripDay;
+          });
+        }
       }
       state.tripDetail = payload;
     },
     getTripDayWithEvents(state: any, payload: TripDay) {
-      payload.trip_date = moment(payload.trip_date).format(DATE_FORMAT);
-      if (!isEmpty(payload.events)) {
-        map(payload.events, (tripEvent: Event) => {
-          if (!isEmpty(tripEvent.start_time)) {
-            tripEvent.start_time = tripEvent.start_time.slice(0, 5);
-          }
-          if (!isEmpty(tripEvent.end_time)) {
-            tripEvent.end_time = tripEvent.end_time.slice(0, 5);
-          }
-          return tripEvent;
-        });
+      if (payload) {
+        payload.trip_date = moment(payload.trip_date).format(DATE_FORMAT);
+        if (!isEmpty(payload.events)) {
+          map(payload.events, (tripEvent: Event) => {
+            if (!isEmpty(tripEvent.start_time)) {
+              tripEvent.start_time = tripEvent.start_time.slice(0, 5);
+            }
+            if (!isEmpty(tripEvent.end_time)) {
+              tripEvent.end_time = tripEvent.end_time.slice(0, 5);
+            }
+            return tripEvent;
+          });
+        }
       }
       state.tripDayDetail = payload;
     },

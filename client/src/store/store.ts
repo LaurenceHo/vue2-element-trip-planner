@@ -12,7 +12,6 @@ export const store = new Vuex.Store({
     toggle: true,
     openCreateTripDialog: false,
     openCreateTripDayDialog: false,
-    openTripDetail: false,
   },
   modules: {
     alert,
@@ -30,9 +29,6 @@ export const store = new Vuex.Store({
     openCreateTripDayDialog(context: any, payload: boolean) {
       context.commit('openCreateTripDayDialog', payload);
     },
-    openTripDetail(context: any, payload: boolean) {
-      context.commit('openTripDetail', payload);
-    },
   },
   mutations: {
     toggleSideBar(state: any) {
@@ -43,9 +39,6 @@ export const store = new Vuex.Store({
     },
     openCreateTripDayDialog(state: any, payload: boolean) {
       state.openCreateTripDayDialog = payload;
-    },
-    openTripDetail(state: any, payload: boolean) {
-      state.openTripDetail = payload;
     },
   },
 });
