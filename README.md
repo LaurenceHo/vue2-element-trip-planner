@@ -41,7 +41,7 @@ docker run --name mysql5 -p 3306:3306 -v mysqldata:/var/lib/mysql -e MYSQL_ROOT_
 * Launch the express server: `npm run start-server`
 * Bundle frontend code: `npm run build-client`
 * Run seed db: `node dist/server/database/seed.js`
-* Visit in your browser: `http://localhost:3000`, use `laurence.ho@test.co.nz` as email and `abc123` as password to login.
+* Visit in your browser: `http://localhost:3000`, use `laurence@test.co.nz` as email and `abc123` as password to login.
 * If you want to start client using webpack dev server: `npm run start-client`, 
 and visit in your browser: `http://localhost:8080`, use the above credential to login.
 * If you want to lint the project: `npm run lint`

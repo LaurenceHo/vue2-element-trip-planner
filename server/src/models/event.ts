@@ -7,7 +7,7 @@ export interface Event {
   end_time: string;
   title: string;
   start_location: string;
-  end_location: number;
+  end_location: string;
   note: string;
   tag: string[];
   cost: number;

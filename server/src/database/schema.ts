@@ -100,7 +100,7 @@ export const schema = () => {
             .notNullable();
           table.time('start_time');
           table.time('end_time');
-          table.string('title');
+          table.string('title').notNullable();
           table.string('start_location');
           table.string('end_location');
           table.text('note');

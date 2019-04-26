@@ -15,6 +15,12 @@ const createCategory = () => {
     {
       name: 'accommodation',
     },
+    {
+      name: 'flight',
+    },
+    {
+      name: 'cruise',
+    },
   ];
 
   knex('category')
@@ -27,7 +33,7 @@ const createUser = () => {
   const user = {
     username: 'laurence.ho',
     password: bcrypt.hashSync('abc123', 10),
-    email: 'laurence.ho@test.co.nz',
+    email: 'laurence@test.co.nz',
   };
 
   knex('user')
@@ -37,22 +43,33 @@ const createUser = () => {
 };
 
 const createTrip = () => {
-  const trip = {
-    user_id: 1,
-    start_date: '2019-05-01',
-    end_date: '2019-05-15',
-    destination: 'New Zealand',
-    archived: false,
-  };
+  const trips = [
+    {
+      user_id: 1,
+      name: 'Go to New Zealand',
+      start_date: '2019-05-01',
+      end_date: '2019-05-15',
+      destination: 'New Zealand',
+      archived: false,
+    },
+    {
+      user_id: 1,
+      name: `Let's go to Taiwan`,
+      start_date: '2019-07-01',
+      end_date: '2019-07-15',
+      destination: 'Taiwan',
+      archived: false,
+    },
+  ];
 
   knex('trip')
-    .insert(trip)
+    .insert(trips)
     .then((returning: any) => console.log(returning))
     .catch((err: any) => console.error(err));
 };
 
 const createTripDay = () => {
-  const tripDay = [
+  const tripDays = [
     {
       user_id: 1,
       trip_id: 1,
@@ -74,7 +91,7 @@ const createTripDay = () => {
   ];
 
   knex('trip_day')
-    .insert(tripDay)
+    .insert(tripDays)
     .then((returning: any) => console.log(returning))
     .catch((err: any) => console.error(err));
 };
@@ -85,8 +102,10 @@ const createEvent = () => {
       user_id: 1,
       trip_day_id: 1,
       category_id: 4,
-      title: 'Hostel',
+      title: 'Hostel in Auckland',
       note: 'Cannot refund',
+      cost: 100,
+      currency: 'NZD',
     },
     {
       user_id: 1,
@@ -94,7 +113,7 @@ const createEvent = () => {
       category_id: 2,
       start_time: '07:00',
       end_time: '07:30',
-      title: 'Take the bus',
+      title: 'Take the bus from Auckland CBD',
     },
     {
       user_id: 1,
@@ -110,7 +129,7 @@ const createEvent = () => {
       category_id: 1,
       start_time: '12:00',
       end_time: '13:00',
-      title: 'Lunch',
+      title: 'Lunch @ Mt.Eden',
       cost: 50,
       currency: 'NZD',
     },
