@@ -1,6 +1,76 @@
 import * as bcrypt from 'bcrypt';
 import { knex } from './knex';
 
+const createCurrency = () => {
+  const currencies = [
+    {
+      code: 'AED',
+      name: 'United Arab Emirates Dirham',
+    },
+    {
+      code: 'AUD',
+      name: 'Australian Dollar',
+    },
+    {
+      code: 'CAD',
+      name: 'Canadian Dollar',
+    },
+    {
+      code: 'CHF',
+      name: 'Swiss Franc',
+    },
+    {
+      code: 'CNY',
+      name: 'Chinese Yuan Renminbi',
+    },
+    {
+      code: 'EUR',
+      name: 'Euro',
+    },
+    {
+      code: 'GBP',
+      name: 'British Pound',
+    },
+    {
+      code: 'HKD',
+      name: 'Hong Kong Dollar',
+    },
+    {
+      code: 'INR',
+      name: 'Indian Rupee',
+    },
+    {
+      code: 'JPY',
+      name: 'Japanese Yen',
+    },
+    {
+      code: 'MYR',
+      name: 'Malaysian Ringgit',
+    },
+    {
+      code: 'NZD',
+      name: 'New Zealand Dollar',
+    },
+    {
+      code: 'SGD',
+      name: 'Singapore Dollar',
+    },
+    {
+      code: 'TWD',
+      name: 'Taiwan New Dollar',
+    },
+    {
+      code: 'USD',
+      name: 'US Dollar',
+    },
+  ];
+
+  knex('currency')
+    .insert(currencies)
+    .then((returning: any) => console.log(returning))
+    .catch((err: any) => console.error(err));
+};
+
 const createCategory = () => {
   const categories = [
     {
@@ -105,43 +175,43 @@ const createEvent = () => {
       title: 'Hostel in Auckland',
       note: 'Cannot refund',
       cost: 100,
-      currency: 'NZD',
+      currency_id: 12,
     },
     {
       user_id: 1,
       trip_day_id: 1,
       category_id: 2,
-      start_time: '07:00',
-      end_time: '07:30',
+      start_time: '2019-05-01 07:00',
+      end_time: '2019-05-01 07:30',
       title: 'Take the bus from Auckland CBD',
     },
     {
       user_id: 1,
       trip_day_id: 1,
       category_id: 1,
-      start_time: '09:00',
-      end_time: '10:00',
-      title: 'sightseeing',
+      start_time: '2019-05-01 09:00',
+      end_time: '2019-05-01  10:00',
+      title: 'sightseeing in Auckland',
     },
     {
       user_id: 1,
       trip_day_id: 1,
       category_id: 1,
-      start_time: '12:00',
-      end_time: '13:00',
+      start_time: '2019-05-01 12:00',
+      end_time: '2019-05-01 13:00',
       title: 'Lunch @ Mt.Eden',
       cost: 50,
-      currency: 'NZD',
+      currency_id: 12,
     },
     {
       user_id: 1,
       trip_day_id: 2,
       category_id: 1,
-      start_time: '06:00',
-      end_time: '07:00',
+      start_time: '2019-05-02 06:00',
+      end_time: '2019-05-02 07:00',
       title: 'Breakfast',
       cost: 20,
-      currency: 'NZD',
+      currency_id: 12,
     },
   ];
 
@@ -151,6 +221,7 @@ const createEvent = () => {
     .catch((err: any) => console.error(err));
 };
 
+createCurrency();
 createCategory();
 createUser();
 createTrip();

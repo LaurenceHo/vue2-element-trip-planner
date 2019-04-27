@@ -16,6 +16,33 @@ export const schema = () => {
     }
   });
 
+  knex.schema.hasTable('currency').then((exists: boolean) => {
+    if (!exists) {
+      knex.schema
+        .createTable('currency', (table: any) => {
+          table.increments('id').primary();
+          table.string('code').notNullable();
+          table.string('name').notNullable();
+          table.timestamp('created_at').defaultTo(knex.fn.now());
+          table.timestamp('updated_at').defaultTo(knex.fn.now());
+        })
+        .catch((err: any) => console.error(err));
+    }
+  });
+
+  knex.schema.hasTable('timezone').then((exists: boolean) => {
+    if (!exists) {
+      knex.schema
+        .createTable('timezone', (table: any) => {
+          table.increments('id').primary();
+          table.string('name').notNullable();
+          table.timestamp('created_at').defaultTo(knex.fn.now());
+          table.timestamp('updated_at').defaultTo(knex.fn.now());
+        })
+        .catch((err: any) => console.error(err));
+    }
+  });
+
   knex.schema.hasTable('category').then((exists: boolean) => {
     if (!exists) {
       knex.schema
@@ -38,6 +65,7 @@ export const schema = () => {
             .integer('user_id')
             .unsigned()
             .notNullable();
+          table.integer('timezone_id').unsigned();
           table.date('start_date').notNullable();
           table.date('end_date').notNullable();
           table.string('name');
@@ -49,6 +77,10 @@ export const schema = () => {
             .foreign('user_id')
             .references('id')
             .inTable('user');
+          table
+            .foreign('timezone_id')
+            .references('id')
+            .inTable('timezone');
         })
         .catch((err: any) => console.error(err));
     }
@@ -98,8 +130,10 @@ export const schema = () => {
             .integer('user_id')
             .unsigned()
             .notNullable();
-          table.time('start_time');
-          table.time('end_time');
+          table.integer('timezone_id').unsigned();
+          table.integer('currency_id').unsigned();
+          table.date('start_time');
+          table.date('end_time');
           table.string('title').notNullable();
           table.string('start_location');
           table.string('end_location');
@@ -121,6 +155,14 @@ export const schema = () => {
             .foreign('user_id')
             .references('id')
             .inTable('user');
+          table
+            .foreign('timezone_id')
+            .references('id')
+            .inTable('timezone');
+          table
+            .foreign('currency_id')
+            .references('id')
+            .inTable('currency');
         })
         .catch((err: any) => console.error(err));
     }
