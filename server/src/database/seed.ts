@@ -1,5 +1,32 @@
 import * as bcrypt from 'bcrypt';
 import { knex } from './knex';
+import * as fs from 'fs';
+
+const importTimeZoneJsonFile = () => {
+  fs.readFile('./server/src/database/timezone.json', (err: any, data: any) => {
+    if (err) {
+      throw err;
+    }
+    const timezoneArray: any = [];
+    const timezoneJson = JSON.parse(data);
+    timezoneJson.forEach((timezone: any) => {
+      let tz = {
+        value: timezone.value,
+        abbr: timezone.abbr,
+        offset: timezone.offset,
+        isdst: timezone.isdst,
+        text: timezone.text,
+        utc: timezone.utc[0],
+      };
+      timezoneArray.push(tz);
+    });
+
+    knex('timezone')
+      .insert(timezoneArray)
+      .then((returning: any) => console.log(returning))
+      .catch((err: any) => console.error(err));
+  });
+};
 
 const createCurrency = () => {
   const currencies = [
@@ -116,6 +143,7 @@ const createTrip = () => {
   const trips = [
     {
       user_id: 1,
+      timezone_id: 99,
       name: 'Go to New Zealand',
       start_date: '2019-05-01',
       end_date: '2019-05-15',
@@ -124,6 +152,7 @@ const createTrip = () => {
     },
     {
       user_id: 1,
+      timezone_id: 85,
       name: `Let's go to Taiwan`,
       start_date: '2019-07-01',
       end_date: '2019-07-15',
@@ -172,6 +201,7 @@ const createEvent = () => {
       user_id: 1,
       trip_day_id: 1,
       category_id: 4,
+      timezone_id: 99,
       title: 'Hostel in Auckland',
       note: 'Cannot refund',
       cost: 100,
@@ -181,6 +211,7 @@ const createEvent = () => {
       user_id: 1,
       trip_day_id: 1,
       category_id: 2,
+      timezone_id: 99,
       start_time: '2019-05-01 07:00',
       end_time: '2019-05-01 07:30',
       title: 'Take the bus from Auckland CBD',
@@ -189,6 +220,7 @@ const createEvent = () => {
       user_id: 1,
       trip_day_id: 1,
       category_id: 1,
+      timezone_id: 99,
       start_time: '2019-05-01 09:00',
       end_time: '2019-05-01  10:00',
       title: 'sightseeing in Auckland',
@@ -197,6 +229,7 @@ const createEvent = () => {
       user_id: 1,
       trip_day_id: 1,
       category_id: 1,
+      timezone_id: 99,
       start_time: '2019-05-01 12:00',
       end_time: '2019-05-01 13:00',
       title: 'Lunch @ Mt.Eden',
@@ -207,6 +240,7 @@ const createEvent = () => {
       user_id: 1,
       trip_day_id: 2,
       category_id: 1,
+      timezone_id: 99,
       start_time: '2019-05-02 06:00',
       end_time: '2019-05-02 07:00',
       title: 'Breakfast',
@@ -221,9 +255,10 @@ const createEvent = () => {
     .catch((err: any) => console.error(err));
 };
 
+importTimeZoneJsonFile();
 createCurrency();
 createCategory();
 createUser();
-createTrip();
-setTimeout(createTripDay, 3000);
-setTimeout(createEvent, 6000);
+setTimeout(createTrip, 3000);
+setTimeout(createTripDay, 6000);
+setTimeout(createEvent, 9000);

@@ -8,7 +8,10 @@ export const schema = () => {
           table.increments('id').primary();
           table.string('username').notNullable();
           table.string('password').notNullable();
-          table.string('email').notNullable();
+          table
+            .string('email')
+            .notNullable()
+            .unique();
           table.timestamp('created_at').defaultTo(knex.fn.now());
           table.timestamp('updated_at').defaultTo(knex.fn.now());
         })
@@ -21,7 +24,10 @@ export const schema = () => {
       knex.schema
         .createTable('currency', (table: any) => {
           table.increments('id').primary();
-          table.string('code').notNullable();
+          table
+            .string('code')
+            .notNullable()
+            .unique();
           table.string('name').notNullable();
           table.timestamp('created_at').defaultTo(knex.fn.now());
           table.timestamp('updated_at').defaultTo(knex.fn.now());
@@ -35,7 +41,12 @@ export const schema = () => {
       knex.schema
         .createTable('timezone', (table: any) => {
           table.increments('id').primary();
-          table.string('name').notNullable();
+          table.string('value').notNullable();
+          table.string('abbr').notNullable();
+          table.integer('offset').notNullable();
+          table.boolean('isdst').notNullable();
+          table.string('text').notNullable();
+          table.string('utc').notNullable();
           table.timestamp('created_at').defaultTo(knex.fn.now());
           table.timestamp('updated_at').defaultTo(knex.fn.now());
         })
@@ -48,7 +59,10 @@ export const schema = () => {
       knex.schema
         .createTable('category', (table: any) => {
           table.increments('id').primary();
-          table.string('name').notNullable();
+          table
+            .string('name')
+            .notNullable()
+            .unique();
           table.timestamp('created_at').defaultTo(knex.fn.now());
           table.timestamp('updated_at').defaultTo(knex.fn.now());
         })
@@ -65,7 +79,10 @@ export const schema = () => {
             .integer('user_id')
             .unsigned()
             .notNullable();
-          table.integer('timezone_id').unsigned();
+          table
+            .integer('timezone_id')
+            .unsigned()
+            .notNullable();
           table.date('start_date').notNullable();
           table.date('end_date').notNullable();
           table.string('name');
@@ -73,14 +90,8 @@ export const schema = () => {
           table.boolean('archived').notNullable();
           table.timestamp('created_at').defaultTo(knex.fn.now());
           table.timestamp('updated_at').defaultTo(knex.fn.now());
-          table
-            .foreign('user_id')
-            .references('id')
-            .inTable('user');
-          table
-            .foreign('timezone_id')
-            .references('id')
-            .inTable('timezone');
+          table.foreign('user_id').references('user.id');
+          table.foreign('timezone_id').references('timezone.id');
         })
         .catch((err: any) => console.error(err));
     }
@@ -103,14 +114,8 @@ export const schema = () => {
           table.date('trip_date').notNullable();
           table.timestamp('created_at').defaultTo(knex.fn.now());
           table.timestamp('updated_at').defaultTo(knex.fn.now());
-          table
-            .foreign('trip_id')
-            .references('id')
-            .inTable('trip');
-          table
-            .foreign('user_id')
-            .references('id')
-            .inTable('user');
+          table.foreign('trip_id').references('trip.id');
+          table.foreign('user_id').references('user.id');
         })
         .catch((err: any) => console.error(err));
     }
@@ -143,26 +148,11 @@ export const schema = () => {
           table.string('currency');
           table.timestamp('created_at').defaultTo(knex.fn.now());
           table.timestamp('updated_at').defaultTo(knex.fn.now());
-          table
-            .foreign('trip_day_id')
-            .references('id')
-            .inTable('trip_day');
-          table
-            .foreign('category_id')
-            .references('id')
-            .inTable('category');
-          table
-            .foreign('user_id')
-            .references('id')
-            .inTable('user');
-          table
-            .foreign('timezone_id')
-            .references('id')
-            .inTable('timezone');
-          table
-            .foreign('currency_id')
-            .references('id')
-            .inTable('currency');
+          table.foreign('trip_day_id').references('trip_day.id');
+          table.foreign('category_id').references('category.id');
+          table.foreign('user_id').references('user.id');
+          table.foreign('timezone_id').references('timezone.id');
+          table.foreign('currency_id').references('currency.id');
         })
         .catch((err: any) => console.error(err));
     }
