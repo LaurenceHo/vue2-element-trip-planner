@@ -4,7 +4,8 @@
     :show-close="false"
     custom-class="create-trip-dialog"
     title="Create trip"
-    width="40%"
+    width="30rem"
+    append-to-body
   >
     <el-form
       ref="tripForm"

@@ -8,26 +8,25 @@
     <div v-else>
       <div v-if="tripDayDetail">
         <el-row>
-          <el-col :span="20">
+          <el-col :xs="18" :sm="18" :md="19" :lg="21" :xl="21">
             {{ tripDayDetail.trip_date }}
             {{ tripDayDetail.name }}
           </el-col>
-          <el-col :span="4">
+          <el-col :xs="6" :sm="6" :md="5" :lg="3" :xl="3">
             <el-button @click="openCreateDialog()" class="create-button" type="primary">
-              <font-awesome-icon icon="plus" class="menu-icon" />
+              <font-awesome-icon icon="plus" />
               New Event
             </el-button>
           </el-col>
         </el-row>
         <div v-for="event in tripDayDetail.events">
-          <el-row class="box-card" shadow="hover">
-            <div>
-              <div>Title: {{ event.title }}</div>
-              <div>Start time: {{ event.start_time }}</div>
-              <div>End time: {{ event.end_time }}</div>
-            </div>
-          </el-row>
+          <el-card shadow="hover">
+            <div>Title: {{ event.title }}</div>
+            <div>Start time: {{ event.start_time }}</div>
+            <div>End time: {{ event.end_time }}</div>
+          </el-card>
         </div>
+        <create-event-dialog />
       </div>
       <div v-else>
         <el-alert title="You don't have trip detail. Please create trip day at first" type="info" show-icon />
@@ -39,8 +38,11 @@
 <script lang="ts">
 import Vue from 'vue';
 import Component from 'vue-class-component';
+import CreateEventDialog from './CreateEventDialog.vue';
 
-@Component({})
+@Component({
+  components: { CreateEventDialog },
+})
 export default class TripEvent extends Vue {
   get alert() {
     return this.$store.state.alert;
@@ -55,12 +57,9 @@ export default class TripEvent extends Vue {
   }
 
   openCreateDialog() {
-    // TODO
+    this.$store.dispatch('openCreateEventDialog', true);
   }
 }
 </script>
 
-<style scoped>
-.box-card {
-}
-</style>
+<style scoped></style>

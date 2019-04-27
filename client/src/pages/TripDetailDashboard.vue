@@ -1,16 +1,14 @@
 <template>
   <div>
     <el-row>
-      <el-col :span="24">
-        <trip-banner />
-      </el-col>
+      <trip-banner />
     </el-row>
     <div style="padding-top: 1rem">
       <el-row>
-        <el-col :span="4">
+        <el-col :xs="6" :sm="6" :md="6" :lg="6" :xl="4">
           <trip-day />
         </el-col>
-        <el-col :span="16">
+        <el-col :xs="18" :sm="17" :md="17" :lg="16" :xl="16">
           <trip-event />
         </el-col>
       </el-row>
