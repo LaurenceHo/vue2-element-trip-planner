@@ -132,8 +132,8 @@ export const schema = () => {
             .notNullable();
           table.integer('timezone_id').unsigned();
           table.integer('currency_id').unsigned();
-          table.date('start_time');
-          table.date('end_time');
+          table.datetime('start_time');
+          table.datetime('end_time');
           table.string('title').notNullable();
           table.string('start_location');
           table.string('end_location');
