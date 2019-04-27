@@ -2,6 +2,8 @@ export interface Event {
   id: number;
   trip_day_id: number;
   category_id: number;
+  timezone_id: number;
+  currency_id: number;
   user_id: number;
   start_time: string;
   end_time: string;
@@ -9,7 +11,6 @@ export interface Event {
   start_location: string;
   end_location: string;
   note: string;
-  tag: string[];
+  tag: string;
   cost: number;
-  currency: string;
 }

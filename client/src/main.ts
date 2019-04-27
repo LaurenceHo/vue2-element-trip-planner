@@ -1,12 +1,19 @@
 import { library } from '@fortawesome/fontawesome-svg-core';
 import {
   faArchive,
+  faBusAlt,
   faCalendarAlt,
   faCog,
+  faChevronRight,
   faFilter,
+  faHotel,
+  faInfoCircle,
+  faPlane,
   faPlus,
+  faShip,
   faSignOutAlt,
   faUser,
+  faWalking,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import {
@@ -27,8 +34,11 @@ import {
   Main,
   Menu,
   MenuItem,
+  RadioButton,
+  RadioGroup,
   Row,
   Submenu,
+  TimePicker,
 } from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import Vue from 'vue';
@@ -39,7 +49,22 @@ import { router } from './router';
 import { store } from './store/store';
 import './style/style.css';
 
-library.add(faArchive, faCalendarAlt, faCog, faFilter, faPlus, faSignOutAlt, faUser);
+library.add(
+  faArchive,
+  faBusAlt,
+  faCalendarAlt,
+  faCog,
+  faChevronRight,
+  faFilter,
+  faHotel,
+  faInfoCircle,
+  faPlane,
+  faPlus,
+  faShip,
+  faSignOutAlt,
+  faUser,
+  faWalking
+);
 
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 Vue.use(Alert);
@@ -59,8 +84,11 @@ Vue.use(Input);
 Vue.use(Main);
 Vue.use(Menu);
 Vue.use(MenuItem);
+Vue.use(RadioButton);
+Vue.use(RadioGroup);
 Vue.use(Row);
 Vue.use(Submenu);
+Vue.use(TimePicker);
 
 new Vue({
   el: '#app',

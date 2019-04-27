@@ -6,11 +6,14 @@ import { TripDay } from '../models/trip-day';
 import { TripService } from '../services/trip-service';
 
 const DATE_FORMAT = 'YYYY-MM-DD';
+const DATE_TIME_FORMAT = 'YYYY-MM-DD HH:mm';
+
 const tripService = new TripService();
 const tripList: Trip[] = [];
 const tripDetail: Trip = {
   id: 0,
   user_id: 0,
+  timezone_id: 0,
   start_date: '',
   end_date: '',
   name: '',
@@ -47,24 +50,6 @@ export const trip = {
           context.commit('isLoading', false);
           if (result.success) {
             context.commit('getTripList', result.result);
-          } else {
-            context.dispatch('alert/error', result.error, { root: true });
-          }
-        })
-        .catch((error: any) => {
-          context.commit('isLoading', false);
-          context.dispatch('alert/error', error.error, { root: true });
-        });
-    },
-    createTrip(context: any, payload: Trip) {
-      context.commit('isLoading', true);
-      payload.start_date = moment(payload.start_date).format(DATE_FORMAT);
-      payload.end_date = moment(payload.end_date).format(DATE_FORMAT);
-      tripService
-        .createTrip(payload)
-        .then((result: any) => {
-          if (result.success) {
-            context.dispatch('trip/getTripList', {}, { root: true });
           } else {
             context.dispatch('alert/error', result.error, { root: true });
           }
@@ -119,6 +104,25 @@ export const trip = {
           context.dispatch('alert/error', error.error, { root: true });
         });
     },
+    createTrip(context: any, payload: Trip) {
+      context.commit('isLoading', true);
+      payload.start_date = moment(payload.start_date).format(DATE_FORMAT);
+      payload.end_date = moment(payload.end_date).format(DATE_FORMAT);
+      tripService
+        .createTrip(payload)
+        .then((result: any) => {
+          if (result.success) {
+            context.dispatch('trip/getTripList', {}, { root: true });
+          } else {
+            context.commit('isLoading', false);
+            context.dispatch('alert/error', result.error, { root: true });
+          }
+        })
+        .catch((error: any) => {
+          context.commit('isLoading', false);
+          context.dispatch('alert/error', error.error, { root: true });
+        });
+    },
     createTripDay(context: any, payload: TripDay) {
       context.commit('isLoading', true);
       payload.trip_date = moment(payload.trip_date).format(DATE_FORMAT);
@@ -128,6 +132,34 @@ export const trip = {
           if (result.success) {
             context.dispatch('trip/getTripDetailWithDays', payload.trip_id, { root: true });
           } else {
+            context.commit('isLoading', false);
+            context.dispatch('alert/error', result.error, { root: true });
+          }
+        })
+        .catch((error: any) => {
+          context.commit('isLoading', false);
+          context.dispatch('alert/error', error.error, { root: true });
+        });
+    },
+    createTripEvent(context: any, payload: Event) {
+      context.commit('isLoading', true);
+      if (payload.start_time) {
+        payload.start_time = moment(payload.start_time).format(DATE_TIME_FORMAT);
+      }
+      if (payload.end_time) {
+        payload.end_time = moment(payload.end_time).format(DATE_TIME_FORMAT);
+      }
+      tripService
+        .createTripEvent(context.state.tripDetail.id, payload)
+        .then((result: any) => {
+          if (result.success) {
+            context.dispatch(
+              'trip/getTripDayWithEvents',
+              { trip_id: context.state.tripDetail.id, trip_day_id: payload.trip_day_id },
+              { root: true }
+            );
+          } else {
+            context.commit('isLoading', false);
             context.dispatch('alert/error', result.error, { root: true });
           }
         })
@@ -172,10 +204,10 @@ export const trip = {
         if (!isEmpty(payload.events)) {
           map(payload.events, (tripEvent: Event) => {
             if (!isEmpty(tripEvent.start_time)) {
-              tripEvent.start_time = tripEvent.start_time.slice(0, 5);
+              tripEvent.start_time = moment(tripEvent.start_time).format(DATE_TIME_FORMAT);
             }
             if (!isEmpty(tripEvent.end_time)) {
-              tripEvent.end_time = tripEvent.end_time.slice(0, 5);
+              tripEvent.end_time = moment(tripEvent.end_time).format(DATE_TIME_FORMAT);
             }
             return tripEvent;
           });

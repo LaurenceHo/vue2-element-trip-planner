@@ -1,13 +1,13 @@
 <template>
   <el-menu @select="handleSelect" class="trip-day-menu" default-active="0">
     <el-button @click="openCreateDialog()" class="create-button" type="primary">
-      <font-awesome-icon icon="plus" class="menu-icon" />
+      <font-awesome-icon icon="plus" />
       Create new day
     </el-button>
     <div v-for="(tripDay, index) in tripDetail.trip_day">
       <el-menu-item :index="String(index)">
         <span>{{ tripDay.trip_date }}</span>
-        <i class="el-icon-arrow-right" />
+        <font-awesome-icon icon="chevron-right" />
       </el-menu-item>
     </div>
   </el-menu>
