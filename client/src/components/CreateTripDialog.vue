@@ -4,17 +4,10 @@
     :show-close="false"
     custom-class="create-trip-dialog"
     title="Create trip"
-    width="30rem"
+    width="40rem"
     append-to-body
   >
-    <el-form
-      ref="tripForm"
-      :rules="requiredRules"
-      :model="trip"
-      class="create-trip-form"
-      label-position="top"
-      label-width="3rem"
-    >
+    <el-form ref="tripForm" :rules="requiredRules" :model="trip" class="create-trip-form" label-width="6rem">
       <el-form-item label="Name">
         <el-input v-model="trip.name" />
       </el-form-item>
@@ -24,19 +17,28 @@
       <el-row>
         <el-col :span="12">
           <el-form-item label="Start date" prop="start_date">
-            <el-date-picker v-model="trip.start_date" style="width: 90%;" type="date" placeholder="Pick a day" />
+            <el-date-picker v-model="trip.start_date" style="width: 100%" type="date" placeholder="Pick a day" />
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="End date" prop="end_date">
-            <el-date-picker v-model="trip.end_date" style="width: 90%;" type="date" placeholder="Pick a day" />
+            <el-date-picker v-model="trip.end_date" style="width: 100%;" type="date" placeholder="Pick a day" />
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="12">
+          <el-form-item label="Timezone">
+            <el-select v-model="trip.timezone_id" filterable placeholder="please select timezone">
+              <el-option v-for="tz in timezoneList" :label="tz.text" :value="tz.id" :key="tz.id" />
+            </el-select>
           </el-form-item>
         </el-col>
       </el-row>
     </el-form>
     <span slot="footer" class="dialog-footer">
       <el-button @click="closeDialog">Cancel</el-button>
-      <el-button @click="createTrip()" type="primary">Confirm</el-button>
+      <el-button @click="createTrip" type="primary">Confirm</el-button>
     </span>
   </el-dialog>
 </template>
@@ -54,13 +56,18 @@ export default class CreateTripDialog extends Vue {
   };
 
   trip = {
-    user_id: 0,
+    user_id: this.$store.state.authentication.user.id,
+    timezone_id: '',
     start_date: '',
     end_date: '',
     name: '',
     destination: '',
     archived: false,
   };
+
+  get timezoneList() {
+    return this.$store.state.util.timezone;
+  }
 
   closeDialog() {
     this.$store.dispatch('openCreateTripDialog', false);
@@ -71,7 +78,6 @@ export default class CreateTripDialog extends Vue {
     tripForm.validate((valid: boolean) => {
       if (valid) {
         this.$store.dispatch('openCreateTripDialog', false);
-        this.trip.user_id = this.$store.state.authentication.user.id;
         this.$store.dispatch('trip/createTrip', this.trip);
         tripForm.resetFields();
       } else {

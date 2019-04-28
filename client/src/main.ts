@@ -34,9 +34,11 @@ import {
   Main,
   Menu,
   MenuItem,
+  Option,
   RadioButton,
   RadioGroup,
   Row,
+  Select,
   Submenu,
   TimePicker,
 } from 'element-ui';
@@ -84,9 +86,11 @@ Vue.use(Input);
 Vue.use(Main);
 Vue.use(Menu);
 Vue.use(MenuItem);
+Vue.use(Option);
 Vue.use(RadioButton);
 Vue.use(RadioGroup);
 Vue.use(Row);
+Vue.use(Select);
 Vue.use(Submenu);
 Vue.use(TimePicker);
 

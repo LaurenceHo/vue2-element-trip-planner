@@ -18,6 +18,11 @@ export const authentication = {
           if (result.success) {
             localStorage.setItem('user', JSON.stringify(result.user));
             context.commit('loginSuccess', result.user);
+
+            context.dispatch('util/getCurrencyList', null, { root: true });
+            context.dispatch('util/getTimezoneList', null, { root: true });
+            context.dispatch('util/getCategoryList', null, { root: true });
+
             router.push('/');
           } else {
             context.commit('loginFailure', result);
