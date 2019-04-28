@@ -10,7 +10,6 @@ import * as eventRoute from './routes/event-route';
 import * as tripDayRoute from './routes/trip-day-route';
 import * as tripRoute from './routes/trip-route';
 import * as userRoute from './routes/user-route';
-import * as utilRoute from './routes/util-route';
 
 schema();
 
@@ -58,14 +57,12 @@ const jwtAuthentication = (req: any, res: express.Response, next: any) => {
   }
 };
 app.use('/api/trip', jwtAuthentication);
-app.use('/api/util', jwtAuthentication);
 app.use('/api/user/update', jwtAuthentication);
 
 app.use('/api/trip', tripRoute);
 app.use('/api/trip', tripDayRoute);
 app.use('/api/trip', eventRoute);
 app.use('/api/user', userRoute);
-app.use('/api/util', utilRoute);
 
 app.get('/*', (req: express.Request, res: express.Response) =>
   res.sendFile(path.resolve(__dirname, '../client', 'index.html'))

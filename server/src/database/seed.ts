@@ -1,31 +1,25 @@
 import * as bcrypt from 'bcrypt';
 import { knex } from './knex';
-import * as fs from 'fs';
+import { timezoneList } from './timezone';
 
-const importTimeZoneJsonFile = () => {
-  fs.readFile('./server/src/database/timezone.json', (err: any, data: any) => {
-    if (err) {
-      throw err;
-    }
-    const timezoneArray: any = [];
-    const timezoneJson = JSON.parse(data);
-    timezoneJson.forEach((timezone: any) => {
-      let tz = {
-        value: timezone.value,
-        abbr: timezone.abbr,
-        offset: timezone.offset,
-        isdst: timezone.isdst,
-        text: timezone.text,
-        utc: timezone.utc[0],
-      };
-      timezoneArray.push(tz);
-    });
-
-    knex('timezone')
-      .insert(timezoneArray)
-      .then((returning: any) => console.log(returning))
-      .catch((err: any) => console.error(err));
+const importTimeZoneFile = () => {
+  const timezoneArray: any = [];
+  timezoneList.forEach((timezone: any) => {
+    let tz = {
+      value: timezone.value,
+      abbr: timezone.abbr,
+      offset: timezone.offset,
+      isdst: timezone.isdst,
+      text: timezone.text,
+      utc: timezone.utc[0],
+    };
+    timezoneArray.push(tz);
   });
+
+  knex('timezone')
+    .insert(timezoneArray)
+    .then((returning: any) => console.log(returning))
+    .catch((err: any) => console.error(err));
 };
 
 const createCurrency = () => {
@@ -255,7 +249,7 @@ const createEvent = () => {
     .catch((err: any) => console.error(err));
 };
 
-importTimeZoneJsonFile();
+importTimeZoneFile();
 createCurrency();
 createCategory();
 createUser();
