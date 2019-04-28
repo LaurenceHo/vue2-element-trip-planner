@@ -5,19 +5,14 @@
     custom-class="create-trip-day-dialog"
     title="Create trip day"
     width="35rem"
-    append-to-body
   >
     <el-form ref="tripForm" :rules="requiredRules" :model="tripDay" class="create-trip-day-form" label-width="6rem">
       <el-form-item label="Name">
         <el-input v-model="tripDay.name" />
       </el-form-item>
-      <el-row>
-        <el-col :span="12">
-          <el-form-item label="Trip date" prop="trip_date">
-            <el-date-picker v-model="tripDay.trip_date" type="date" placeholder="Pick a day" />
-          </el-form-item>
-        </el-col>
-      </el-row>
+      <el-form-item label="Trip date" prop="trip_date">
+        <el-date-picker v-model="tripDay.trip_date" type="date" placeholder="Pick a day" style="width: 100%" />
+      </el-form-item>
     </el-form>
     <span slot="footer" class="dialog-footer">
       <el-button @click="closeDialog">Cancel</el-button>

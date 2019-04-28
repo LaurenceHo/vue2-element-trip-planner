@@ -4,7 +4,6 @@
     :show-close="false"
     title="Create event"
     width="45rem"
-    append-to-body
   >
     <el-form ref="eventForm" :rules="requiredRules" :model="tripEvent" class="create-event-form" label-width="6rem">
       <el-form-item label="Category">
@@ -42,20 +41,11 @@
           </el-form-item>
         </el-col>
       </el-row>
-      <el-row>
-        <el-col :span="12">
-          <el-form-item label="Timezone">
-            <el-select
-              v-model="tripEvent.timezone_id"
-              filterable
-              placeholder="please select timezone"
-              style="width: 100%"
-            >
-              <el-option v-for="tz in timezoneList" :label="tz.text" :value="tz.id" :key="tz.id" />
-            </el-select>
-          </el-form-item>
-        </el-col>
-      </el-row>
+      <el-form-item label="Timezone">
+        <el-select v-model="tripEvent.timezone_id" filterable placeholder="TEST" style="width: 100%">
+          <el-option v-for="tz in timezoneList" :label="tz.text" :value="tz.id" :key="tz.id" />
+        </el-select>
+      </el-form-item>
       <el-row>
         <el-col :span="12">
           <el-form-item label="Cost">
@@ -95,9 +85,15 @@
 <script lang="ts">
 import Vue from 'vue';
 import Component from 'vue-class-component';
+import { currency } from '../assets/currency';
+import { timezone } from '../assets/timezone';
 
 @Component({})
 export default class CreateEventDialog extends Vue {
+  currencyList: any = currency;
+  timezoneList: any = timezone;
+  currentTimezone = this.timezoneList.find((tz: any) => tz.id === this.$store.state.trip.tripDetail.timezone_id);
+
   requiredRules = {
     title: [{ required: true, message: 'Please input title', trigger: 'blur' }],
   };
@@ -105,18 +101,10 @@ export default class CreateEventDialog extends Vue {
   tripEvent = {
     user_id: this.$store.state.authentication.user.id,
     trip_day_id: this.$store.state.trip.tripDayDetail.id,
-    timezone_id: this.$store.state.trip.tripDayDetail.timezone_id,
+    timezone_id: this.$store.state.trip.tripDetail.timezone_id,
     category_id: 1,
     title: '',
   };
-
-  get timezoneList() {
-    return this.$store.state.util.timezone;
-  }
-
-  get currencyList() {
-    return this.$store.state.util.currency;
-  }
 
   closeDialog() {
     this.$store.dispatch('openCreateEventDialog', false);

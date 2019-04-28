@@ -4,7 +4,6 @@ import { alert } from './alert-module';
 import { authentication } from './authentication-module';
 import { trip } from './trip-module';
 import { user } from './user-module';
-import { util } from './util-module';
 
 Vue.use(Vuex);
 
@@ -20,7 +19,6 @@ export const store = new Vuex.Store({
     authentication,
     user,
     trip,
-    util,
   },
   actions: {
     toggleSideBar(context: any) {

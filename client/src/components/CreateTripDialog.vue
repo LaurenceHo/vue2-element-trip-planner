@@ -5,7 +5,6 @@
     custom-class="create-trip-dialog"
     title="Create trip"
     width="40rem"
-    append-to-body
   >
     <el-form ref="tripForm" :rules="requiredRules" :model="trip" class="create-trip-form" label-width="6rem">
       <el-form-item label="Name">
@@ -26,15 +25,11 @@
           </el-form-item>
         </el-col>
       </el-row>
-      <el-row>
-        <el-col :span="12">
-          <el-form-item label="Timezone">
-            <el-select v-model="trip.timezone_id" filterable placeholder="please select timezone">
-              <el-option v-for="tz in timezoneList" :label="tz.text" :value="tz.id" :key="tz.id" />
-            </el-select>
-          </el-form-item>
-        </el-col>
-      </el-row>
+      <el-form-item label="Timezone" prop="timezone">
+        <el-select v-model="trip.timezone_id" filterable placeholder="please select timezone" style="width: 100%">
+          <el-option v-for="tz in timezoneList" :label="tz.text" :value="tz.id" :key="tz.id" />
+        </el-select>
+      </el-form-item>
     </el-form>
     <span slot="footer" class="dialog-footer">
       <el-button @click="closeDialog">Cancel</el-button>
@@ -46,13 +41,17 @@
 <script lang="ts">
 import Component from 'vue-class-component';
 import Vue from 'vue';
+import { timezone } from '../assets/timezone';
 
 @Component({})
 export default class CreateTripDialog extends Vue {
+  timezoneList: any = timezone;
+
   requiredRules = {
     destination: [{ required: true, message: 'Please input destination', trigger: 'blur' }],
     start_date: [{ type: 'date', required: true, message: 'Please pick a date', trigger: 'change' }],
     end_date: [{ type: 'date', required: true, message: 'Please pick a date', trigger: 'change' }],
+    timezone: [{ required: true, message: 'Please select timezone', trigger: 'change' }],
   };
 
   trip = {
@@ -64,10 +63,6 @@ export default class CreateTripDialog extends Vue {
     destination: '',
     archived: false,
   };
-
-  get timezoneList() {
-    return this.$store.state.util.timezone;
-  }
 
   closeDialog() {
     this.$store.dispatch('openCreateTripDialog', false);
