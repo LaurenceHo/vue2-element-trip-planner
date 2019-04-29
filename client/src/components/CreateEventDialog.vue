@@ -7,14 +7,7 @@
   >
     <el-form ref="eventForm" :rules="requiredRules" :model="tripEvent" class="create-event-form" label-width="6rem">
       <el-form-item label="Category">
-        <el-radio-group v-model="tripEvent.category_id" size="small">
-          <el-radio-button label="1"><font-awesome-icon icon="walking" /> Activity</el-radio-button>
-          <el-radio-button label="2"><font-awesome-icon icon="bus-alt" /> Transportation</el-radio-button>
-          <el-radio-button label="3"><font-awesome-icon icon="info-circle" /> Info</el-radio-button>
-          <el-radio-button label="4"><font-awesome-icon icon="hotel" /> Accommodation</el-radio-button>
-          <el-radio-button label="5"><font-awesome-icon icon="plane" /> Flight</el-radio-button>
-          <el-radio-button label="6"><font-awesome-icon icon="ship" /> Cruise</el-radio-button>
-        </el-radio-group>
+        <CategoryRadioButton v-model="tripEvent.category_id" />
       </el-form-item>
       <el-form-item label="Title" prop="title">
         <el-input v-model="tripEvent.title"></el-input>
@@ -85,10 +78,13 @@
 <script lang="ts">
 import Vue from 'vue';
 import Component from 'vue-class-component';
+import CategoryRadioButton from './CategoryRadioButton.vue';
 import { currency } from '../assets/currency';
 import { timezone } from '../assets/timezone';
 
-@Component({})
+@Component({
+  components: { CategoryRadioButton },
+})
 export default class CreateEventDialog extends Vue {
   currencyList: any = currency;
   timezoneList: any = timezone;
@@ -99,9 +95,9 @@ export default class CreateEventDialog extends Vue {
   };
 
   tripEvent = {
-    user_id: this.$store.state.authentication.user.id,
-    trip_day_id: this.$store.state.trip.tripDayDetail.id,
-    timezone_id: this.$store.state.trip.tripDetail.timezone_id,
+    user_id: 0,
+    trip_day_id: 0,
+    timezone_id: 0,
     category_id: 1,
     title: '',
   };
@@ -114,6 +110,9 @@ export default class CreateEventDialog extends Vue {
     let eventForm: any = this.$refs.eventForm;
     eventForm.validate((valid: boolean) => {
       if (valid) {
+        this.tripEvent.user_id = this.$store.state.authentication.user.id;
+        this.tripEvent.timezone_id = this.$store.state.trip.tripDetail.timezone_id;
+        this.tripEvent.trip_day_id = this.$store.state.trip.tripDayDetail.id;
         this.$store.dispatch('openCreateEventDialog', false);
         this.$store.dispatch('trip/createTripEvent', this.tripEvent);
         eventForm.resetFields();

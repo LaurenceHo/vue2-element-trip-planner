@@ -12,7 +12,7 @@
           <div class="avatar-outer">
             <img class="avatar" src="../assets/default-avatar.png" height="10" alt="avatar" />
           </div>
-          <div style="float: right">{{ username }}</div>
+          <div style="float: right">{{ user.username }}</div>
         </div>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item command="profile">
@@ -42,14 +42,12 @@ import CreateTripDayDialog from '../components/CreateTripDayDialog.vue';
 
 @Component({
   components: { CreateTripDialog, CreateTripDayDialog, Hamburger },
-  props: {
-    username: {
-      type: String,
-      default: '',
-    },
-  },
 })
 export default class TopBar extends Vue {
+  get user() {
+    return this.$store.state.authentication.user;
+  }
+
   toggleSideBar() {
     this.$store.dispatch('toggleSideBar');
   }

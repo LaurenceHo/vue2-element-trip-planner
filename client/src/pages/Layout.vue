@@ -1,7 +1,7 @@
 <template>
   <el-container>
     <el-header>
-      <top-bar :username="user.username" />
+      <top-bar />
     </el-header>
     <el-container>
       <side-menu />
