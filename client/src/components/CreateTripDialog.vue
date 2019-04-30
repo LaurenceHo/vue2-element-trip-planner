@@ -55,7 +55,7 @@ export default class CreateTripDialog extends Vue {
   };
 
   trip = {
-    user_id: this.$store.state.authentication.user.id,
+    user_id: 0,
     timezone_id: '',
     start_date: '',
     end_date: '',
@@ -72,6 +72,7 @@ export default class CreateTripDialog extends Vue {
     let tripForm: any = this.$refs.tripForm;
     tripForm.validate((valid: boolean) => {
       if (valid) {
+        this.trip.user_id = this.$store.state.authentication.user.id;
         this.$store.dispatch('openCreateTripDialog', false);
         this.$store.dispatch('trip/createTrip', this.trip);
         tripForm.resetFields();
