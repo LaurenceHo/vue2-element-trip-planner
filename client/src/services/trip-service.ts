@@ -69,4 +69,11 @@ export class TripService {
       formParams
     );
   }
+
+  updateTrip(requestBody: Trip): any {
+    const searchParams = {};
+    const formParams = {};
+
+    return this.apiService.perform('PUT', `${SERVER_URL}/trip/update`, requestBody, searchParams, formParams);
+  }
 }

@@ -168,6 +168,30 @@ export const trip = {
           context.dispatch('alert/error', error.error, { root: true });
         });
     },
+    updateTrip(context: any, payload: Trip) {
+      context.commit('isLoading', true);
+      payload.start_date = moment(payload.start_date).format(DATE_FORMAT);
+      payload.end_date = moment(payload.end_date).format(DATE_FORMAT);
+      delete payload.trip_day;
+      delete payload['created_at'];
+      delete payload['updated_at'];
+
+      tripService
+        .updateTrip(payload)
+        .then((result: any) => {
+          if (result.success) {
+            context.commit('isLoading', false);
+            context.commit('updateTrip', payload);
+          } else {
+            context.commit('isLoading', false);
+            context.dispatch('alert/error', result.error, { root: true });
+          }
+        })
+        .catch((error: any) => {
+          context.commit('isLoading', false);
+          context.dispatch('alert/error', error.error, { root: true });
+        });
+    },
   },
   mutations: {
     isLoading(state: any, payload: boolean) {
@@ -214,6 +238,14 @@ export const trip = {
         }
       }
       state.tripDayDetail = payload;
+    },
+    updateTrip(state: any, payload: Trip) {
+      state.tripDetail.destination = payload.destination;
+      state.tripDetail.name = payload.name;
+      state.tripDetail.start_date = payload.start_date;
+      state.tripDetail.end_date = payload.end_date;
+      state.tripDetail.archived = payload.archived;
+      state.tripDetail.timezone_id = payload.timezone_id;
     },
   },
 };

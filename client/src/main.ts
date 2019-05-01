@@ -5,6 +5,7 @@ import {
   faCalendarAlt,
   faCog,
   faChevronRight,
+  faEdit,
   faFilter,
   faHotel,
   faInfoCircle,
@@ -19,6 +20,7 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import {
   Alert,
   Button,
+  ButtonGroup,
   Card,
   Col,
   Container,
@@ -57,6 +59,7 @@ library.add(
   faCalendarAlt,
   faCog,
   faChevronRight,
+  faEdit,
   faFilter,
   faHotel,
   faInfoCircle,
@@ -71,6 +74,7 @@ library.add(
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 Vue.use(Alert);
 Vue.use(Button);
+Vue.use(ButtonGroup);
 Vue.use(Card);
 Vue.use(Col);
 Vue.use(Container);

@@ -1,4 +1,4 @@
-# Fullstack web application using Vue2, element-ui, Nodejs, Express, Mysql, Gulp4 and Webpack4.
+# (WIP) Fullstack web application using Vue2, element-ui, Nodejs, Express, Mysql, Gulp4 and Webpack4.
 
 ## Introduction
 This project demonstrates the basic fullstack development including frontend and backend.
