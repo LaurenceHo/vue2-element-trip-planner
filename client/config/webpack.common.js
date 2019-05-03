@@ -1,4 +1,5 @@
 const path = require('path');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const NormalModuleReplacementPlugin = require('webpack/lib/NormalModuleReplacementPlugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -78,5 +79,17 @@ module.exports = {
       /element-ui[\/\\]lib[\/\\]locale[\/\\]lang[\/\\]zh-CN/,
       'element-ui/lib/locale/lang/en'
     ),
+    /*
+     * Plugin: CopyWebpackPlugin
+     * Description: Copy files and directories in webpack.
+     * Copies project static assets.
+     * See: https://www.npmjs.com/package/copy-webpack-plugin
+     */
+    new CopyWebpackPlugin([
+      {
+        from: 'src/assets/favicon.png',
+        to: 'favicon.png',
+      },
+    ]),
   ],
 };

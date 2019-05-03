@@ -1,3 +1,4 @@
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const merge = require('webpack-merge');
@@ -24,6 +25,12 @@ module.exports = merge(common, {
       filename: '[name].[hash].css',
       chunkFilename: '[id].[hash].css',
     }),
+    /*
+     * Plugin: CleanWebpackPlugin
+     * Description: A webpack plugin to remove/clean your build folder(s).
+     * See: https://github.com/johnagan/clean-webpack-plugin
+     */
+    new CleanWebpackPlugin(),
   ],
   optimization: {
     splitChunks: {
