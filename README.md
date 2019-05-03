@@ -103,14 +103,15 @@ vue-trip-planner
     │    │    ├── routes
     │    │    ├── services
     │    │    ├── server.ts
+    ├── .eslintrc.json
     ├── .gitignore
+    ├── .prettierrc
     ├── gulpfile.ts
     ├── LICENSE.md
     ├── package.json
     ├── package-lock.json (generted by npm)
     ├── README.md
     ├── tsconfig.json
-    ├── tslint.json
 ```
 ## TypeScript / JavaScript Naming rule
 https://google.github.io/styleguide/jsguide.html
