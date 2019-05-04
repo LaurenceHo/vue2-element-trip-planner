@@ -145,7 +145,6 @@ export const schema = () => {
           table.text('note');
           table.text('tag');
           table.integer('cost');
-          table.string('currency');
           table.timestamp('created_at').defaultTo(knex.fn.now());
           table.timestamp('updated_at').defaultTo(knex.fn.now());
           table.foreign('trip_day_id').references('trip_day.id');

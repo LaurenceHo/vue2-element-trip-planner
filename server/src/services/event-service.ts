@@ -5,7 +5,7 @@ import { BaseService } from './base-service';
 const eventRepository = new EventRepository();
 
 export class EventService implements BaseService<Event> {
-  retrieve(whereClauses: any, callback: any): void {
+  retrieve(columns: string[], whereClauses: any, callback: any): void {
     eventRepository.retrieve(null, whereClauses, callback);
   }
 

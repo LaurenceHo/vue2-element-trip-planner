@@ -10,7 +10,7 @@ export class EventController implements BaseController<EventService> {
     try {
       const whereClauses: any = req.body;
       whereClauses.user_id = req.user.id;
-      eventService.retrieve(whereClauses, (result: Event[], error: any) => {
+      eventService.retrieve(null, whereClauses, (result: Event[], error: any) => {
         if (error) {
           res.status(400).send({ error: error.sqlMessage });
         } else {

@@ -1,24 +1,36 @@
+import { isEmpty } from 'lodash';
 import { knex } from '../database/knex';
 import { Trip } from '../models/trip';
 import { TripDay } from '../models/trip-day';
 import { BaseRepository } from './base-repository';
+import { TripDayRepository } from './trip-day-repository';
+
+const tripDayRepository = new TripDayRepository();
 
 export class TripRepository implements BaseRepository<Trip> {
   retrieveDetail(whereClauses: any, callback: any): void {
     let trip: Trip = null;
-    knex('trip')
+    const columns = ['id', 'user_id', 'timezone_id', 'start_date', 'end_date', 'name', 'destination', 'archived'];
+    knex
+      .column(columns)
+      .select()
+      .from('trip')
       .where(whereClauses)
       .then((results: Trip[]) => {
         trip = results[0];
         if (trip) {
-          knex('trip_day')
-            .where({ trip_id: whereClauses.id })
-            .orderBy('trip_date')
-            .then((results: TripDay[]) => {
+          const columns = ['id', 'name', 'trip_date'];
+          tripDayRepository.retrieve(
+            columns,
+            { trip_id: whereClauses.id, user_id: whereClauses.user_id },
+            (results: TripDay[], error: any) => {
+              if (error) {
+                callback(null, error);
+              }
               trip.trip_day = results;
               callback(trip);
-            })
-            .catch((err: any) => callback(null, err));
+            }
+          );
         } else {
           callback();
         }
@@ -27,22 +39,17 @@ export class TripRepository implements BaseRepository<Trip> {
   }
 
   retrieve(columns: string[], whereClauses: any, callback: any): void {
-    if (columns) {
-      knex
-        .column(columns)
-        .select()
-        .from('trip')
-        .where(whereClauses)
-        .orderBy('start_date')
-        .then((results: Trip[]) => callback(results))
-        .catch((err: any) => callback(null, err));
-    } else {
-      knex('trip')
-        .where(whereClauses)
-        .orderBy('start_date')
-        .then((results: Trip[]) => callback(results))
-        .catch((err: any) => callback(null, err));
+    if (isEmpty(columns)) {
+      columns = ['id', 'user_id', 'start_date', 'end_date', 'name', 'destination'];
     }
+    knex
+      .column(columns)
+      .select()
+      .from('trip')
+      .where(whereClauses)
+      .orderBy('start_date')
+      .then((results: Trip[]) => callback(results))
+      .catch((err: any) => callback(null, err));
   }
 
   create(item: Trip, callback: any): void {

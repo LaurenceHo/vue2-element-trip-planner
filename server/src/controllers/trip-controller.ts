@@ -26,7 +26,7 @@ export class TripController implements BaseController<TripService> {
     try {
       const whereClauses: any = req.body;
       whereClauses.user_id = req.user.id;
-      tripService.retrieve(whereClauses, (result: Trip[], error: any) => {
+      tripService.retrieve(null, whereClauses, (result: Trip[], error: any) => {
         if (error) {
           res.status(400).send({ error: error.sqlMessage });
         } else {

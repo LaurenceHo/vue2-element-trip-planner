@@ -1,9 +1,9 @@
 export interface BaseRepository<T> {
-  retrieve(columns: string[], whereClauses: any, callback: any): void;
+  retrieve(columns: string[], whereClauses: any, callback: (result: T[], error: any) => void): void;
 
-  create(item: T, callback: any): void;
+  create(item: T, callback: (result: any, error: any) => void): void;
 
-  update(item: T, callback: any): void;
+  update(item: T, callback: (result: any, error: any) => void): void;
 
-  delete(id: number, callback: any): void;
+  delete(id: number, callback: (result: any, error: any) => void): void;
 }

@@ -9,7 +9,7 @@ export class TripService implements BaseService<Trip> {
     tripRepository.retrieveDetail(whereClauses, callback);
   }
 
-  retrieve(whereClauses: any, callback: any): void {
+  retrieve(columns: string[], whereClauses: any, callback: any): void {
     tripRepository.retrieve(null, whereClauses, callback);
   }
 

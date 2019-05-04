@@ -26,7 +26,7 @@ export class UserController {
   login(req: express.Request, res: express.Response): void {
     try {
       const email = req.body.email;
-      userService.retrieve({ email }, (user: User, error: any) => {
+      userService.retrieve(null, { email }, (user: User, error: any) => {
         if (error) {
           res.status(400).send({ error: error.sqlMessage });
         }

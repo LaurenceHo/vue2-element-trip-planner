@@ -9,7 +9,7 @@ export class TripDayService implements BaseService<TripDay> {
     tripDayRepository.retrieveDetail(whereClauses, callback);
   }
 
-  retrieve(whereClauses: any, callback: any): void {
+  retrieve(columns: string[], whereClauses: any, callback: any): void {
     tripDayRepository.retrieve(null, whereClauses, callback);
   }
 

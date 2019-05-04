@@ -26,7 +26,7 @@ export class TripDayController implements BaseController<TripDayService> {
     try {
       const trip_id: number = req.params.trip_id;
       const user_id: number = req.user.id;
-      tripDayService.retrieve({ trip_id, user_id }, (result: TripDay[], error: any) => {
+      tripDayService.retrieve(null, { trip_id, user_id }, (result: TripDay[], error: any) => {
         if (error) {
           res.status(400).send({ error: error.sqlMessage });
         } else {
