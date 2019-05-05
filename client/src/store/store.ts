@@ -10,6 +10,7 @@ Vue.use(Vuex);
 export const store = new Vuex.Store({
   state: {
     toggle: true,
+    isEditMode: false,
     openCreateTripDialog: false,
     openCreateTripDayDialog: false,
     openCreateEventDialog: false,
@@ -24,6 +25,9 @@ export const store = new Vuex.Store({
     toggleSideBar(context: any) {
       context.commit('toggleSideBar');
     },
+    isEditMode(context: any, payload: boolean) {
+      context.commit('isEditMode', payload);
+    },
     openCreateTripDialog(context: any, payload: boolean) {
       context.commit('openCreateTripDialog', payload);
     },
@@ -37,6 +41,9 @@ export const store = new Vuex.Store({
   mutations: {
     toggleSideBar(state: any) {
       state.toggle = !state.toggle;
+    },
+    isEditMode(state: any, payload: boolean) {
+      state.isEditMode = payload;
     },
     openCreateTripDialog(state: any, payload: boolean) {
       state.openCreateTripDialog = payload;

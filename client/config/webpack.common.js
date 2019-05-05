@@ -73,7 +73,7 @@ module.exports = {
      * See: https://github.com/ampedandwired/html-webpack-plugin
      */
     new HtmlWebpackPlugin({
-      template: 'index.html',
+      template: 'src/index.html',
     }),
     new NormalModuleReplacementPlugin(
       /element-ui[\/\\]lib[\/\\]locale[\/\\]lang[\/\\]zh-CN/,

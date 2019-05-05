@@ -172,9 +172,6 @@ export const trip = {
       context.commit('isLoading', true);
       payload.start_date = moment(payload.start_date).format(DATE_FORMAT);
       payload.end_date = moment(payload.end_date).format(DATE_FORMAT);
-      delete payload.trip_day;
-      delete payload['created_at'];
-      delete payload['updated_at'];
 
       tripService
         .updateTrip(payload)
@@ -205,7 +202,7 @@ export const trip = {
       });
       state.tripList = payload;
     },
-    getTripDetailWithDays(state: any, payload: Trip) {
+    getTripDetailWithDays(state: any, payload: any) {
       if (payload) {
         if (!isEmpty(payload.start_date)) {
           payload.start_date = moment(payload.start_date).format(DATE_FORMAT);
@@ -219,6 +216,7 @@ export const trip = {
             return tripDay;
           });
         }
+        payload.archived = payload.archived === 1;
       }
       state.tripDetail = payload;
     },

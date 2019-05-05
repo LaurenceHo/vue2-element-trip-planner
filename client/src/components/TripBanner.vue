@@ -3,7 +3,6 @@
     <div>
       <el-button-group>
         <el-button @click="editTrip" type="primary" size="mini"><font-awesome-icon icon="edit"/></el-button>
-        <el-button @click="archiveTrip" type="primary" size="mini"><font-awesome-icon icon="archive"/></el-button>
       </el-button-group>
     </div>
     <div class="trip-destination-text">
@@ -30,12 +29,8 @@ export default class TripBanner extends Vue {
   }
 
   editTrip() {
-    // TODO
-  }
-
-  archiveTrip() {
-    this.tripDetail.archived = true;
-    this.$store.dispatch('trip/updateTrip', this.tripDetail);
+    this.$store.dispatch('openCreateTripDialog', true);
+    this.$store.dispatch('isEditMode', true);
   }
 }
 </script>

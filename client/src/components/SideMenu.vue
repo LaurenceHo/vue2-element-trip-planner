@@ -10,7 +10,7 @@
       active-text-color="#ffd04b"
       default-active="current"
     >
-      <el-button @click="openCreateTripDialog()" class="create-button" type="primary">
+      <el-button @click="openCreateTripDialog" class="create-button" type="primary">
         <font-awesome-icon icon="plus" class="menu-icon" />
         {{ this.$store.state.toggle ? 'Create new trip' : '' }}
       </el-button>

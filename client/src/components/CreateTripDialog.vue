@@ -25,10 +25,13 @@
           </el-form-item>
         </el-col>
       </el-row>
-      <el-form-item label="Timezone" prop="timezone">
+      <el-form-item label="Timezone" prop="timezone_id">
         <el-select v-model="trip.timezone_id" filterable placeholder="please select timezone" style="width: 100%">
           <el-option v-for="tz in timezoneList" :label="tz.text" :value="tz.id" :key="tz.id" />
         </el-select>
+      </el-form-item>
+      <el-form-item v-if="isEditMode" label="Archived" prop="archived">
+        <el-switch v-model="trip.archived" active-text="Yes" inactive-text="No" />
       </el-form-item>
     </el-form>
     <span slot="footer" class="dialog-footer">
@@ -39,22 +42,23 @@
 </template>
 
 <script lang="ts">
-import Component from 'vue-class-component';
-import Vue from 'vue';
+// import * as moment from 'moment';
+import { Vue, Component, Watch } from 'vue-property-decorator';
 import { timezone } from '../assets/timezone';
 
-@Component({})
+@Component
 export default class CreateTripDialog extends Vue {
   timezoneList: any = timezone;
 
   requiredRules = {
     destination: [{ required: true, message: 'Please input destination', trigger: 'blur' }],
-    start_date: [{ type: 'date', required: true, message: 'Please pick a date', trigger: 'change' }],
-    end_date: [{ type: 'date', required: true, message: 'Please pick a date', trigger: 'change' }],
-    timezone: [{ required: true, message: 'Please select timezone', trigger: 'change' }],
+    // start_date: [{ type: 'date', required: true, message: 'Please pick a date', trigger: 'change' }],
+    // end_date: [{ type: 'date', required: true, message: 'Please pick a date', trigger: 'change' }],
+    // timezone_id: [{ required: true, message: 'Please select timezone', trigger: 'change' }],
   };
 
   trip = {
+    id: 0,
     user_id: 0,
     timezone_id: '',
     start_date: '',
@@ -64,8 +68,35 @@ export default class CreateTripDialog extends Vue {
     archived: false,
   };
 
+  @Watch('isEditMode', { immediate: true, deep: true })
+  onEditModeChanged1(val: boolean) {
+    if (val === true) {
+      this.trip = {
+        id: this.tripDetail.id,
+        user_id: 0,
+        timezone_id: this.tripDetail.timezone_id,
+        start_date: this.tripDetail.start_date,
+        end_date: this.tripDetail.end_date,
+        name: this.tripDetail.name,
+        destination: this.tripDetail.destination,
+        archived: this.tripDetail.archived,
+      };
+    }
+  }
+
+  get isEditMode() {
+    return this.$store.state.isEditMode;
+  }
+
+  get tripDetail() {
+    return this.$store.state.trip.tripDetail;
+  }
+
   closeDialog() {
     this.$store.dispatch('openCreateTripDialog', false);
+    this.$store.dispatch('isEditMode', false);
+    let tripForm: any = this.$refs.tripForm;
+    tripForm.resetFields();
   }
 
   createTrip() {
@@ -74,8 +105,12 @@ export default class CreateTripDialog extends Vue {
       if (valid) {
         this.trip.user_id = this.$store.state.authentication.user.id;
         this.$store.dispatch('openCreateTripDialog', false);
-        this.$store.dispatch('trip/createTrip', this.trip);
         tripForm.resetFields();
+        if (!this.isEditMode) {
+          this.$store.dispatch('trip/createTrip', this.trip);
+        } else {
+          this.$store.dispatch('trip/updateTrip', this.trip);
+        }
       } else {
         return false;
       }

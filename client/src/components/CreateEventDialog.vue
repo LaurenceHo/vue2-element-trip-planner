@@ -3,9 +3,9 @@
     :visible.sync="this.$store.state.openCreateEventDialog"
     :show-close="false"
     title="Create event"
-    width="45rem"
+    width="48rem"
   >
-    <el-form ref="eventForm" :rules="requiredRules" :model="tripEvent" class="create-event-form" label-width="6rem">
+    <el-form ref="eventForm" :rules="requiredRules" :model="tripEvent" class="create-event-form" label-width="8rem">
       <el-form-item label="Category">
         <CategoryRadioButton v-model="tripEvent.category_id" />
       </el-form-item>

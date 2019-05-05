@@ -41,6 +41,7 @@ import {
   RadioGroup,
   Row,
   Select,
+  Switch,
   Submenu,
   TimePicker,
 } from 'element-ui';
@@ -95,6 +96,7 @@ Vue.use(RadioButton);
 Vue.use(RadioGroup);
 Vue.use(Row);
 Vue.use(Select);
+Vue.use(Switch);
 Vue.use(Submenu);
 Vue.use(TimePicker);
 
