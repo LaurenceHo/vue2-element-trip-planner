@@ -40,6 +40,7 @@ export default class CreateTripDayDialog extends Vue {
 
   closeDialog() {
     this.$store.dispatch('openCreateTripDayDialog', false);
+    this.resetForm();
   }
 
   createTripDay() {
@@ -50,11 +51,20 @@ export default class CreateTripDayDialog extends Vue {
         this.tripDay.user_id = this.$store.state.authentication.user.id;
         this.$store.dispatch('openCreateTripDayDialog', false);
         this.$store.dispatch('trip/createTripDay', this.tripDay);
-        tripForm.resetFields();
+        this.resetForm();
       } else {
         return false;
       }
     });
+  }
+
+  resetForm() {
+    this.tripDay = {
+      user_id: 0,
+      trip_id: 0,
+      trip_date: '',
+      name: '',
+    };
   }
 }
 </script>

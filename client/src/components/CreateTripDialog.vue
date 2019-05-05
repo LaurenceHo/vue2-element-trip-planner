@@ -95,8 +95,7 @@ export default class CreateTripDialog extends Vue {
   closeDialog() {
     this.$store.dispatch('openCreateTripDialog', false);
     this.$store.dispatch('isEditMode', false);
-    let tripForm: any = this.$refs.tripForm;
-    tripForm.resetFields();
+    this.resetForm();
   }
 
   createTrip() {
@@ -105,7 +104,7 @@ export default class CreateTripDialog extends Vue {
       if (valid) {
         this.trip.user_id = this.$store.state.authentication.user.id;
         this.$store.dispatch('openCreateTripDialog', false);
-        tripForm.resetFields();
+        this.resetForm();
         if (!this.isEditMode) {
           this.$store.dispatch('trip/createTrip', this.trip);
         } else {
@@ -115,6 +114,19 @@ export default class CreateTripDialog extends Vue {
         return false;
       }
     });
+  }
+
+  resetForm() {
+    this.trip = {
+      id: 0,
+      user_id: 0,
+      timezone_id: '',
+      start_date: '',
+      end_date: '',
+      name: '',
+      destination: '',
+      archived: false,
+    };
   }
 }
 </script>

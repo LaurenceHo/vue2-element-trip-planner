@@ -104,6 +104,7 @@ export default class CreateEventDialog extends Vue {
 
   closeDialog() {
     this.$store.dispatch('openCreateEventDialog', false);
+    this.resetForm();
   }
 
   createTripEvent() {
@@ -115,11 +116,21 @@ export default class CreateEventDialog extends Vue {
         this.tripEvent.trip_day_id = this.$store.state.trip.tripDayDetail.id;
         this.$store.dispatch('openCreateEventDialog', false);
         this.$store.dispatch('trip/createTripEvent', this.tripEvent);
-        eventForm.resetFields();
+        this.resetForm();
       } else {
         return false;
       }
     });
+  }
+
+  resetForm() {
+    this.tripEvent = {
+      user_id: 0,
+      trip_day_id: 0,
+      timezone_id: 0,
+      category_id: 1,
+      title: '',
+    };
   }
 }
 </script>
