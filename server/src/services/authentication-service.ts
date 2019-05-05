@@ -15,7 +15,7 @@ export class AuthenticationService {
     if (req.user) {
       try {
         if (req.params.trip_id) {
-          tripRepository.retrieve(null, { id: req.params.trip_id }, (result: Trip[], error: any) => {
+          tripRepository.retrieve(['user_id'], { id: req.params.trip_id }, (result: Trip[], error: any) => {
             if (error) {
               res.status(400).send({ error });
             }
@@ -42,7 +42,7 @@ export class AuthenticationService {
     if (req.user) {
       try {
         if (req.params.trip_day_id) {
-          tripDayRepository.retrieve(null, { id: req.params.trip_day_id }, (result: TripDay[], error: any) => {
+          tripDayRepository.retrieve(['user_id'], { id: req.params.trip_day_id }, (result: TripDay[], error: any) => {
             if (error) {
               res.status(400).send({ error });
             }
@@ -69,7 +69,7 @@ export class AuthenticationService {
     if (req.user) {
       try {
         if (req.params.event_id) {
-          eventRepository.retrieve(null, { id: req.params.event_id }, (result: Event[], error: any) => {
+          eventRepository.retrieve(['user_id'], { id: req.params.event_id }, (result: Event[], error: any) => {
             if (error) {
               res.status(400).send({ error });
             }

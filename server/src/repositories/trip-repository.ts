@@ -10,7 +10,7 @@ const tripDayRepository = new TripDayRepository();
 export class TripRepository implements BaseRepository<Trip> {
   retrieveDetail(whereClauses: any, callback: any): void {
     let trip: Trip = null;
-    const columns = ['id', 'user_id', 'timezone_id', 'start_date', 'end_date', 'name', 'destination', 'archived'];
+    const columns = ['id', 'timezone_id', 'start_date', 'end_date', 'name', 'destination', 'archived'];
     knex
       .column(columns)
       .select()
@@ -40,7 +40,7 @@ export class TripRepository implements BaseRepository<Trip> {
 
   retrieve(columns: string[], whereClauses: any, callback: any): void {
     if (isEmpty(columns)) {
-      columns = ['id', 'user_id', 'start_date', 'end_date', 'name', 'destination'];
+      columns = ['id', 'start_date', 'end_date', 'name', 'destination'];
     }
     knex
       .column(columns)

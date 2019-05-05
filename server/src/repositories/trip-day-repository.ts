@@ -39,7 +39,7 @@ export class TripDayRepository implements BaseRepository<TripDay> {
 
   retrieve(columns: string[], whereClauses: object, callback: any): void {
     if (isEmpty(columns)) {
-      columns = ['id', 'user_id', 'trip_id', 'name', 'trip_date'];
+      columns = ['id', 'trip_id', 'name', 'trip_date'];
     }
     knex
       .column(columns)

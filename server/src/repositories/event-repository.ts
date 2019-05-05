@@ -8,7 +8,6 @@ export class EventRepository implements BaseRepository<Event> {
     if (isEmpty(columns)) {
       columns = [
         'id',
-        'user_id',
         'trip_day_id',
         'category_id',
         'timezone_id',
