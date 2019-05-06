@@ -52,6 +52,7 @@ export default class CreateTripDialog extends Vue {
 
   requiredRules = {
     destination: [{ required: true, message: 'Please input destination', trigger: 'blur' }],
+    // FIXME
     // start_date: [{ type: 'date', required: true, message: 'Please pick a date', trigger: 'change' }],
     // end_date: [{ type: 'date', required: true, message: 'Please pick a date', trigger: 'change' }],
     // timezone_id: [{ required: true, message: 'Please select timezone', trigger: 'change' }],
@@ -69,7 +70,7 @@ export default class CreateTripDialog extends Vue {
   };
 
   @Watch('isEditMode', { immediate: true, deep: true })
-  onEditModeChanged1(val: boolean) {
+  onEditModeChanged(val: boolean) {
     if (val === true) {
       this.trip = {
         id: this.tripDetail.id,

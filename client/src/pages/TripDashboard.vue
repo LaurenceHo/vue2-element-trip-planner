@@ -31,14 +31,14 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import Component from 'vue-class-component';
+import { Vue, Component } from 'vue-property-decorator';
 
-@Component({})
+@Component
 export default class TripDashboard extends Vue {
   beforeMount() {
-    // TODO: use date as filter in the request body
-    const requestBody = {};
+    const requestBody = {
+      archived: false,
+    };
     this.$store.dispatch('trip/getTripList', requestBody);
   }
 

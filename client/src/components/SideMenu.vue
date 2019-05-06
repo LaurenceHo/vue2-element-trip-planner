@@ -51,8 +51,20 @@ export default class SideMenu extends Vue {
   }
 
   handleSelect(value: string) {
-    // TODO
-    console.log(value);
+    this.$store.dispatch('currentMenu', value);
+
+    // TODO ... add more filter by menu
+    let requestBody = {};
+    if (value === 'current') {
+      requestBody = {
+        archived: false,
+      };
+    } else if (value === 'archived') {
+      requestBody = {
+        archived: true,
+      };
+    }
+    this.$store.dispatch('trip/getTripList', requestBody);
   }
 }
 </script>
