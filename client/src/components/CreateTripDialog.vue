@@ -103,13 +103,14 @@ export default class CreateTripDialog extends Vue {
     tripForm.validate((valid: boolean) => {
       if (valid) {
         this.trip.user_id = this.$store.state.authentication.user.id;
-        this.$store.dispatch('openCreateTripDialog', false);
-        this.resetForm();
         if (!this.isEditMode) {
           this.$store.dispatch('trip/createTrip', this.trip);
         } else {
           this.$store.dispatch('trip/updateTrip', this.trip);
         }
+        this.$store.dispatch('openCreateTripDialog', false);
+        this.$store.dispatch('isEditMode', false);
+        this.resetForm();
       } else {
         return false;
       }
