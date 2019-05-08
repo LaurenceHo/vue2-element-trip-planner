@@ -203,26 +203,22 @@ app.use('/api/user/update', jwtAuthentication);
 
 ## Write Vue using TypeScript
 ### Class-Style Vue Components
-You can use the officially maintained `vue-class-component` decorator:
+We can use the officially maintained `vue-class-component` decorator or `vue-property-decorator`:
 ```
 <script lang="ts">
-import Vue from 'vue';
-import Component from 'vue-class-component';
+import { Vue, Component, Watch, Prop } from 'vue-property-decorator';
 import Hamburger from './Hamburger.vue';
 import CreateTripDialog from '../components/CreateTripDialog.vue';
 
 // The @Component decorator indicates the class is a Vue component
 @Component({
   components: { CreateTripDialog, CreateTripDayDialog, Hamburger },
-  // Define props type here
-  props: {
-    username: {
-      type: String,
-      default: '',
-    },
-  },
 })
 export default class TopBar extends Vue {
+  // Define props type here
+  @Prop()
+  value: number;
+
   // Initial data can be declared as instance properties
   message: string = 'Hello!'
   
@@ -244,6 +240,13 @@ export default class TopBar extends Vue {
   get tripList() {
     return this.$store.state.trip.tripList;
   }
+  
+  // Watchers can be created with the @Watch(propertyString, config) decorator.
+  @Watch('isEditMode', { immediate: true, deep: true })
+  onEditModeChanged(val: boolean) {
+    ......
+  }
+
 }
 </script>
 ```
