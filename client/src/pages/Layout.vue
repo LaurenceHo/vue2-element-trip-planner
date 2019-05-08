@@ -15,8 +15,7 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import Component from 'vue-class-component';
+import { Vue, Component } from 'vue-property-decorator';
 import TopBar from '../components/TopBar.vue';
 import SideMenu from '../components/SideMenu.vue';
 

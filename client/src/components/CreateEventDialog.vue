@@ -76,8 +76,7 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import Component from 'vue-class-component';
+import { Vue, Component } from 'vue-property-decorator';
 import CategoryRadioButton from './CategoryRadioButton.vue';
 import { currency } from '../assets/currency';
 import { timezone } from '../assets/timezone';

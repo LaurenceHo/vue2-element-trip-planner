@@ -1,6 +1,6 @@
 <template>
   <el-menu @select="handleSelect" class="trip-day-menu" default-active="0">
-    <el-button @click="openCreateDialog()" class="create-button" type="primary">
+    <el-button @click="openCreateDialog" class="create-button" type="primary">
       <font-awesome-icon icon="plus" />
       Create new day
     </el-button>
@@ -14,10 +14,9 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import Component from 'vue-class-component';
+import { Vue, Component } from 'vue-property-decorator';
 
-@Component({})
+@Component
 export default class TripDay extends Vue {
   get tripDetail() {
     return this.$store.state.trip.tripDetail;

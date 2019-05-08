@@ -39,10 +39,9 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import Component from 'vue-class-component';
+import { Vue, Component } from 'vue-property-decorator';
 
-@Component({})
+@Component
 export default class Register extends Vue {
   emailRules = [{ type: 'email', message: 'Please input correct email address', trigger: ['blur', 'change'] }];
   user = {

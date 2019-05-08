@@ -1,6 +1,6 @@
 <template>
   <div class="main-content">
-    <div v-if="isLoading" :style="{ width: '100%', textAlign: 'center' }">
+    <div v-if="isLoading" class="loading-spinner-outer">
       <i class="el-icon-loading loading-spinner" />
       Loading...
     </div>
@@ -64,11 +64,6 @@ export default class TripDashboard extends Vue {
 <style scoped>
 .main-content {
   padding: 0 2rem;
-}
-
-.loading-spinner {
-  font-size: 3rem;
-  display: inline-block;
 }
 
 .box-card {

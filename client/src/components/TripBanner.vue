@@ -1,9 +1,7 @@
 <template>
   <el-card class="box-card" shadow="never">
     <div>
-      <el-button-group>
-        <el-button @click="editTrip" type="primary" size="mini"><font-awesome-icon icon="edit"/></el-button>
-      </el-button-group>
+      <el-button @click="editTrip" type="primary" size="mini"><font-awesome-icon icon="edit"/></el-button>
     </div>
     <div class="trip-destination-text">
       {{ tripDetail.destination }}
@@ -19,10 +17,9 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import Component from 'vue-class-component';
+import { Vue, Component } from 'vue-property-decorator';
 
-@Component({})
+@Component
 export default class TripBanner extends Vue {
   get tripDetail() {
     return this.$store.state.trip.tripDetail;

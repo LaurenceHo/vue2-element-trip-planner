@@ -6,10 +6,10 @@
     <div style="padding-top: 1rem">
       <el-row>
         <el-col :xs="6" :sm="6" :md="6" :lg="6" :xl="4">
-          <trip-day />
+          <trip-day-list />
         </el-col>
         <el-col :xs="18" :sm="17" :md="17" :lg="16" :xl="16">
-          <trip-event />
+          <trip-itinerary />
         </el-col>
       </el-row>
     </div>
@@ -17,14 +17,13 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import Component from 'vue-class-component';
-import TripDay from '../components/TripDay.vue';
-import TripEvent from '../components/TripEvent.vue';
+import { Vue, Component } from 'vue-property-decorator';
+import TripDayList from '../components/TripDayList.vue';
+import TripItinerary from '../components/TripItinerary.vue';
 import TripBanner from '../components/TripBanner.vue';
 
 @Component({
-  components: { TripBanner, TripDay, TripEvent },
+  components: { TripBanner, TripDayList, TripItinerary },
 })
 export default class TripDetailDashboard extends Vue {
   beforeMount() {

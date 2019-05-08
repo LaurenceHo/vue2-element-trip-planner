@@ -22,10 +22,9 @@
 </template>
 
 <script lang="ts">
-import Component from 'vue-class-component';
-import Vue from 'vue';
+import { Vue, Component } from 'vue-property-decorator';
 
-@Component({})
+@Component
 export default class CreateTripDayDialog extends Vue {
   requiredRules = {
     trip_date: [{ type: 'date', required: true, message: 'Please pick a date', trigger: 'change' }],

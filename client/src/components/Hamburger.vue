@@ -17,22 +17,16 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import Component from 'vue-class-component';
+import { Vue, Component, Prop } from 'vue-property-decorator';
 
-@Component({
-  props: {
-    isActive: {
-      type: Boolean,
-      default: false,
-    },
-    toggleClick: {
-      type: Function,
-      default: null,
-    },
-  },
-})
-export default class Hamburger extends Vue {}
+@Component
+export default class Hamburger extends Vue {
+  @Prop({ default: false })
+  isActive: boolean;
+
+  @Prop(Function)
+  toggleClick: Function;
+}
 </script>
 
 <style scoped>
