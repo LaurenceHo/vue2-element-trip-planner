@@ -44,7 +44,7 @@
 <script lang="ts">
 // import * as moment from 'moment';
 import { Vue, Component, Watch } from 'vue-property-decorator';
-import { timezone } from '../assets/timezone';
+import timezone from '../assets/timezone.json';
 
 @Component
 export default class CreateTripDialog extends Vue {
