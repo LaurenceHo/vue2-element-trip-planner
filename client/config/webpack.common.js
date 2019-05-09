@@ -1,9 +1,11 @@
 const path = require('path');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const NormalModuleReplacementPlugin = require('webpack/lib/NormalModuleReplacementPlugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
+
+const NormalModuleReplacementPlugin = require('webpack/lib/NormalModuleReplacementPlugin');
+const IgnorePlugin = require('webpack/lib/IgnorePlugin');
 
 module.exports = {
   entry: ['./src/main.ts', 'whatwg-fetch'],
@@ -64,6 +66,7 @@ module.exports = {
   },
   plugins: [
     new VueLoaderPlugin(),
+    new IgnorePlugin(/^\.\/locale$/, /moment$/),
     /*
      * Plugin: HtmlWebpackPlugin
      * Description: Simplifies creation of HTML files to serve your webpack bundles.
