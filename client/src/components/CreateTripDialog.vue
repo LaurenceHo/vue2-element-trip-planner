@@ -6,7 +6,7 @@
     title="Create trip"
     width="40rem"
   >
-    <el-form ref="tripForm" :rules="requiredRules" :model="trip" class="create-trip-form" label-width="6rem">
+    <el-form ref="tripForm" :rules="requiredRules" :model="trip" class="create-trip-form" label-width="7rem">
       <el-form-item label="Name">
         <el-input v-model="trip.name" />
       </el-form-item>
@@ -14,16 +14,18 @@
         <el-input v-model="trip.destination" />
       </el-form-item>
       <el-row>
-        <el-col :span="12">
-          <el-form-item label="Start date" prop="start_date">
-            <el-date-picker v-model="trip.start_date" style="width: 100%" type="date" placeholder="Pick a day" />
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="End date" prop="end_date">
-            <el-date-picker v-model="trip.end_date" style="width: 100%;" type="date" placeholder="Pick a day" />
-          </el-form-item>
-        </el-col>
+        <el-form-item label="Trip date" prop="trip_date">
+          <el-date-picker
+            v-model="trip_date"
+            type="daterange"
+            align="right"
+            unlink-panels
+            range-separator="To"
+            start-placeholder="Start date"
+            end-placeholder="End date"
+            style="width: 100%"
+          />
+        </el-form-item>
       </el-row>
       <el-form-item label="Timezone" prop="timezone_id">
         <el-select v-model="trip.timezone_id" filterable placeholder="please select timezone" style="width: 100%">
@@ -44,7 +46,7 @@
 <script lang="ts">
 // import * as moment from 'moment';
 import { Vue, Component, Watch } from 'vue-property-decorator';
-import timezone from '../assets/timezone.json';
+import { timezone } from '../assets/timezone';
 
 @Component
 export default class CreateTripDialog extends Vue {
@@ -53,11 +55,11 @@ export default class CreateTripDialog extends Vue {
   requiredRules = {
     destination: [{ required: true, message: 'Please input destination', trigger: 'blur' }],
     // FIXME
-    // start_date: [{ type: 'date', required: true, message: 'Please pick a date', trigger: 'change' }],
-    // end_date: [{ type: 'date', required: true, message: 'Please pick a date', trigger: 'change' }],
-    // timezone_id: [{ required: true, message: 'Please select timezone', trigger: 'change' }],
+    // timezone_id: [{ required: true, message: 'Please select timezone', trigger: 'blur' }],
+    trip_date: [{ required: true, message: 'Please pick a date', trigger: 'blur' }],
   };
 
+  trip_date: string[] = [];
   trip = {
     id: 0,
     user_id: 0,
@@ -72,6 +74,7 @@ export default class CreateTripDialog extends Vue {
   @Watch('isEditMode', { immediate: true, deep: true })
   onEditModeChanged(val: boolean) {
     if (val === true) {
+      this.trip_date = [this.tripDetail.start_date, this.tripDetail.end_date];
       this.trip = {
         id: this.tripDetail.id,
         user_id: 0,
@@ -104,6 +107,8 @@ export default class CreateTripDialog extends Vue {
     tripForm.validate((valid: boolean) => {
       if (valid) {
         this.trip.user_id = this.$store.state.authentication.user.id;
+        this.trip.start_date = this.trip_date[0];
+        this.trip.end_date = this.trip_date[1];
         if (!this.isEditMode) {
           this.$store.dispatch('trip/createTrip', this.trip);
         } else {

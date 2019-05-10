@@ -78,8 +78,8 @@
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
 import CategoryRadioButton from './CategoryRadioButton.vue';
-import currency from '../assets/currency.json';
-import timezone from '../assets/timezone.json';
+import { currency } from '../assets/currency';
+import { timezone } from '../assets/timezone';
 
 @Component({
   components: { CategoryRadioButton },
