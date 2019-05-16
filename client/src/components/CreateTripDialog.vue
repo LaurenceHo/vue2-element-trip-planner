@@ -2,8 +2,8 @@
   <el-dialog
     :visible.sync="this.$store.state.openCreateTripDialog"
     :show-close="false"
+    :title="edit.isEditMode ? 'Edit trip' : 'Create trip'"
     custom-class="create-trip-dialog"
-    title="Create trip"
     width="40rem"
   >
     <el-form ref="tripForm" :rules="requiredRules" :model="trip" class="create-trip-form" label-width="7rem">
@@ -32,7 +32,7 @@
           <el-option v-for="tz in timezoneList" :label="tz.text" :value="tz.id" :key="tz.id" />
         </el-select>
       </el-form-item>
-      <el-form-item v-if="isEditMode" label="Archived" prop="archived">
+      <el-form-item v-if="edit.isEditMode" label="Archived" prop="archived">
         <el-switch v-model="trip.archived" active-text="Yes" inactive-text="No" />
       </el-form-item>
     </el-form>
@@ -56,7 +56,7 @@ export default class CreateTripDialog extends Vue {
     destination: [{ required: true, message: 'Please input destination', trigger: 'blur' }],
     // FIXME
     // timezone_id: [{ required: true, message: 'Please select timezone', trigger: 'blur' }],
-    trip_date: [{ required: true, message: 'Please pick a date', trigger: 'blur' }],
+    // trip_date: [{ required: true, message: 'Please pick a date', trigger: 'blur' }],
   };
 
   trip_date: string[] = [];
@@ -71,9 +71,9 @@ export default class CreateTripDialog extends Vue {
     archived: false,
   };
 
-  @Watch('isEditMode', { immediate: true, deep: true })
-  onEditModeChanged(val: boolean) {
-    if (val === true) {
+  @Watch('edit', { immediate: true, deep: true })
+  onEditModeChanged(val: any) {
+    if (val.isEditMode === true) {
       this.trip_date = [this.tripDetail.start_date, this.tripDetail.end_date];
       this.trip = {
         id: this.tripDetail.id,
@@ -88,8 +88,8 @@ export default class CreateTripDialog extends Vue {
     }
   }
 
-  get isEditMode() {
-    return this.$store.state.isEditMode;
+  get edit() {
+    return this.$store.state.edit;
   }
 
   get tripDetail() {
@@ -98,7 +98,7 @@ export default class CreateTripDialog extends Vue {
 
   closeDialog() {
     this.$store.dispatch('openCreateTripDialog', false);
-    this.$store.dispatch('isEditMode', false);
+    this.$store.dispatch('edit', { isEditMode: false, idInEdit: 0, component: '' });
     this.resetForm();
   }
 
@@ -109,13 +109,13 @@ export default class CreateTripDialog extends Vue {
         this.trip.user_id = this.$store.state.authentication.user.id;
         this.trip.start_date = this.trip_date[0];
         this.trip.end_date = this.trip_date[1];
-        if (!this.isEditMode) {
+        if (!this.edit.isEditMode) {
           this.$store.dispatch('trip/createTrip', this.trip);
         } else {
           this.$store.dispatch('trip/updateTrip', this.trip);
         }
         this.$store.dispatch('openCreateTripDialog', false);
-        this.$store.dispatch('isEditMode', false);
+        this.$store.dispatch('edit', { isEditMode: false, idInEdit: 0, component: '' });
         this.resetForm();
       } else {
         return false;

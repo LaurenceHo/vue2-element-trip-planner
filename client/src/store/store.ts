@@ -7,10 +7,16 @@ import { user } from './user-module';
 
 Vue.use(Vuex);
 
+const edit = {
+  isEditMode: false,
+  idInEdit: 0,
+  component: '',
+};
+
 export const store = new Vuex.Store({
   state: {
     toggle: true,
-    isEditMode: false,
+    edit,
     openCreateTripDialog: false,
     openCreateTripDayDialog: false,
     openCreateEventDialog: false,
@@ -26,8 +32,8 @@ export const store = new Vuex.Store({
     toggleSideBar(context: any) {
       context.commit('toggleSideBar');
     },
-    isEditMode(context: any, payload: boolean) {
-      context.commit('isEditMode', payload);
+    edit(context: any, payload: any) {
+      context.commit('edit', payload);
     },
     openCreateTripDialog(context: any, payload: boolean) {
       context.commit('openCreateTripDialog', payload);
@@ -46,8 +52,10 @@ export const store = new Vuex.Store({
     toggleSideBar(state: any) {
       state.toggle = !state.toggle;
     },
-    isEditMode(state: any, payload: boolean) {
-      state.isEditMode = payload;
+    edit(state: any, payload: any) {
+      state.edit.isEditMode = payload.isEditMode;
+      state.edit.idInEdit = payload.idInEdit;
+      state.edit.component = payload.component;
     },
     openCreateTripDialog(state: any, payload: boolean) {
       state.openCreateTripDialog = payload;
