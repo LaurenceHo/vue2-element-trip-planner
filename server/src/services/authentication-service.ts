@@ -5,6 +5,7 @@ import { TripDay } from '../models/trip-day';
 import { EventRepository } from '../repositories/event-repository';
 import { TripDayRepository } from '../repositories/trip-day-repository';
 import { TripRepository } from '../repositories/trip-repository';
+import { parameterIdValidation } from '../utils';
 
 const eventRepository = new EventRepository();
 const tripRepository = new TripRepository();
@@ -14,22 +15,21 @@ export class AuthenticationService {
   checkTripOwner(req: any, res: any, next: any): void {
     if (req.user) {
       try {
-        if (req.params.trip_id) {
-          tripRepository.retrieve(['user_id'], { id: req.params.trip_id }, (result: Trip[], error: any) => {
-            if (error) {
-              res.status(400).send({ error });
-            }
-            if (!_.isEmpty(result)) {
-              if (result[0].user_id !== req.user.id) {
-                res.status(403).send({ error: 'You have no permission' });
-              } else {
-                next();
-              }
+        const id: number = parameterIdValidation(req.params.trip_id, res);
+        tripRepository.retrieve(['user_id'], { id }, (result: Trip[], error: any) => {
+          if (error) {
+            res.status(400).send({ error });
+          }
+          if (!_.isEmpty(result)) {
+            if (result[0].user_id !== req.user.id) {
+              res.status(403).send({ error: 'You have no permission' });
             } else {
-              res.status(404).send({ error: 'Not found' });
+              next();
             }
-          });
-        }
+          } else {
+            res.status(404).send({ error: 'Not found' });
+          }
+        });
       } catch (error) {
         res.status(400).send({ error });
       }
@@ -41,22 +41,21 @@ export class AuthenticationService {
   checkTripDayOwner(req: any, res: any, next: any): void {
     if (req.user) {
       try {
-        if (req.params.trip_day_id) {
-          tripDayRepository.retrieve(['user_id'], { id: req.params.trip_day_id }, (result: TripDay[], error: any) => {
-            if (error) {
-              res.status(400).send({ error });
-            }
-            if (!_.isEmpty(result)) {
-              if (result[0].user_id !== req.user.id) {
-                res.status(403).send({ error: 'You have no permission' });
-              } else {
-                next();
-              }
+        const id: number = parameterIdValidation(req.params.trip_day_id, res);
+        tripDayRepository.retrieve(['user_id'], { id }, (result: TripDay[], error: any) => {
+          if (error) {
+            res.status(400).send({ error });
+          }
+          if (!_.isEmpty(result)) {
+            if (result[0].user_id !== req.user.id) {
+              res.status(403).send({ error: 'You have no permission' });
             } else {
-              res.status(404).send({ error: 'Not found' });
+              next();
             }
-          });
-        }
+          } else {
+            res.status(404).send({ error: 'Not found' });
+          }
+        });
       } catch (error) {
         res.status(400).send({ error });
       }
@@ -68,22 +67,21 @@ export class AuthenticationService {
   checkEventOwner(req: any, res: any, next: any): void {
     if (req.user) {
       try {
-        if (req.params.event_id) {
-          eventRepository.retrieve(['user_id'], { id: req.params.event_id }, (result: Event[], error: any) => {
-            if (error) {
-              res.status(400).send({ error });
-            }
-            if (!_.isEmpty(result)) {
-              if (result[0].user_id !== req.user.id) {
-                res.status(403).send({ error: 'You have no permission' });
-              } else {
-                next();
-              }
+        const id: number = parameterIdValidation(req.params.event_id, res);
+        eventRepository.retrieve(['user_id'], { id }, (result: Event[], error: any) => {
+          if (error) {
+            res.status(400).send({ error });
+          }
+          if (!_.isEmpty(result)) {
+            if (result[0].user_id !== req.user.id) {
+              res.status(403).send({ error: 'You have no permission' });
             } else {
-              res.status(404).send({ error: 'Not found' });
+              next();
             }
-          });
-        }
+          } else {
+            res.status(404).send({ error: 'Not found' });
+          }
+        });
       } catch (error) {
         res.status(400).send({ error });
       }
