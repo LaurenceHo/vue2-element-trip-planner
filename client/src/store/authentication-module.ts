@@ -34,6 +34,18 @@ export const authentication = {
       context.commit('logout');
       router.push('/login');
     },
+    register(context: any, payload: User) {
+      userService.register(payload).then((result: any) => {
+        if (result.success) {
+          context.dispatch('alert/info', 'Sign up successful, will be going to redirect to login page.', {
+            root: true,
+          });
+          setTimeout(() => router.push('/login'), 4000);
+        } else {
+          context.dispatch('alert/error', result.error, { root: true });
+        }
+      });
+    },
   },
   mutations: {
     loginSuccess(state: any, user: User) {

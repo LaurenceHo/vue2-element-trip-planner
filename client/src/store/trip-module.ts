@@ -40,6 +40,7 @@ export const trip = {
   },
   actions: {
     isLoading(context: any, payload: boolean) {
+      context.dispatch('alert/clear', null, { root: true });
       context.commit('isLoading', payload);
     },
     getTripList(context: any, payload: any) {
@@ -78,6 +79,7 @@ export const trip = {
             }
           } else {
             context.commit('getTripDetailWithDays', null);
+            context.commit('isLoading', false);
             context.dispatch('alert/error', result.error, { root: true });
           }
         })
@@ -179,6 +181,33 @@ export const trip = {
           if (result.success) {
             context.commit('isLoading', false);
             context.commit('updateTrip', payload);
+          } else {
+            context.commit('isLoading', false);
+            context.dispatch('alert/error', result.error, { root: true });
+          }
+        })
+        .catch((error: any) => {
+          context.commit('isLoading', false);
+          context.dispatch('alert/error', error.error, { root: true });
+        });
+    },
+    updateTripEvent(context: any, payload: Event) {
+      context.commit('isLoading', true);
+      if (payload.start_time) {
+        payload.start_time = moment(payload.start_time).format(DATE_TIME_FORMAT);
+      }
+      if (payload.end_time) {
+        payload.end_time = moment(payload.end_time).format(DATE_TIME_FORMAT);
+      }
+      tripService
+        .updateTripEvent(context.state.tripDetail.id, payload)
+        .then((result: any) => {
+          if (result.success) {
+            context.dispatch(
+              'trip/getTripDayWithEvents',
+              { trip_id: context.state.tripDetail.id, trip_day_id: payload.trip_day_id },
+              { root: true }
+            );
           } else {
             context.commit('isLoading', false);
             context.dispatch('alert/error', result.error, { root: true });

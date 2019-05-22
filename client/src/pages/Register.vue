@@ -59,7 +59,7 @@ export default class Register extends Vue {
   }
 
   handleSubmit(user: any) {
-    this.$store.dispatch('user/register', user);
+    this.$store.dispatch('authentication/register', user);
   }
 }
 </script>
