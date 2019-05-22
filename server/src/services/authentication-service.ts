@@ -15,7 +15,7 @@ export class AuthenticationService {
   checkTripOwner(req: any, res: any, next: any): void {
     if (req.user) {
       try {
-        const id: number = parameterIdValidation(req.params.trip_id, res);
+        const id: number = parameterIdValidation(req.params.trip_id);
         tripRepository.retrieve(['user_id'], { id }, (result: Trip[], error: any) => {
           if (error) {
             res.status(400).send({ error });
@@ -31,6 +31,7 @@ export class AuthenticationService {
           }
         });
       } catch (error) {
+        console.log(error);
         res.status(400).send({ error });
       }
     } else {
@@ -41,7 +42,7 @@ export class AuthenticationService {
   checkTripDayOwner(req: any, res: any, next: any): void {
     if (req.user) {
       try {
-        const id: number = parameterIdValidation(req.params.trip_day_id, res);
+        const id: number = parameterIdValidation(req.params.trip_day_id);
         tripDayRepository.retrieve(['user_id'], { id }, (result: TripDay[], error: any) => {
           if (error) {
             res.status(400).send({ error });
@@ -67,7 +68,7 @@ export class AuthenticationService {
   checkEventOwner(req: any, res: any, next: any): void {
     if (req.user) {
       try {
-        const id: number = parameterIdValidation(req.params.event_id, res);
+        const id: number = parameterIdValidation(req.params.event_id);
         eventRepository.retrieve(['user_id'], { id }, (result: Event[], error: any) => {
           if (error) {
             res.status(400).send({ error });

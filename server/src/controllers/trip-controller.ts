@@ -9,7 +9,7 @@ const tripService = new TripService();
 export class TripController implements BaseController<TripService> {
   retrieveDetail(req: any, res: express.Response): void {
     try {
-      const id: number = parameterIdValidation(req.params.trip_id, res);
+      const id: number = parameterIdValidation(req.params.trip_id);
       const user_id: number = req.user.id;
       tripService.retrieveDetail({ id, user_id }, (result: Trip, error: any) => {
         if (error) {
@@ -73,7 +73,7 @@ export class TripController implements BaseController<TripService> {
 
   delete(req: express.Request, res: express.Response): void {
     try {
-      const id: number = parameterIdValidation(req.params.trip_id, res);
+      const id: number = parameterIdValidation(req.params.trip_id);
       tripService.delete(id, (result: any, error: any) => {
         if (error) {
           res.status(400).send({ error: error.sqlMessage });

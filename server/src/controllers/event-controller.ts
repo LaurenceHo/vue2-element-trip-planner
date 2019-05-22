@@ -26,7 +26,7 @@ export class EventController implements BaseController<EventService> {
   create(req: any, res: express.Response): void {
     try {
       const event: Event = req.body;
-      event.trip_day_id = parameterIdValidation(req.params.trip_day_id, res);
+      event.trip_day_id = parameterIdValidation(req.params.trip_day_id);
       event.user_id = req.user.id;
       eventService.create(event, (result: any, error: any) => {
         if (error) {
@@ -43,7 +43,7 @@ export class EventController implements BaseController<EventService> {
   update(req: any, res: express.Response): void {
     try {
       const event: Event = req.body;
-      event.trip_day_id = parameterIdValidation(req.params.trip_day_id, res);
+      event.trip_day_id = parameterIdValidation(req.params.trip_day_id);
       event.user_id = req.user.id;
       eventService.update(event, (result: any, error: any) => {
         if (error) {
@@ -59,7 +59,7 @@ export class EventController implements BaseController<EventService> {
 
   delete(req: express.Request, res: express.Response): void {
     try {
-      const id: number = parameterIdValidation(req.params.event_id, res);
+      const id: number = parameterIdValidation(req.params.event_id);
       eventService.delete(id, (result: any, error: any) => {
         if (error) {
           res.status(400).send({ error: error.sqlMessage });
