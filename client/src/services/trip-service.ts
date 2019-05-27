@@ -76,4 +76,17 @@ export class TripService {
 
     return this.apiService.perform('PUT', `${SERVER_URL}/trip/update`, requestBody, searchParams, formParams);
   }
+
+  updateTripEvent(tripId: number, requestBody: Event): any {
+    const searchParams = {};
+    const formParams = {};
+
+    return this.apiService.perform(
+      'PUT',
+      `${SERVER_URL}/trip/${tripId}/day/${requestBody.trip_day_id}/event/update`,
+      requestBody,
+      searchParams,
+      formParams
+    );
+  }
 }

@@ -108,6 +108,11 @@ export const trip = {
     },
     createTrip(context: any, payload: Trip) {
       context.commit('isLoading', true);
+      Object.keys(payload).forEach(prop => {
+        if (isEmpty(payload[prop]) || payload[prop] === 0) {
+          delete payload[prop];
+        }
+      });
       payload.start_date = moment(payload.start_date).format(DATE_FORMAT);
       payload.end_date = moment(payload.end_date).format(DATE_FORMAT);
       tripService
@@ -144,6 +149,11 @@ export const trip = {
         });
     },
     createTripEvent(context: any, payload: Event) {
+      Object.keys(payload).forEach(prop => {
+        if (isEmpty(payload[prop]) || payload[prop] === 0) {
+          delete payload[prop];
+        }
+      });
       context.commit('isLoading', true);
       if (payload.start_time) {
         payload.start_time = moment(payload.start_time).format(DATE_TIME_FORMAT);

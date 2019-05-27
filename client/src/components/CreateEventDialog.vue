@@ -2,7 +2,7 @@
   <el-dialog
     :visible.sync="this.$store.state.openCreateEventDialog"
     :show-close="false"
-    title="Create event"
+    :title="edit.isEditMode ? 'Edit event' : 'Create event'"
     width="48rem"
   >
     <el-form ref="eventForm" :rules="requiredRules" :model="tripEvent" class="create-event-form" label-width="8rem">
@@ -10,7 +10,7 @@
         <CategoryRadioButton v-model="tripEvent.category_id" />
       </el-form-item>
       <el-form-item label="Title" prop="title">
-        <el-input v-model="tripEvent.title"></el-input>
+        <el-input v-model="tripEvent.title" />
       </el-form-item>
       <el-row>
         <el-form-item label="Event time" prop="trip_date">
@@ -68,6 +68,7 @@
 </template>
 
 <script lang="ts">
+import { isEmpty } from 'lodash';
 import { Vue, Component, Watch } from 'vue-property-decorator';
 import CategoryRadioButton from './CategoryRadioButton.vue';
 import { currency } from '../assets/currency';
@@ -87,29 +88,42 @@ export default class CreateEventDialog extends Vue {
   };
 
   tripEvent = {
-    user_id: 0,
-    trip_day_id: 0,
-    timezone_id: '',
+    id: 0,
+    user_id: this.$store.state.authentication.user.id,
+    trip_day_id: this.$store.state.trip.tripDayDetail.id,
+    timezone_id: this.$store.state.trip.tripDetail.timezone_id,
     category_id: 1,
+    currency_id: '',
     title: '',
     start_time: '',
     end_time: '',
+    start_location: '',
+    end_location: '',
+    note: '',
+    tag: '',
+    cost: '',
   };
 
   @Watch('edit', { immediate: true, deep: true })
   onEditModeChanged(val: any) {
     if (val.isEditMode === true) {
       this.event_time = [this.tripEvent.start_time, this.tripEvent.end_time];
-      //   this.trip = {
-      //     id: this.tripDetail.id,
-      //     user_id: 0,
-      //     timezone_id: this.tripDetail.timezone_id,
-      //     start_date: this.tripDetail.start_date,
-      //     end_date: this.tripDetail.end_date,
-      //     name: this.tripDetail.name,
-      //     destination: this.tripDetail.destination,
-      //     archived: this.tripDetail.archived,
-      //   };
+      this.tripEvent = {
+        id: this.tripEventDetail.id,
+        user_id: this.$store.state.authentication.user.id,
+        trip_day_id: this.tripEventDetail.trip_day_id,
+        timezone_id: this.tripEventDetail.timezone_id,
+        category_id: this.tripEventDetail.category_id,
+        currency_id: this.tripEventDetail.currency_id,
+        start_time: this.tripEventDetail.start_time,
+        end_time: this.tripEventDetail.end_time,
+        title: this.tripEventDetail.title,
+        start_location: this.tripEventDetail.start_location,
+        end_location: this.tripEventDetail.end_location,
+        note: this.tripEventDetail.note,
+        tag: this.tripEventDetail.tag,
+        cost: this.tripEventDetail.cost,
+      };
     }
   }
 
@@ -117,8 +131,25 @@ export default class CreateEventDialog extends Vue {
     return this.$store.state.edit;
   }
 
+  get tripDetail() {
+    return this.$store.state.trip.tripDetail;
+  }
+
+  get tripDayDetail() {
+    return this.$store.state.trip.tripDayDetail;
+  }
+
+  get tripEventDetail() {
+    if (!isEmpty(this.tripDayDetail.events) && this.edit.isEditMode) {
+      return this.tripDayDetail.events.find((e: any) => e.id === this.edit.idInEdit);
+    } else {
+      return {};
+    }
+  }
+
   closeDialog() {
     this.$store.dispatch('openCreateEventDialog', false);
+    this.$store.dispatch('edit', { isEditMode: false, idInEdit: 0, component: '' });
     this.resetForm();
   }
 
@@ -128,13 +159,14 @@ export default class CreateEventDialog extends Vue {
       if (valid) {
         this.tripEvent.start_time = this.event_time[0];
         this.tripEvent.end_time = this.event_time[1];
-        this.tripEvent.user_id = this.$store.state.authentication.user.id;
-        this.tripEvent.timezone_id = this.$store.state.trip.tripDetail.timezone_id;
-        this.tripEvent.trip_day_id = this.$store.state.trip.tripDayDetail.id;
+        if (isEmpty(this.tripEvent.timezone_id)) {
+          this.tripEvent.timezone_id = this.tripDetail.timezone_id;
+        }
+        console.log(this.tripEvent);
         if (!this.edit.isEditMode) {
           this.$store.dispatch('trip/createTripEvent', this.tripEvent);
         } else {
-          // TODO
+          this.$store.dispatch('trip/updateTripEvent', this.tripEvent);
         }
         this.$store.dispatch('openCreateEventDialog', false);
         this.$store.dispatch('edit', { isEditMode: false, idInEdit: 0, component: '' });
@@ -147,13 +179,20 @@ export default class CreateEventDialog extends Vue {
 
   resetForm() {
     this.tripEvent = {
-      user_id: 0,
-      trip_day_id: 0,
-      timezone_id: '',
+      id: 0,
+      user_id: this.$store.state.authentication.user.id,
+      trip_day_id: this.$store.state.trip.tripDayDetail.id,
+      timezone_id: this.$store.state.trip.tripDetail.timezone_id,
       category_id: 1,
+      currency_id: '',
       title: '',
       start_time: '',
       end_time: '',
+      start_location: '',
+      end_location: '',
+      note: '',
+      tag: '',
+      cost: '',
     };
   }
 }
