@@ -36,8 +36,8 @@
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
 import Hamburger from './Hamburger.vue';
-import CreateTripDialog from '../components/CreateTripDialog.vue';
-import CreateTripDayDialog from '../components/CreateTripDayDialog.vue';
+import CreateTripDialog from './CreateTripDialog.vue';
+import CreateTripDayDialog from './CreateTripDayDialog.vue';
 
 @Component({
   components: { CreateTripDialog, CreateTripDayDialog, Hamburger },

@@ -10,11 +10,11 @@ const IgnorePlugin = require('webpack/lib/IgnorePlugin');
 module.exports = {
   entry: ['./src/main.ts', 'whatwg-fetch'],
   output: {
-    path: path.resolve(__dirname, '../../dist/client'),
+    path: path.resolve(__dirname, '../dist'),
     filename: '[name].bundle.js',
   },
   resolve: {
-    modules: [path.join(__dirname, '../dist/client'), 'node_modules'],
+    modules: [path.join(__dirname, '../dist'), 'node_modules'],
     extensions: ['.ts', '.vue', '.js', '.json'],
   },
   module: {
