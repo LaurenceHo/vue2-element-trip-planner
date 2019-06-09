@@ -28,7 +28,7 @@ import TripBanner from '../components/TripBanner.vue';
 export default class TripDetailDashboard extends Vue {
   beforeMount() {
     if (this.$store.state.trip.tripDetail.id === 0) {
-      this.$store.dispatch('trip/getTripDetailWithDays', this.$route.params.trip_id);
+      this.$store.dispatch('trip/getTripDetail', this.$route.params.trip_id);
     }
   }
 }

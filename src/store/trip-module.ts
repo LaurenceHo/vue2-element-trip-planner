@@ -21,14 +21,6 @@ const tripDetail: Trip = {
   archived: false,
   trip_day: [],
 };
-const tripDayDetail: TripDay = {
-  id: 0,
-  name: '',
-  trip_id: 0,
-  user_id: 0,
-  trip_date: '',
-  events: [],
-};
 
 export const trip = {
   namespaced: true,
@@ -36,7 +28,6 @@ export const trip = {
     isLoading: false,
     tripList,
     tripDetail,
-    tripDayDetail,
   },
   actions: {
     isLoading(context: any, payload: boolean) {
@@ -60,44 +51,15 @@ export const trip = {
           context.dispatch('alert/error', error.error, { root: true });
         });
     },
-    getTripDetailWithDays(context: any, tripId: number) {
+    getTripDetail(context: any, tripId: number) {
       context.commit('isLoading', true);
       tripService
-        .getTripDetailWithDays(tripId)
-        .then((result: any) => {
-          if (result.success) {
-            context.commit('getTripDetailWithDays', result.result);
-            if (!isEmpty(result.result.trip_day)) {
-              context.dispatch(
-                'trip/getTripDayWithEvents',
-                { trip_id: tripId, trip_day_id: result.result.trip_day[0].id },
-                { root: true }
-              );
-            } else {
-              context.commit('getTripDayWithEvents', null);
-              context.commit('isLoading', false);
-            }
-          } else {
-            context.commit('getTripDetailWithDays', null);
-            context.commit('isLoading', false);
-            context.dispatch('alert/error', result.error, { root: true });
-          }
-        })
-        .catch((error: any) => {
-          context.commit('isLoading', false);
-          context.dispatch('alert/error', error.error, { root: true });
-        });
-    },
-    getTripDayWithEvents(context: any, payload: any) {
-      context.commit('isLoading', true);
-      tripService
-        .getTripDayWithEvents(payload.trip_id, payload.trip_day_id)
+        .getTripDetail(tripId)
         .then((result: any) => {
           context.commit('isLoading', false);
           if (result.success) {
-            context.commit('getTripDayWithEvents', result.result);
+            context.commit('getTripDetail', result.result);
           } else {
-            context.commit('getTripDayWithEvents', {});
             context.dispatch('alert/error', result.error, { root: true });
           }
         })
@@ -137,7 +99,7 @@ export const trip = {
         .createTripDay(payload)
         .then((result: any) => {
           if (result.success) {
-            context.dispatch('trip/getTripDetailWithDays', payload.trip_id, { root: true });
+            context.dispatch('trip/getTripDetail', payload.trip_id, { root: true });
           } else {
             context.commit('isLoading', false);
             context.dispatch('alert/error', result.error, { root: true });
@@ -241,7 +203,7 @@ export const trip = {
       });
       state.tripList = payload;
     },
-    getTripDetailWithDays(state: any, payload: any) {
+    getTripDetail(state: any, payload: any) {
       if (payload) {
         if (!isEmpty(payload.start_date)) {
           payload.start_date = moment(payload.start_date).format(DATE_FORMAT);
@@ -258,23 +220,6 @@ export const trip = {
         payload.archived = payload.archived === 1;
       }
       state.tripDetail = payload;
-    },
-    getTripDayWithEvents(state: any, payload: TripDay) {
-      if (payload) {
-        payload.trip_date = moment(payload.trip_date).format(DATE_FORMAT);
-        if (!isEmpty(payload.events)) {
-          map(payload.events, (tripEvent: Event) => {
-            if (!isEmpty(tripEvent.start_time)) {
-              tripEvent.start_time = moment(tripEvent.start_time).format(DATE_TIME_FORMAT);
-            }
-            if (!isEmpty(tripEvent.end_time)) {
-              tripEvent.end_time = moment(tripEvent.end_time).format(DATE_TIME_FORMAT);
-            }
-            return tripEvent;
-          });
-        }
-      }
-      state.tripDayDetail = payload;
     },
     updateTrip(state: any, payload: Trip) {
       state.tripDetail.destination = payload.destination;

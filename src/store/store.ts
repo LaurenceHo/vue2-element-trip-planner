@@ -20,6 +20,7 @@ export const store = new Vuex.Store({
     openCreateTripDayDialog: false,
     openCreateEventDialog: false,
     currentMenu: 'current',
+    selectedTripDayId: 0,
   },
   modules: {
     alert,
@@ -45,6 +46,9 @@ export const store = new Vuex.Store({
     currentMenu(context: any, payload: string) {
       context.commit('currentMenu', payload);
     },
+    selectedTripDayId(context: any, payload: number) {
+      context.commit('selectedTripDayId', payload);
+    },
   },
   mutations: {
     toggleSideBar(state: any) {
@@ -66,6 +70,9 @@ export const store = new Vuex.Store({
     },
     currentMenu(state: any, payload: string) {
       state.currentMenu = payload;
+    },
+    selectedTripDayId(state: any, payload: number) {
+      state.selectedTripDayId = payload;
     },
   },
 });

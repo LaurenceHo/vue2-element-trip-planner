@@ -36,9 +36,11 @@
 </template>
 
 <script lang="ts">
+import { isEmpty } from 'lodash';
 import { Vue, Component } from 'vue-property-decorator';
 import CreateEventDialog from './CreateEventDialog.vue';
 import Event from './Event.vue';
+import { TripDay } from '../models/trip-day';
 
 @Component({
   components: { CreateEventDialog, Event },
@@ -52,8 +54,18 @@ export default class TripItinerary extends Vue {
     return this.$store.state.trip.isLoading;
   }
 
+  get selectedTripDayId() {
+    return this.$store.state.selectedTripDayId;
+  }
+
+  get tripDetail() {
+    return this.$store.state.trip.tripDetail;
+  }
+
   get tripDayDetail() {
-    return this.$store.state.trip.tripDayDetail;
+    if (!isEmpty(this.tripDetail.trip_day)) {
+      return this.tripDetail.trip_day.find((tripDay: TripDay) => tripDay.id === this.selectedTripDayId);
+    }
   }
 
   openCreateDialog() {
