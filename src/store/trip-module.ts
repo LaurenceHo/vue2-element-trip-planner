@@ -59,6 +59,9 @@ export const trip = {
           context.commit('isLoading', false);
           if (result.success) {
             context.commit('getTripDetail', result.result);
+            if (context.rootState.selectedTripDayId === 0) {
+              context.dispatch('selectedTripDayId', result.result.trip_day[0].id, { root: true });
+            }
           } else {
             context.dispatch('alert/error', result.error, { root: true });
           }
@@ -214,6 +217,15 @@ export const trip = {
         if (!isEmpty(payload.trip_day)) {
           map(payload.trip_day, (tripDay: TripDay) => {
             tripDay.trip_date = moment(tripDay.trip_date).format(DATE_FORMAT);
+            map(tripDay.events, (tripEvent: Event) => {
+              if (!isEmpty(tripEvent.start_time)) {
+                tripEvent.start_time = moment(tripEvent.start_time).format(DATE_TIME_FORMAT);
+              }
+              if (!isEmpty(tripEvent.end_time)) {
+                tripEvent.end_time = moment(tripEvent.end_time).format(DATE_TIME_FORMAT);
+              }
+              return tripEvent;
+            });
             return tripDay;
           });
         }
