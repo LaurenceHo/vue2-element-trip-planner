@@ -3,8 +3,8 @@ import {
   faArchive,
   faBusAlt,
   faCalendarAlt,
-  faCog,
   faChevronRight,
+  faCog,
   faEdit,
   faFilter,
   faHotel,
@@ -41,8 +41,8 @@ import {
   RadioGroup,
   Row,
   Select,
-  Switch,
   Submenu,
+  Switch,
   TimePicker,
 } from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
@@ -51,7 +51,7 @@ import 'whatwg-fetch';
 
 import App from './App.vue';
 import { router } from './router';
-import { store } from './store/store';
+import store from './store/store';
 import './style/style.css';
 
 library.add(

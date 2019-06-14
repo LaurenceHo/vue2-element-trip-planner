@@ -1,39 +1,37 @@
-export const alert = {
-  namespaced: true,
-  state: {
-    type: '',
-    message: '',
+import { ActionTree, Module, MutationTree } from 'vuex';
+
+import { AlertState, RootState } from './types';
+
+export const state: AlertState = {
+  type: null,
+  message: null,
+};
+
+const namespaced = true;
+
+export const actions: ActionTree<AlertState, RootState> = {
+  create({ commit }, alert: AlertState) {
+    commit('create', alert);
   },
-  actions: {
-    success(context: any, message: any) {
-      context.commit('success', message);
-    },
-    error(context: any, message: any) {
-      context.commit('error', message);
-    },
-    info(context: any, message: any) {
-      context.commit('info', message);
-    },
-    clear(context: any) {
-      context.commit('clear');
-    },
+  clear({ commit }: any) {
+    commit('clear');
   },
-  mutations: {
-    success(state: any, message: any) {
-      state.type = 'success';
-      state.message = message;
-    },
-    error(state: any, message: any) {
-      state.type = 'error';
-      state.message = message;
-    },
-    info(state: any, message: any) {
-      state.type = 'info';
-      state.message = message;
-    },
-    clear(state: any) {
-      state.type = null;
-      state.message = null;
-    },
+};
+
+export const mutations: MutationTree<AlertState> = {
+  create(state: any, alert: AlertState) {
+    state.type = alert.type;
+    state.message = alert.message;
   },
+  clear(state: any) {
+    state.type = null;
+    state.message = null;
+  },
+};
+
+export const alert: Module<AlertState, RootState> = {
+  namespaced,
+  state,
+  actions,
+  mutations,
 };

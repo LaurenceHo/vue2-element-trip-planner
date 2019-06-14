@@ -1,6 +1,6 @@
 <template>
   <el-dialog
-    :visible.sync="this.$store.state.openCreateEventDialog"
+    :visible.sync="this.$store.state.dashboard.openCreateEventDialog"
     :show-close="false"
     :title="edit.isEditMode ? 'Edit event' : 'Create event'"
     width="48rem"
@@ -128,7 +128,7 @@ export default class CreateEventDialog extends Vue {
   }
 
   get edit() {
-    return this.$store.state.edit;
+    return this.$store.state.dashboard.edit;
   }
 
   get tripDetail() {
@@ -148,8 +148,8 @@ export default class CreateEventDialog extends Vue {
   }
 
   closeDialog() {
-    this.$store.dispatch('openCreateEventDialog', false);
-    this.$store.dispatch('edit', { isEditMode: false, idInEdit: 0, component: '' });
+    this.$store.dispatch('dashboard/openCreateEventDialog', false);
+    this.$store.dispatch('dashboard/edit', { isEditMode: false, idInEdit: 0, component: null });
     this.resetForm();
   }
 
@@ -168,8 +168,8 @@ export default class CreateEventDialog extends Vue {
         } else {
           this.$store.dispatch('trip/updateTripEvent', this.tripEvent);
         }
-        this.$store.dispatch('openCreateEventDialog', false);
-        this.$store.dispatch('edit', { isEditMode: false, idInEdit: 0, component: '' });
+        this.$store.dispatch('dashboard/openCreateEventDialog', false);
+        this.$store.dispatch('dashboard/edit', { isEditMode: false, idInEdit: 0, component: null });
         this.resetForm();
       } else {
         return false;

@@ -1,6 +1,6 @@
 <template>
   <el-dialog
-    :visible.sync="this.$store.state.openCreateTripDayDialog"
+    :visible.sync="this.$store.state.dashboard.openCreateTripDayDialog"
     :show-close="false"
     custom-class="create-trip-day-dialog"
     title="Create trip day"
@@ -38,7 +38,7 @@ export default class CreateTripDayDialog extends Vue {
   };
 
   closeDialog() {
-    this.$store.dispatch('openCreateTripDayDialog', false);
+    this.$store.dispatch('dashboard/openCreateTripDayDialog', false);
     this.resetForm();
   }
 
@@ -48,7 +48,7 @@ export default class CreateTripDayDialog extends Vue {
       if (valid) {
         this.tripDay.trip_id = this.$store.state.trip.tripDetail.id;
         this.tripDay.user_id = this.$store.state.authentication.user.id;
-        this.$store.dispatch('openCreateTripDayDialog', false);
+        this.$store.dispatch('dashboard/openCreateTripDayDialog', false);
         this.$store.dispatch('trip/createTripDay', this.tripDay);
         this.resetForm();
       } else {

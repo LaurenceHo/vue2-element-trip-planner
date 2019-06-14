@@ -3,7 +3,7 @@
     <el-menu
       @select="handleSelect"
       :default-openeds="['dateFilter']"
-      :collapse="!this.$store.state.toggle"
+      :collapse="!this.$store.state.dashboard.toggle"
       class="side-menu"
       background-color="#2d3a4b"
       text-color="#fff"
@@ -12,7 +12,7 @@
     >
       <el-button @click="openCreateTripDialog" class="create-button" type="primary">
         <font-awesome-icon icon="plus" class="menu-icon" />
-        {{ this.$store.state.toggle ? 'Create new trip' : '' }}
+        {{ this.$store.state.dashboard.toggle ? 'Create new trip' : '' }}
       </el-button>
       <el-submenu index="dateFilter">
         <template slot="title">
@@ -46,11 +46,11 @@ import { Vue, Component } from 'vue-property-decorator';
 @Component
 export default class SideMenu extends Vue {
   openCreateTripDialog() {
-    this.$store.dispatch('openCreateTripDialog', true);
+    this.$store.dispatch('dashboard/openCreateTripDialog', true);
   }
 
   handleSelect(value: string) {
-    this.$store.dispatch('currentMenu', value);
+    this.$store.dispatch('dashboard/currentMenu', value);
 
     // TODO ... add more filter by menu
     let requestBody = {};

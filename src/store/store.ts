@@ -1,78 +1,23 @@
 import Vue from 'vue';
-import Vuex from 'vuex';
+import Vuex, { StoreOptions } from 'vuex';
 import { alert } from './alert-module';
 import { authentication } from './authentication-module';
+import { dashboard } from './dashboard-module';
 import { trip } from './trip-module';
+import { RootState } from './types';
 
 Vue.use(Vuex);
 
-const edit = {
-  isEditMode: false,
-  idInEdit: 0,
-  component: '',
-};
-
-export const store = new Vuex.Store({
+const store: StoreOptions<RootState> = {
   state: {
-    toggle: true,
-    edit,
-    openCreateTripDialog: false,
-    openCreateTripDayDialog: false,
-    openCreateEventDialog: false,
-    currentMenu: 'current',
-    selectedTripDayId: 0,
+    version: '1.0.0',
   },
+
   modules: {
     alert,
+    dashboard,
     authentication,
     trip,
   },
-  actions: {
-    toggleSideBar(context: any) {
-      context.commit('toggleSideBar');
-    },
-    edit(context: any, payload: any) {
-      context.commit('edit', payload);
-    },
-    openCreateTripDialog(context: any, payload: boolean) {
-      context.commit('openCreateTripDialog', payload);
-    },
-    openCreateTripDayDialog(context: any, payload: boolean) {
-      context.commit('openCreateTripDayDialog', payload);
-    },
-    openCreateEventDialog(context: any, payload: boolean) {
-      context.commit('openCreateEventDialog', payload);
-    },
-    currentMenu(context: any, payload: string) {
-      context.commit('currentMenu', payload);
-    },
-    selectedTripDayId(context: any, payload: number) {
-      context.commit('selectedTripDayId', payload);
-    },
-  },
-  mutations: {
-    toggleSideBar(state: any) {
-      state.toggle = !state.toggle;
-    },
-    edit(state: any, payload: any) {
-      state.edit.isEditMode = payload.isEditMode;
-      state.edit.idInEdit = payload.idInEdit;
-      state.edit.component = payload.component;
-    },
-    openCreateTripDialog(state: any, payload: boolean) {
-      state.openCreateTripDialog = payload;
-    },
-    openCreateTripDayDialog(state: any, payload: boolean) {
-      state.openCreateTripDayDialog = payload;
-    },
-    openCreateEventDialog(state: any, payload: boolean) {
-      state.openCreateEventDialog = payload;
-    },
-    currentMenu(state: any, payload: string) {
-      state.currentMenu = payload;
-    },
-    selectedTripDayId(state: any, payload: number) {
-      state.selectedTripDayId = payload;
-    },
-  },
-});
+};
+export default new Vuex.Store<RootState>(store);

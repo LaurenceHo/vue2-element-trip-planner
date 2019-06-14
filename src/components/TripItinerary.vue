@@ -55,7 +55,7 @@ export default class TripItinerary extends Vue {
   }
 
   get selectedTripDayId() {
-    return this.$store.state.selectedTripDayId;
+    return this.$store.state.dashboard.selectedTripDayId;
   }
 
   get tripDetail() {

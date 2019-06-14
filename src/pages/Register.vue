@@ -58,8 +58,9 @@ export default class Register extends Vue {
     this.$router.push('/login');
   }
 
-  handleSubmit(user: any) {
-    this.$store.dispatch('authentication/register', user);
+  handleSubmit(event: any) {
+    event.preventDefault();
+    this.$store.dispatch('authentication/register', this.user);
   }
 }
 </script>

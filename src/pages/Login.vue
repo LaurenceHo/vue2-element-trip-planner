@@ -22,7 +22,7 @@
       </el-form-item>
       <el-form-item>
         <el-button
-          @click="handleSubmit(user)"
+          @click="handleSubmit"
           :disabled="loggingIn || !user.email || !user.password"
           class="user-form-button"
           type="primary"
@@ -58,8 +58,9 @@ export default class Login extends Vue {
     return this.$store.state.authentication.status.loggingIn;
   }
 
-  handleSubmit(user: any) {
-    this.$store.dispatch('authentication/login', user);
+  handleSubmit(event: any) {
+    event.preventDefault();
+    this.$store.dispatch('authentication/login', this.user);
   }
 
   goToRegisterPage() {
