@@ -1,4 +1,5 @@
 import { Trip } from '../models/trip';
+import { User } from '../models/user';
 
 export interface RootState {
   version: string;
@@ -24,6 +25,12 @@ export interface AlertState {
 }
 
 export interface TripState {
+  isLoading: boolean;
   tripList: Trip[];
   tripDetail: Trip;
+}
+
+export interface AuthenticationState {
+  status: { loggedIn: boolean };
+  user: User;
 }

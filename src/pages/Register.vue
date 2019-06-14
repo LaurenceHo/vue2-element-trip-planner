@@ -25,7 +25,7 @@
       </el-form-item>
       <el-form-item>
         <el-button
-          @click="handleSubmit(user)"
+          @click="handleSubmit"
           :disabled="!user.email || !user.username || !user.password"
           class="user-form-button"
           type="primary"
