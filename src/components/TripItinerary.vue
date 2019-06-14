@@ -69,7 +69,7 @@ export default class TripItinerary extends Vue {
   }
 
   openCreateDialog() {
-    this.$store.dispatch('openCreateEventDialog', true);
+    this.$store.dispatch('dashboard/openCreateEventDialog', true);
   }
 }
 </script>

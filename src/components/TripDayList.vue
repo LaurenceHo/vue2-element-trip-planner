@@ -23,11 +23,11 @@ export default class TripDay extends Vue {
   }
 
   openCreateDialog() {
-    this.$store.dispatch('openCreateTripDayDialog', true);
+    this.$store.dispatch('dashboard/openCreateTripDayDialog', true);
   }
 
   handleSelect(value: string) {
-    this.$store.dispatch('selectedTripDayId', this.tripDetail.trip_day[Number(value)].id);
+    this.$store.dispatch('dashboard/selectedTripDayId', this.tripDetail.trip_day[Number(value)].id);
   }
 }
 </script>

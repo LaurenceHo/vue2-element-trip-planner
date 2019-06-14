@@ -73,6 +73,7 @@ import { Vue, Component, Watch } from 'vue-property-decorator';
 import CategoryRadioButton from './CategoryRadioButton.vue';
 import { currency } from '../assets/currency';
 import { timezone } from '../assets/timezone';
+import { TripDay } from '../models/trip-day';
 
 @Component({
   components: { CategoryRadioButton },
@@ -90,7 +91,7 @@ export default class CreateEventDialog extends Vue {
   tripEvent = {
     id: 0,
     user_id: this.$store.state.authentication.user.id,
-    trip_day_id: this.$store.state.trip.tripDayDetail.id,
+    trip_day_id: this.selectedTripDayId,
     timezone_id: this.$store.state.trip.tripDetail.timezone_id,
     category_id: 1,
     currency_id: '',
@@ -131,19 +132,23 @@ export default class CreateEventDialog extends Vue {
     return this.$store.state.dashboard.edit;
   }
 
+  get selectedTripDayId() {
+    return this.$store.state.dashboard.selectedTripDayId;
+  }
+
   get tripDetail() {
     return this.$store.state.trip.tripDetail;
   }
 
-  get tripDayDetail() {
-    return this.$store.state.trip.tripDayDetail;
-  }
-
   get tripEventDetail() {
-    if (!isEmpty(this.tripDayDetail.events) && this.edit.isEditMode) {
-      return this.tripDayDetail.events.find((e: any) => e.id === this.edit.idInEdit);
-    } else {
-      return {};
+    if (!isEmpty(this.tripDetail.trip_day)) {
+      const tripDay = this.tripDetail.trip_day.find((tripDay: TripDay) => tripDay.id === this.selectedTripDayId);
+
+      if (!isEmpty(tripDay.events) && this.edit.isEditMode) {
+        return tripDay.events.find((e: any) => e.id === this.edit.idInEdit);
+      } else {
+        return {};
+      }
     }
   }
 
@@ -181,7 +186,7 @@ export default class CreateEventDialog extends Vue {
     this.tripEvent = {
       id: 0,
       user_id: this.$store.state.authentication.user.id,
-      trip_day_id: this.$store.state.trip.tripDayDetail.id,
+      trip_day_id: this.selectedTripDayId,
       timezone_id: this.$store.state.trip.tripDetail.timezone_id,
       category_id: 1,
       currency_id: '',
