@@ -170,6 +170,7 @@ export const actions: ActionTree<TripState, RootState> = {
         context.dispatch('alert/create', { type: 'error', message: error.error }, { root: true });
       });
   },
+  // TODO - Update trip day action
   updateTripEvent(context: any, payload: Event) {
     context.commit('isLoading', true);
     if (payload.start_time) {
