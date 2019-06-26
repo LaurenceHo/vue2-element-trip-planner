@@ -30,15 +30,46 @@ export const state: TripState = {
 const namespaced = true;
 const tripService = new TripService();
 
+const _generateGetTripListPayload = (currentMenu: string) => {
+  let requestBody = null;
+  if (currentMenu === 'archived') {
+    requestBody = {
+      archived: true,
+    };
+  } else if (currentMenu === 'current') {
+    requestBody = {
+      start_date: moment().format(DATE_FORMAT),
+      end_date: moment().format(DATE_FORMAT),
+      archived: false,
+    };
+  } else if (currentMenu === 'upcoming') {
+    requestBody = {
+      start_date: moment().format(DATE_FORMAT),
+      archived: false,
+    };
+  } else if (currentMenu === 'past') {
+    requestBody = {
+      end_date: moment().format(DATE_FORMAT),
+      archived: false,
+    };
+  } else {
+    requestBody = {
+      archived: false,
+    };
+  }
+  return requestBody;
+};
+
 export const actions: ActionTree<TripState, RootState> = {
   isLoading(context: any, payload: boolean) {
     context.dispatch('alert/clear', null, { root: true });
     context.commit('isLoading', payload);
   },
-  getTripList(context: any, payload: any) {
+  getTripList(context: any) {
     context.commit('isLoading', true);
+    const requestPayload = _generateGetTripListPayload(context.rootState.dashboard.currentMenu);
     tripService
-      .getTripList(payload)
+      .getTripList(requestPayload)
       .then((result: any) => {
         context.commit('isLoading', false);
         if (result.success) {
@@ -83,7 +114,7 @@ export const actions: ActionTree<TripState, RootState> = {
       .createTrip(payload)
       .then((result: any) => {
         if (result.success) {
-          context.dispatch('trip/getTripList', {}, { root: true });
+          context.dispatch('trip/getTripList', null, { root: true });
         } else {
           context.commit('isLoading', false);
           context.dispatch('alert/create', { type: 'error', message: result.error }, { root: true });

@@ -36,10 +36,7 @@ import { Vue, Component } from 'vue-property-decorator';
 @Component
 export default class TripDashboard extends Vue {
   beforeMount() {
-    const requestBody = {
-      archived: false,
-    };
-    this.$store.dispatch('trip/getTripList', requestBody);
+    this.$store.dispatch('trip/getTripList');
   }
 
   get alert() {
