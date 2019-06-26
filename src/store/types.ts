@@ -12,9 +12,9 @@ export interface DashboardState {
     idInEdit: number;
     component: 'trip' | 'tripDay' | 'tripEvent';
   };
-  openCreateTripDialog: boolean;
-  openCreateTripDayDialog: boolean;
-  openCreateEventDialog: boolean;
+  openTripForm: boolean;
+  openTripDayForm: boolean;
+  openTripEventForm: boolean;
   currentMenu: 'upcoming' | 'current' | 'past' | 'archived';
   selectedTripDayId: number;
 }

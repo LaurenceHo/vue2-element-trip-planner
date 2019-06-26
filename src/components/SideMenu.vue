@@ -46,11 +46,11 @@ import { Vue, Component } from 'vue-property-decorator';
 @Component
 export default class SideMenu extends Vue {
   openCreateTripDialog() {
-    this.$store.dispatch('dashboard/openCreateTripDialog', true);
+    this.$store.dispatch('dashboard/openTripForm', true);
   }
 
   handleSelect(value: string) {
-    this.$store.dispatch('dashboard/currentMenu', value);
+    this.$store.dispatch('dashboard/setSideMenu', value);
 
     // TODO ... add more filter by menu
     let requestBody = {};

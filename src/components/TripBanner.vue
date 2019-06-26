@@ -26,8 +26,8 @@ export default class TripBanner extends Vue {
   }
 
   editTrip() {
-    this.$store.dispatch('openCreateTripDialog', true);
-    this.$store.dispatch('edit', { isEditMode: true, idInEdit: this.tripDetail.id, component: 'trip' });
+    this.$store.dispatch('dashboard/openTripForm', true);
+    this.$store.dispatch('dashboard/updateEdit', { isEditMode: true, idInEdit: this.tripDetail.id, component: 'trip' });
   }
 }
 </script>

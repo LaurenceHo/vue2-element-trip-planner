@@ -9,9 +9,9 @@ export const state: DashboardState = {
     idInEdit: 0,
     component: null,
   },
-  openCreateTripDialog: false,
-  openCreateTripDayDialog: false,
-  openCreateEventDialog: false,
+  openTripForm: false,
+  openTripDayForm: false,
+  openTripEventForm: false,
   currentMenu: 'current',
   selectedTripDayId: 0,
 };
@@ -22,23 +22,23 @@ export const actions: ActionTree<DashboardState, RootState> = {
   toggleSideBar({ commit }: any) {
     commit('toggleSideBar');
   },
-  edit({ commit }, payload: any) {
-    commit('edit', payload);
+  updateEdit({ commit }, payload: any) {
+    commit('updateEdit', payload);
   },
-  openCreateTripDialog({ commit }, payload: boolean) {
-    commit('openCreateTripDialog', payload);
+  openTripForm({ commit }, payload: boolean) {
+    commit('openTripForm', payload);
   },
-  openCreateTripDayDialog({ commit }, payload: boolean) {
-    commit('openCreateTripDayDialog', payload);
+  openTripDayForm({ commit }, payload: boolean) {
+    commit('openTripDayForm', payload);
   },
-  openCreateEventDialog({ commit }, payload: boolean) {
-    commit('openCreateEventDialog', payload);
+  openTripEventForm({ commit }, payload: boolean) {
+    commit('openTripEventForm', payload);
   },
-  currentMenu({ commit }, payload: string) {
-    commit('currentMenu', payload);
+  setSideMenu({ commit }, payload: string) {
+    commit('setSideMenu', payload);
   },
-  selectedTripDayId({ commit }, payload: number) {
-    commit('selectedTripDayId', payload);
+  updateSelectedTripDayId({ commit }, payload: number) {
+    commit('updateSelectedTripDayId', payload);
   },
 };
 
@@ -46,24 +46,24 @@ export const mutations: MutationTree<DashboardState> = {
   toggleSideBar(state: any) {
     state.toggle = !state.toggle;
   },
-  edit(state: any, payload: any) {
+  updateEdit(state: any, payload: any) {
     state.edit.isEditMode = payload.isEditMode;
     state.edit.idInEdit = payload.idInEdit;
     state.edit.component = payload.component;
   },
-  openCreateTripDialog(state: any, payload: boolean) {
-    state.openCreateTripDialog = payload;
+  openTripForm(state: any, payload: boolean) {
+    state.openTripForm = payload;
   },
-  openCreateTripDayDialog(state: any, payload: boolean) {
-    state.openCreateTripDayDialog = payload;
+  openTripDayForm(state: any, payload: boolean) {
+    state.openTripDayForm = payload;
   },
-  openCreateEventDialog(state: any, payload: boolean) {
-    state.openCreateEventDialog = payload;
+  openTripEventForm(state: any, payload: boolean) {
+    state.openTripEventForm = payload;
   },
-  currentMenu(state: any, payload: string) {
+  setSideMenu(state: any, payload: string) {
     state.currentMenu = payload;
   },
-  selectedTripDayId(state: any, payload: number) {
+  updateSelectedTripDayId(state: any, payload: number) {
     state.selectedTripDayId = payload;
   },
 };

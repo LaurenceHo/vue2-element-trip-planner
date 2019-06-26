@@ -19,8 +19,8 @@ export default class Event extends Vue {
   event: TripEvent;
 
   editEvent() {
-    this.$store.dispatch('openCreateEventDialog', true);
-    this.$store.dispatch('edit', { isEditMode: true, idInEdit: this.event.id, component: 'event' });
+    this.$store.dispatch('dashboard/openTripEventForm', true);
+    this.$store.dispatch('dashboard/updateEdit', { isEditMode: true, idInEdit: this.event.id, component: 'event' });
   }
 }
 </script>

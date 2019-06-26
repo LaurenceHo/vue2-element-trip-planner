@@ -1,6 +1,6 @@
 <template>
   <el-dialog
-    :visible.sync="this.$store.state.dashboard.openCreateTripDialog"
+    :visible.sync="this.$store.state.dashboard.openTripForm"
     :show-close="false"
     :title="edit.isEditMode ? 'Edit trip' : 'Create trip'"
     custom-class="create-trip-dialog"
@@ -97,8 +97,8 @@ export default class CreateTripDialog extends Vue {
   }
 
   closeDialog() {
-    this.$store.dispatch('dashboard/openCreateTripDialog', false);
-    this.$store.dispatch('dashboard/edit', { isEditMode: false, idInEdit: 0, component: null });
+    this.$store.dispatch('dashboard/openTripForm', false);
+    this.$store.dispatch('dashboard/updateEdit', { isEditMode: false, idInEdit: 0, component: null });
     this.resetForm();
   }
 
@@ -114,8 +114,8 @@ export default class CreateTripDialog extends Vue {
         } else {
           this.$store.dispatch('trip/updateTrip', this.trip);
         }
-        this.$store.dispatch('dashboard/openCreateTripDialog', false);
-        this.$store.dispatch('dashboard/edit', { isEditMode: false, idInEdit: 0, component: null });
+        this.$store.dispatch('dashboard/openTripForm', false);
+        this.$store.dispatch('dashboard/updateEdit', { isEditMode: false, idInEdit: 0, component: null });
         this.resetForm();
       } else {
         return false;

@@ -1,4 +1,4 @@
-import { isEmpty, map } from 'lodash';
+import { isEmpty, isNumber, map } from 'lodash';
 import * as moment from 'moment';
 import { ActionTree, Module, MutationTree } from 'vuex';
 
@@ -18,7 +18,6 @@ export const state: TripState = {
   tripList,
   tripDetail: {
     id: 0,
-    user_id: 0,
     timezone_id: 0,
     start_date: '',
     end_date: '',
@@ -62,7 +61,7 @@ export const actions: ActionTree<TripState, RootState> = {
         if (result.success) {
           context.commit('getTripDetail', result.result);
           if (context.rootState.dashboard.selectedTripDayId === 0) {
-            context.dispatch('dashboard/selectedTripDayId', result.result.trip_day[0].id, { root: true });
+            context.dispatch('dashboard/updateSelectedTripDayId', result.result.trip_day[0].id, { root: true });
           }
         } else {
           context.dispatch('alert/create', { type: 'error', message: result.error }, { root: true });
@@ -75,12 +74,9 @@ export const actions: ActionTree<TripState, RootState> = {
   },
   createTrip(context: any, payload: Trip) {
     context.commit('isLoading', true);
-    // FIXME
-    // Object.keys(payload).forEach(prop => {
-    //   if (isEmpty(payload[prop]) || payload[prop] === 0) {
-    //     delete payload[prop];
-    //   }
-    // });
+    if (isEmpty(payload.name)) {
+      delete payload.name;
+    }
     payload.start_date = moment(payload.start_date).format(DATE_FORMAT);
     payload.end_date = moment(payload.end_date).format(DATE_FORMAT);
     tripService
@@ -117,26 +113,31 @@ export const actions: ActionTree<TripState, RootState> = {
       });
   },
   createTripEvent(context: any, payload: Event) {
-    // FIXME
-    // Object.keys(payload).forEach(prop => {
-    //   if (isEmpty(payload[prop]) || payload[prop] === 0) {
-    //     delete payload[prop];
-    //   }
-    // });
+    let newPayload: Event = {
+      trip_day_id: 0,
+      category_id: 0,
+      timezone_id: 0,
+      title: '',
+    };
+    Object.keys(payload).forEach(prop => {
+      if ((isNumber(payload[prop]) && payload[prop] > 0) || !isEmpty(payload[prop])) {
+        newPayload[prop] = payload[prop];
+      }
+    });
     context.commit('isLoading', true);
-    if (payload.start_time) {
-      payload.start_time = moment(payload.start_time).format(DATE_TIME_FORMAT);
+    if (newPayload.start_time) {
+      newPayload.start_time = moment(newPayload.start_time).format(DATE_TIME_FORMAT);
     }
-    if (payload.end_time) {
-      payload.end_time = moment(payload.end_time).format(DATE_TIME_FORMAT);
+    if (newPayload.end_time) {
+      newPayload.end_time = moment(newPayload.end_time).format(DATE_TIME_FORMAT);
     }
     tripService
-      .createTripEvent(context.state.tripDetail.id, payload)
+      .createTripEvent(context.state.tripDetail.id, newPayload)
       .then((result: any) => {
         if (result.success) {
           context.dispatch(
             'trip/getTripDetail',
-            { trip_id: context.state.tripDetail.id, trip_day_id: payload.trip_day_id },
+            { trip_id: context.state.tripDetail.id, trip_day_id: newPayload.trip_day_id },
             { root: true }
           );
         } else {
@@ -170,7 +171,8 @@ export const actions: ActionTree<TripState, RootState> = {
         context.dispatch('alert/create', { type: 'error', message: error.error }, { root: true });
       });
   },
-  // TODO - Update trip day action
+  // TODO - A new action for updating trip day action
+
   updateTripEvent(context: any, payload: Event) {
     context.commit('isLoading', true);
     if (payload.start_time) {
@@ -240,12 +242,9 @@ export const mutations: MutationTree<TripState> = {
     state.tripDetail = payload;
   },
   updateTrip(state: any, payload: Trip) {
-    state.tripDetail.destination = payload.destination;
-    state.tripDetail.name = payload.name;
-    state.tripDetail.start_date = payload.start_date;
-    state.tripDetail.end_date = payload.end_date;
-    state.tripDetail.archived = payload.archived;
-    state.tripDetail.timezone_id = payload.timezone_id;
+    Object.keys(payload).forEach(prop => {
+      state.tripDetail[prop] = payload[prop];
+    });
   },
 };
 
