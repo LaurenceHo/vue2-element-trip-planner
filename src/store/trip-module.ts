@@ -30,7 +30,7 @@ export const state: TripState = {
 const namespaced = true;
 const tripService = new TripService();
 
-const _generateGetTripListPayload = (currentMenu: string) => {
+const _generateGetTripListPayload = (currentMenu: 'archived' | 'current' | 'upcoming' | 'past') => {
   let requestBody = null;
   if (currentMenu === 'archived') {
     requestBody = {
@@ -58,6 +58,22 @@ const _generateGetTripListPayload = (currentMenu: string) => {
     };
   }
   return requestBody;
+};
+
+const _createEventRequestPayload = (payload: Event) => {
+  let newPayload: Event = {
+    trip_day_id: 0,
+    category_id: 0,
+    timezone_id: 0,
+    title: '',
+  };
+  Object.keys(payload).forEach(prop => {
+    // FIXME
+    if ((isNumber(payload[prop]) && payload[prop] > 0) || !isEmpty(payload[prop])) {
+      newPayload[prop] = payload[prop];
+    }
+  });
+  return newPayload;
 };
 
 export const actions: ActionTree<TripState, RootState> = {
@@ -144,18 +160,8 @@ export const actions: ActionTree<TripState, RootState> = {
       });
   },
   createTripEvent(context: any, payload: Event) {
-    let newPayload: Event = {
-      trip_day_id: 0,
-      category_id: 0,
-      timezone_id: 0,
-      title: '',
-    };
-    Object.keys(payload).forEach(prop => {
-      if ((isNumber(payload[prop]) && payload[prop] > 0) || !isEmpty(payload[prop])) {
-        newPayload[prop] = payload[prop];
-      }
-    });
     context.commit('isLoading', true);
+    const newPayload = _createEventRequestPayload(payload);
     if (newPayload.start_time) {
       newPayload.start_time = moment(newPayload.start_time).format(DATE_TIME_FORMAT);
     }
@@ -166,11 +172,7 @@ export const actions: ActionTree<TripState, RootState> = {
       .createTripEvent(context.state.tripDetail.id, newPayload)
       .then((result: any) => {
         if (result.success) {
-          context.dispatch(
-            'trip/getTripDetail',
-            { trip_id: context.state.tripDetail.id, trip_day_id: newPayload.trip_day_id },
-            { root: true }
-          );
+          context.dispatch('trip/getTripDetail', context.state.tripDetail.id, { root: true });
         } else {
           context.commit('isLoading', false);
           context.dispatch('alert/create', { type: 'error', message: result.error }, { root: true });
@@ -206,21 +208,19 @@ export const actions: ActionTree<TripState, RootState> = {
 
   updateTripEvent(context: any, payload: Event) {
     context.commit('isLoading', true);
-    if (payload.start_time) {
-      payload.start_time = moment(payload.start_time).format(DATE_TIME_FORMAT);
+    const newPayload = _createEventRequestPayload(payload);
+    if (newPayload.start_time) {
+      newPayload.start_time = moment(newPayload.start_time).format(DATE_TIME_FORMAT);
     }
-    if (payload.end_time) {
-      payload.end_time = moment(payload.end_time).format(DATE_TIME_FORMAT);
+    if (newPayload.end_time) {
+      newPayload.end_time = moment(newPayload.end_time).format(DATE_TIME_FORMAT);
     }
     tripService
-      .updateTripEvent(context.state.tripDetail.id, payload)
+      .updateTripEvent(context.state.tripDetail.id, newPayload)
       .then((result: any) => {
         if (result.success) {
-          context.dispatch(
-            'trip/getTripDetail',
-            { trip_id: context.state.tripDetail.id, trip_day_id: payload.trip_day_id },
-            { root: true }
-          );
+          console.log('tripDetail.id', context.state.tripDetail.id);
+          context.dispatch('trip/getTripDetail', context.state.tripDetail.id, { root: true });
         } else {
           context.commit('isLoading', false);
           context.dispatch('alert/create', { type: 'error', message: result.error }, { root: true });

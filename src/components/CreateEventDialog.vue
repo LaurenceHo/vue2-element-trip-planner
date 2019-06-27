@@ -73,6 +73,7 @@ import { Vue, Component, Watch } from 'vue-property-decorator';
 import CategoryRadioButton from './CategoryRadioButton.vue';
 import { currency } from '../assets/currency';
 import { timezone } from '../assets/timezone';
+import { Event } from '../models/event';
 import { TripDay } from '../models/trip-day';
 
 @Component({
@@ -88,13 +89,12 @@ export default class CreateEventDialog extends Vue {
     title: [{ required: true, message: 'Please input title', trigger: 'blur' }],
   };
 
-  tripEvent = {
+  tripEvent: Event = {
     id: 0,
-    user_id: this.$store.state.authentication.user.id,
     trip_day_id: this.selectedTripDayId,
     timezone_id: this.$store.state.trip.tripDetail.timezone_id,
     category_id: 1,
-    currency_id: '',
+    currency_id: 0,
     title: '',
     start_time: '',
     end_time: '',
@@ -102,29 +102,17 @@ export default class CreateEventDialog extends Vue {
     end_location: '',
     note: '',
     tag: '',
-    cost: '',
+    cost: 0,
   };
 
   @Watch('edit', { immediate: true, deep: true })
   onEditModeChanged(val: any) {
     if (val.isEditMode === true) {
       this.event_time = [this.tripEvent.start_time, this.tripEvent.end_time];
-      this.tripEvent = {
-        id: this.tripEventDetail.id,
-        user_id: this.$store.state.authentication.user.id,
-        trip_day_id: this.tripEventDetail.trip_day_id,
-        timezone_id: this.tripEventDetail.timezone_id,
-        category_id: this.tripEventDetail.category_id,
-        currency_id: this.tripEventDetail.currency_id,
-        start_time: this.tripEventDetail.start_time,
-        end_time: this.tripEventDetail.end_time,
-        title: this.tripEventDetail.title,
-        start_location: this.tripEventDetail.start_location,
-        end_location: this.tripEventDetail.end_location,
-        note: this.tripEventDetail.note,
-        tag: this.tripEventDetail.tag,
-        cost: this.tripEventDetail.cost,
-      };
+
+      Object.keys(this.tripEventDetail).forEach(prop => {
+        this.tripEvent[prop] = this.tripEventDetail[prop];
+      });
     }
   }
 
@@ -167,7 +155,6 @@ export default class CreateEventDialog extends Vue {
         if (isEmpty(this.tripEvent.timezone_id)) {
           this.tripEvent.timezone_id = this.tripDetail.timezone_id;
         }
-        console.log(this.tripEvent);
         if (!this.edit.isEditMode) {
           this.$store.dispatch('trip/createTripEvent', this.tripEvent);
         } else {
@@ -185,11 +172,10 @@ export default class CreateEventDialog extends Vue {
   resetForm() {
     this.tripEvent = {
       id: 0,
-      user_id: this.$store.state.authentication.user.id,
       trip_day_id: this.selectedTripDayId,
       timezone_id: this.$store.state.trip.tripDetail.timezone_id,
       category_id: 1,
-      currency_id: '',
+      currency_id: 0,
       title: '',
       start_time: '',
       end_time: '',
@@ -197,7 +183,7 @@ export default class CreateEventDialog extends Vue {
       end_location: '',
       note: '',
       tag: '',
-      cost: '',
+      cost: 0,
     };
   }
 }
