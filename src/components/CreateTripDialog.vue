@@ -73,7 +73,7 @@ export default class CreateTripDialog extends Vue {
 
   @Watch('edit', { immediate: true, deep: true })
   onEditModeChanged(val: any) {
-    if (val.isEditMode === true) {
+    if (val.isEditMode && val.component === 'trip') {
       this.trip_date = [this.tripDetail.start_date, this.tripDetail.end_date];
       this.trip = {
         id: this.tripDetail.id,

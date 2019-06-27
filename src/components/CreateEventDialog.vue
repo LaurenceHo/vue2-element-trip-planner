@@ -107,7 +107,7 @@ export default class CreateEventDialog extends Vue {
 
   @Watch('edit', { immediate: true, deep: true })
   onEditModeChanged(val: any) {
-    if (val.isEditMode === true) {
+    if (val.isEditMode === true && val.component === 'tripEvent') {
       this.event_time = [this.tripEvent.start_time, this.tripEvent.end_time];
 
       Object.keys(this.tripEventDetail).forEach(prop => {
