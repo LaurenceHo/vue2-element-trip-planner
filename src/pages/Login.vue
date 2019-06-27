@@ -37,17 +37,19 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
+import { Actions } from '../constants/actions';
+import { Messages } from '../constants/messages';
 
 @Component
 export default class Login extends Vue {
-  emailRules = [{ type: 'email', message: 'Please input correct email address', trigger: ['blur', 'change'] }];
+  emailRules = [{ type: 'email', message: Messages.email.invalid, trigger: ['blur', 'change'] }];
   user = {
     email: '',
     password: '',
   };
 
   created() {
-    this.$store.dispatch('alert/clear');
+    this.$store.dispatch(Actions.CLEAR_ALERT);
   }
 
   get alert() {
@@ -60,7 +62,7 @@ export default class Login extends Vue {
 
   handleSubmit(event: any) {
     event.preventDefault();
-    this.$store.dispatch('authentication/login', this.user);
+    this.$store.dispatch(Actions.LOGIN, this.user);
   }
 
   goToRegisterPage() {

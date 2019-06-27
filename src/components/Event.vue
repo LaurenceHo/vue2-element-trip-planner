@@ -12,6 +12,7 @@
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
 import { Event as TripEvent } from '../models/event';
+import { Actions } from '../constants/actions';
 
 @Component
 export default class Event extends Vue {
@@ -19,8 +20,8 @@ export default class Event extends Vue {
   event: TripEvent;
 
   editEvent() {
-    this.$store.dispatch('dashboard/openTripEventForm', true);
-    this.$store.dispatch('dashboard/updateEdit', { isEditMode: true, idInEdit: this.event.id, component: 'event' });
+    this.$store.dispatch(Actions.OPEN_TRIP_EVENT_FORM, true);
+    this.$store.dispatch(Actions.UPDATE_EDIT, { isEditMode: true, idInEdit: this.event.id, component: 'tripEvent' });
   }
 }
 </script>

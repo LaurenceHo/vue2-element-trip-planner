@@ -18,6 +18,7 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
+import { Actions } from '../constants/actions';
 
 @Component
 export default class TripBanner extends Vue {
@@ -26,8 +27,8 @@ export default class TripBanner extends Vue {
   }
 
   editTrip() {
-    this.$store.dispatch('dashboard/openTripForm', true);
-    this.$store.dispatch('dashboard/updateEdit', { isEditMode: true, idInEdit: this.tripDetail.id, component: 'trip' });
+    this.$store.dispatch(Actions.OPEN_TRIP_FORM, true);
+    this.$store.dispatch(Actions.UPDATE_EDIT, { isEditMode: true, idInEdit: this.tripDetail.id, component: 'trip' });
   }
 }
 </script>

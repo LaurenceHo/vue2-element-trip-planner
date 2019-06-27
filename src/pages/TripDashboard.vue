@@ -32,11 +32,12 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
+import { Actions } from '../constants/actions';
 
 @Component
 export default class TripDashboard extends Vue {
   beforeMount() {
-    this.$store.dispatch('trip/getTripList');
+    this.$store.dispatch(Actions.GET_TRIP_LIST);
   }
 
   get alert() {
@@ -53,7 +54,7 @@ export default class TripDashboard extends Vue {
 
   goToTripDetail(tripId: number) {
     this.$router.push(`trip/${tripId}`);
-    this.$store.dispatch('trip/getTripDetail', tripId);
+    this.$store.dispatch(Actions.GET_TRIP_DETAIL, tripId);
   }
 }
 </script>

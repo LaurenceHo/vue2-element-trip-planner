@@ -42,16 +42,17 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
+import { Actions } from '../constants/actions';
 
 @Component
 export default class SideMenu extends Vue {
   openCreateTripDialog() {
-    this.$store.dispatch('dashboard/openTripForm', true);
+    this.$store.dispatch(Actions.OPEN_TRIP_FORM, true);
   }
 
   handleSelect(value: string) {
-    this.$store.dispatch('dashboard/setSideMenu', value);
-    this.$store.dispatch('trip/getTripList');
+    this.$store.dispatch(Actions.SET_SIDE_MENU, value);
+    this.$store.dispatch(Actions.GET_TRIP_LIST);
   }
 }
 </script>

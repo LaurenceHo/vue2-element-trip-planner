@@ -18,13 +18,14 @@
 import { Vue, Component } from 'vue-property-decorator';
 import TopBar from '../components/TopBar.vue';
 import SideMenu from '../components/SideMenu.vue';
+import { Actions } from '../constants/actions';
 
 @Component({
   components: { SideMenu, TopBar },
 })
 export default class Layout extends Vue {
   created() {
-    this.$store.dispatch('alert/clear');
+    this.$store.dispatch(Actions.CLEAR_ALERT);
   }
 
   get user() {

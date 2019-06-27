@@ -7,13 +7,12 @@ import { Event } from '../models/event';
 import { Trip } from '../models/trip';
 import { TripDay } from '../models/trip-day';
 import { TripService } from '../services/trip-service';
-
-const DATE_FORMAT = 'YYYY-MM-DD';
-const DATE_TIME_FORMAT = 'YYYY-MM-DD HH:mm';
+import { DATE_FORMAT, DATE_TIME_FORMAT } from '../constants/general';
+import { Actions } from '../constants/actions';
 
 const tripList: Trip[] = [];
 const trip_day: TripDay[] = [];
-export const state: TripState = {
+const state: TripState = {
   isLoading: false,
   tripList,
   tripDetail: {
@@ -69,16 +68,21 @@ const _createEventRequestPayload = (payload: Event) => {
   };
   Object.keys(payload).forEach(prop => {
     // FIXME
-    if ((isNumber(payload[prop]) && payload[prop] > 0) || !isEmpty(payload[prop])) {
+    if (prop === 'start_location' || prop === 'end_location' || prop === 'note' || prop === 'cost') {
+      // @ts-ignore
       newPayload[prop] = payload[prop];
+    } else {
+      if ((isNumber(payload[prop]) && payload[prop] > 0) || !isEmpty(payload[prop])) {
+        newPayload[prop] = payload[prop];
+      }
     }
   });
   return newPayload;
 };
 
-export const actions: ActionTree<TripState, RootState> = {
+const actions: ActionTree<TripState, RootState> = {
   isLoading(context: any, payload: boolean) {
-    context.dispatch('alert/clear', null, { root: true });
+    context.dispatch(Actions.CLEAR_ALERT, null, { root: true });
     context.commit('isLoading', payload);
   },
   getTripList(context: any) {
@@ -91,12 +95,12 @@ export const actions: ActionTree<TripState, RootState> = {
         if (result.success) {
           context.commit('getTripList', result.result);
         } else {
-          context.dispatch('alert/create', { type: 'error', message: result.error }, { root: true });
+          context.dispatch(Actions.CREATE_ALERT, { type: 'error', message: result.error }, { root: true });
         }
       })
       .catch((error: any) => {
         context.commit('isLoading', false);
-        context.dispatch('alert/create', { type: 'error', message: error.error }, { root: true });
+        context.dispatch(Actions.CREATE_ALERT, { type: 'error', message: error.error }, { root: true });
       });
   },
   getTripDetail(context: any, tripId: number) {
@@ -108,15 +112,15 @@ export const actions: ActionTree<TripState, RootState> = {
         if (result.success) {
           context.commit('getTripDetail', result.result);
           if (context.rootState.dashboard.selectedTripDayId === 0) {
-            context.dispatch('dashboard/updateSelectedTripDayId', result.result.trip_day[0].id, { root: true });
+            context.dispatch(Actions.UPDATE_SELECTED_TRIP_DAY_ID, result.result.trip_day[0].id, { root: true });
           }
         } else {
-          context.dispatch('alert/create', { type: 'error', message: result.error }, { root: true });
+          context.dispatch(Actions.CREATE_ALERT, { type: 'error', message: result.error }, { root: true });
         }
       })
       .catch((error: any) => {
         context.commit('isLoading', false);
-        context.dispatch('alert/create', { type: 'error', message: error.error }, { root: true });
+        context.dispatch(Actions.CREATE_ALERT, { type: 'error', message: error.error }, { root: true });
       });
   },
   createTrip(context: any, payload: Trip) {
@@ -130,15 +134,15 @@ export const actions: ActionTree<TripState, RootState> = {
       .createTrip(payload)
       .then((result: any) => {
         if (result.success) {
-          context.dispatch('trip/getTripList', null, { root: true });
+          context.dispatch(Actions.GET_TRIP_LIST, null, { root: true });
         } else {
           context.commit('isLoading', false);
-          context.dispatch('alert/create', { type: 'error', message: result.error }, { root: true });
+          context.dispatch(Actions.CREATE_ALERT, { type: 'error', message: result.error }, { root: true });
         }
       })
       .catch((error: any) => {
         context.commit('isLoading', false);
-        context.dispatch('alert/create', { type: 'error', message: error.error }, { root: true });
+        context.dispatch(Actions.CREATE_ALERT, { type: 'error', message: error.error }, { root: true });
       });
   },
   createTripDay(context: any, payload: TripDay) {
@@ -148,15 +152,15 @@ export const actions: ActionTree<TripState, RootState> = {
       .createTripDay(payload)
       .then((result: any) => {
         if (result.success) {
-          context.dispatch('trip/getTripDetail', payload.trip_id, { root: true });
+          context.dispatch(Actions.GET_TRIP_DETAIL, payload.trip_id, { root: true });
         } else {
           context.commit('isLoading', false);
-          context.dispatch('alert/create', { type: 'error', message: result.error }, { root: true });
+          context.dispatch(Actions.CREATE_ALERT, { type: 'error', message: result.error }, { root: true });
         }
       })
       .catch((error: any) => {
         context.commit('isLoading', false);
-        context.dispatch('alert/create', { type: 'error', message: error.error }, { root: true });
+        context.dispatch(Actions.CREATE_ALERT, { type: 'error', message: error.error }, { root: true });
       });
   },
   createTripEvent(context: any, payload: Event) {
@@ -172,15 +176,15 @@ export const actions: ActionTree<TripState, RootState> = {
       .createTripEvent(context.state.tripDetail.id, newPayload)
       .then((result: any) => {
         if (result.success) {
-          context.dispatch('trip/getTripDetail', context.state.tripDetail.id, { root: true });
+          context.dispatch(Actions.GET_TRIP_DETAIL, context.state.tripDetail.id, { root: true });
         } else {
           context.commit('isLoading', false);
-          context.dispatch('alert/create', { type: 'error', message: result.error }, { root: true });
+          context.dispatch(Actions.CREATE_ALERT, { type: 'error', message: result.error }, { root: true });
         }
       })
       .catch((error: any) => {
         context.commit('isLoading', false);
-        context.dispatch('alert/create', { type: 'error', message: error.error }, { root: true });
+        context.dispatch(Actions.CREATE_ALERT, { type: 'error', message: error.error }, { root: true });
       });
   },
   updateTrip(context: any, payload: Trip) {
@@ -196,12 +200,12 @@ export const actions: ActionTree<TripState, RootState> = {
           context.commit('updateTrip', payload);
         } else {
           context.commit('isLoading', false);
-          context.dispatch('alert/create', { type: 'error', message: result.error }, { root: true });
+          context.dispatch(Actions.CREATE_ALERT, { type: 'error', message: result.error }, { root: true });
         }
       })
       .catch((error: any) => {
         context.commit('isLoading', false);
-        context.dispatch('alert/create', { type: 'error', message: error.error }, { root: true });
+        context.dispatch(Actions.CREATE_ALERT, { type: 'error', message: error.error }, { root: true });
       });
   },
   // TODO - A new action for updating trip day action
@@ -220,24 +224,24 @@ export const actions: ActionTree<TripState, RootState> = {
       .then((result: any) => {
         if (result.success) {
           console.log('tripDetail.id', context.state.tripDetail.id);
-          context.dispatch('trip/getTripDetail', context.state.tripDetail.id, { root: true });
+          context.dispatch(Actions.GET_TRIP_DETAIL, context.state.tripDetail.id, { root: true });
         } else {
           context.commit('isLoading', false);
-          context.dispatch('alert/create', { type: 'error', message: result.error }, { root: true });
+          context.dispatch(Actions.CREATE_ALERT, { type: 'error', message: result.error }, { root: true });
         }
       })
       .catch((error: any) => {
         context.commit('isLoading', false);
-        context.dispatch('alert/create', { type: 'error', message: error.error }, { root: true });
+        context.dispatch(Actions.CREATE_ALERT, { type: 'error', message: error.error }, { root: true });
       });
   },
 };
 
-export const mutations: MutationTree<TripState> = {
-  isLoading(state: any, payload: boolean) {
+const mutations: MutationTree<TripState> = {
+  isLoading(state: TripState, payload: boolean) {
     state.isLoading = payload;
   },
-  getTripList(state: any, payload: Trip[]) {
+  getTripList(state: TripState, payload: Trip[]) {
     map(payload, (trip: Trip) => {
       trip.start_date = moment(trip.start_date).format(DATE_FORMAT);
       trip.end_date = moment(trip.end_date).format(DATE_FORMAT);
@@ -245,7 +249,7 @@ export const mutations: MutationTree<TripState> = {
     });
     state.tripList = payload;
   },
-  getTripDetail(state: any, payload: any) {
+  getTripDetail(state: TripState, payload: any) {
     if (payload) {
       if (!isEmpty(payload.start_date)) {
         payload.start_date = moment(payload.start_date).format(DATE_FORMAT);
@@ -272,7 +276,7 @@ export const mutations: MutationTree<TripState> = {
     }
     state.tripDetail = payload;
   },
-  updateTrip(state: any, payload: Trip) {
+  updateTrip(state: TripState, payload: Trip) {
     Object.keys(payload).forEach(prop => {
       state.tripDetail[prop] = payload[prop];
     });

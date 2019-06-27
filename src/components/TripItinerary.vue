@@ -41,6 +41,7 @@ import { Vue, Component } from 'vue-property-decorator';
 import CreateEventDialog from './CreateEventDialog.vue';
 import Event from './Event.vue';
 import { TripDay } from '../models/trip-day';
+import { Actions } from '../constants/actions';
 
 @Component({
   components: { CreateEventDialog, Event },
@@ -69,7 +70,7 @@ export default class TripItinerary extends Vue {
   }
 
   openCreateDialog() {
-    this.$store.dispatch('dashboard/openTripEventForm', true);
+    this.$store.dispatch(Actions.OPEN_TRIP_EVENT_FORM, true);
   }
 }
 </script>

@@ -16,7 +16,7 @@
         <el-form-item label="Event time" prop="trip_date">
           <el-date-picker
             v-model="event_time"
-            type="daterange"
+            type="datetimerange"
             align="right"
             unlink-panels
             range-separator="To"
@@ -69,12 +69,17 @@
 
 <script lang="ts">
 import { isEmpty } from 'lodash';
-import { Vue, Component, Watch } from 'vue-property-decorator';
+import { Component, Vue, Watch } from 'vue-property-decorator';
+import moment = require('moment');
+
 import CategoryRadioButton from './CategoryRadioButton.vue';
 import { currency } from '../assets/currency';
 import { timezone } from '../assets/timezone';
+import { DATE_TIME_FORMAT } from '../constants/general';
 import { Event } from '../models/event';
 import { TripDay } from '../models/trip-day';
+import { Actions } from '../constants/actions';
+import { Messages } from '../constants/messages';
 
 @Component({
   components: { CategoryRadioButton },
@@ -86,7 +91,7 @@ export default class CreateEventDialog extends Vue {
 
   event_time: string[] = [];
   requiredRules = {
-    title: [{ required: true, message: 'Please input title', trigger: 'blur' }],
+    title: [{ required: true, message: Messages.title.required, trigger: 'blur' }],
   };
 
   tripEvent: Event = {
@@ -107,7 +112,7 @@ export default class CreateEventDialog extends Vue {
 
   @Watch('edit', { immediate: true, deep: true })
   onEditModeChanged(val: any) {
-    if (val.isEditMode === true && val.component === 'tripEvent') {
+    if (val.isEditMode && val.component === 'tripEvent') {
       this.event_time = [this.tripEvent.start_time, this.tripEvent.end_time];
 
       Object.keys(this.tripEventDetail).forEach(prop => {
@@ -141,8 +146,8 @@ export default class CreateEventDialog extends Vue {
   }
 
   closeDialog() {
-    this.$store.dispatch('dashboard/openTripEventForm', false);
-    this.$store.dispatch('dashboard/updateEdit', { isEditMode: false, idInEdit: 0, component: null });
+    this.$store.dispatch(Actions.OPEN_TRIP_EVENT_FORM, false);
+    this.$store.dispatch(Actions.UPDATE_EDIT, { isEditMode: false, idInEdit: 0, component: null });
     this.resetForm();
   }
 
@@ -156,12 +161,12 @@ export default class CreateEventDialog extends Vue {
           this.tripEvent.timezone_id = this.tripDetail.timezone_id;
         }
         if (!this.edit.isEditMode) {
-          this.$store.dispatch('trip/createTripEvent', this.tripEvent);
+          this.$store.dispatch(Actions.CREATE_TRIP_EVENT, this.tripEvent);
         } else {
-          this.$store.dispatch('trip/updateTripEvent', this.tripEvent);
+          this.$store.dispatch(Actions.UPDATE_TRIP_EVENT, this.tripEvent);
         }
-        this.$store.dispatch('dashboard/openTripEventForm', false);
-        this.$store.dispatch('dashboard/updateEdit', { isEditMode: false, idInEdit: 0, component: null });
+        this.$store.dispatch(Actions.OPEN_TRIP_EVENT_FORM, false);
+        this.$store.dispatch(Actions.UPDATE_EDIT, { isEditMode: false, idInEdit: 0, component: null });
         this.resetForm();
       } else {
         return false;

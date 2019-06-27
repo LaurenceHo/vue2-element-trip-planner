@@ -1,9 +1,11 @@
 import { ActionTree, Module, MutationTree } from 'vuex';
 
-import { RootState, AuthenticationState } from './types';
+import { AuthenticationState, RootState } from './types';
 import { User } from '../models/user';
 import { router } from '../router';
 import { UserService } from '../services/user-service';
+import { Actions } from '../constants/actions';
+import { Messages } from '../constants/messages';
 
 const user: User = JSON.parse(localStorage.getItem('user'));
 const initialState = user ? { status: { loggedIn: true }, user } : { status: { loggedIn: false }, user };
@@ -23,12 +25,12 @@ export const actions: ActionTree<AuthenticationState, RootState> = {
           router.push('/');
         } else {
           context.commit('loginFailure', result);
-          context.dispatch('alert/create', { type: 'error', message: result.error }, { root: true });
+          context.dispatch(Actions.CREATE_ALERT, { type: 'error', message: result.error }, { root: true });
         }
       })
       .catch((error: any) => {
         context.commit('loginFailure', error);
-        context.dispatch('alert/create', { type: 'error', message: error.error }, { root: true });
+        context.dispatch(Actions.CREATE_ALERT, { type: 'error', message: error.error }, { root: true });
       });
   },
   logout(context: any) {
@@ -40,13 +42,13 @@ export const actions: ActionTree<AuthenticationState, RootState> = {
     userService.register(payload).then((result: any) => {
       if (result.success) {
         context.dispatch(
-          'alert/create',
-          { type: 'info', message: 'Sign up successful, will be going to redirect to login page.' },
+          Actions.CREATE_ALERT,
+          { type: 'info', message: Messages.registerSuccess.message },
           { root: true }
         );
         setTimeout(() => router.push('/login'), 4000);
       } else {
-        context.dispatch('alert/create', { type: 'error', message: result.error }, { root: true });
+        context.dispatch(Actions.CREATE_ALERT, { type: 'error', message: result.error }, { root: true });
       }
     });
   },

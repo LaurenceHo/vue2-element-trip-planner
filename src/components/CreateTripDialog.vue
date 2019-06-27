@@ -44,16 +44,17 @@
 </template>
 
 <script lang="ts">
-// import * as moment from 'moment';
-import { Vue, Component, Watch } from 'vue-property-decorator';
+import { Component, Vue, Watch } from 'vue-property-decorator';
 import { timezone } from '../assets/timezone';
+import { Actions } from '../constants/actions';
+import { Messages } from '../constants/messages';
 
 @Component
 export default class CreateTripDialog extends Vue {
   timezoneList: any = timezone;
 
   requiredRules = {
-    destination: [{ required: true, message: 'Please input destination', trigger: 'blur' }],
+    destination: [{ required: true, message: Messages.destination.required, trigger: 'blur' }],
     // FIXME
     // timezone_id: [{ required: true, message: 'Please select timezone', trigger: 'blur' }],
     // trip_date: [{ required: true, message: 'Please pick a date', trigger: 'blur' }],
@@ -62,8 +63,7 @@ export default class CreateTripDialog extends Vue {
   trip_date: string[] = [];
   trip = {
     id: 0,
-    user_id: 0,
-    timezone_id: '',
+    timezone_id: 99,
     start_date: '',
     end_date: '',
     name: '',
@@ -77,7 +77,6 @@ export default class CreateTripDialog extends Vue {
       this.trip_date = [this.tripDetail.start_date, this.tripDetail.end_date];
       this.trip = {
         id: this.tripDetail.id,
-        user_id: 0,
         timezone_id: this.tripDetail.timezone_id,
         start_date: this.tripDetail.start_date,
         end_date: this.tripDetail.end_date,
@@ -97,8 +96,8 @@ export default class CreateTripDialog extends Vue {
   }
 
   closeDialog() {
-    this.$store.dispatch('dashboard/openTripForm', false);
-    this.$store.dispatch('dashboard/updateEdit', { isEditMode: false, idInEdit: 0, component: null });
+    this.$store.dispatch(Actions.OPEN_TRIP_FORM, false);
+    this.$store.dispatch(Actions.UPDATE_EDIT, { isEditMode: false, idInEdit: 0, component: null });
     this.resetForm();
   }
 
@@ -106,16 +105,15 @@ export default class CreateTripDialog extends Vue {
     let tripForm: any = this.$refs.tripForm;
     tripForm.validate((valid: boolean) => {
       if (valid) {
-        this.trip.user_id = this.$store.state.authentication.user.id;
         this.trip.start_date = this.trip_date[0];
         this.trip.end_date = this.trip_date[1];
         if (!this.edit.isEditMode) {
-          this.$store.dispatch('trip/createTrip', this.trip);
+          this.$store.dispatch(Actions.CREATE_TRIP, this.trip);
         } else {
-          this.$store.dispatch('trip/updateTrip', this.trip);
+          this.$store.dispatch(Actions.UPDATE_TRIP, this.trip);
         }
-        this.$store.dispatch('dashboard/openTripForm', false);
-        this.$store.dispatch('dashboard/updateEdit', { isEditMode: false, idInEdit: 0, component: null });
+        this.$store.dispatch(Actions.OPEN_TRIP_FORM, false);
+        this.$store.dispatch(Actions.UPDATE_EDIT, { isEditMode: false, idInEdit: 0, component: null });
         this.resetForm();
       } else {
         return false;
@@ -126,8 +124,7 @@ export default class CreateTripDialog extends Vue {
   resetForm() {
     this.trip = {
       id: 0,
-      user_id: 0,
-      timezone_id: '',
+      timezone_id: 99,
       start_date: '',
       end_date: '',
       name: '',

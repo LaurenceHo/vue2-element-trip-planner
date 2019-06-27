@@ -40,10 +40,12 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
+import { Actions } from '../constants/actions';
+import { Messages } from '../constants/messages';
 
 @Component
 export default class Register extends Vue {
-  emailRules = [{ type: 'email', message: 'Please input correct email address', trigger: ['blur', 'change'] }];
+  emailRules = [{ type: 'email', message: Messages.email.invalid, trigger: ['blur', 'change'] }];
   user = {
     email: '',
     username: '',
@@ -60,7 +62,7 @@ export default class Register extends Vue {
 
   handleSubmit(event: any) {
     event.preventDefault();
-    this.$store.dispatch('authentication/register', this.user);
+    this.$store.dispatch(Actions.REGISTER, this.user);
   }
 }
 </script>

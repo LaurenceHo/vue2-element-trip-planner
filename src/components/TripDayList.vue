@@ -15,6 +15,7 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
+import { Actions } from '../constants/actions';
 
 @Component
 export default class TripDay extends Vue {
@@ -23,11 +24,11 @@ export default class TripDay extends Vue {
   }
 
   openCreateDialog() {
-    this.$store.dispatch('dashboard/openTripDayForm', true);
+    this.$store.dispatch(Actions.OPEN_TRIP_DAY_FORM, true);
   }
 
   handleSelect(value: string) {
-    this.$store.dispatch('dashboard/updateSelectedTripDayId', this.tripDetail.trip_day[Number(value)].id);
+    this.$store.dispatch(Actions.UPDATE_SELECTED_TRIP_DAY_ID, this.tripDetail.trip_day[Number(value)].id);
   }
 }
 </script>

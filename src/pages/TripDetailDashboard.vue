@@ -21,6 +21,7 @@ import { Vue, Component } from 'vue-property-decorator';
 import TripDayList from '../components/TripDayList.vue';
 import TripItinerary from '../components/TripItinerary.vue';
 import TripBanner from '../components/TripBanner.vue';
+import { Actions } from '../constants/actions';
 
 @Component({
   components: { TripBanner, TripDayList, TripItinerary },
@@ -28,7 +29,7 @@ import TripBanner from '../components/TripBanner.vue';
 export default class TripDetailDashboard extends Vue {
   beforeMount() {
     if (this.$store.state.trip.tripDetail.id === 0) {
-      this.$store.dispatch('trip/getTripDetail', this.$route.params.trip_id);
+      this.$store.dispatch(Actions.GET_TRIP_DETAIL, this.$route.params.trip_id);
     }
   }
 }

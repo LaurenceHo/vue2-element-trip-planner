@@ -42,6 +42,7 @@ import { Vue, Component } from 'vue-property-decorator';
 import Hamburger from './Hamburger.vue';
 import CreateTripDialog from './CreateTripDialog.vue';
 import CreateTripDayDialog from './CreateTripDayDialog.vue';
+import { Actions } from '../constants/actions';
 
 @Component({
   components: { CreateTripDialog, CreateTripDayDialog, Hamburger },
@@ -52,7 +53,7 @@ export default class TopBar extends Vue {
   }
 
   toggleSideBar() {
-    this.$store.dispatch('dashboard/toggleSideBar');
+    this.$store.dispatch(Actions.TOGGLE_SIDE_BAR);
   }
 
   handleClick() {
@@ -61,7 +62,7 @@ export default class TopBar extends Vue {
 
   handleSelect(value: string) {
     if (value === 'logout') {
-      this.$store.dispatch('authentication/logout');
+      this.$store.dispatch(Actions.LOGOUT);
     }
   }
 }

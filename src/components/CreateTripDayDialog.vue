@@ -23,6 +23,7 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
+import { Actions } from '../constants/actions';
 
 @Component
 export default class CreateTripDayDialog extends Vue {
@@ -38,7 +39,7 @@ export default class CreateTripDayDialog extends Vue {
   };
 
   closeDialog() {
-    this.$store.dispatch('dashboard/openTripDayForm', false);
+    this.$store.dispatch(Actions.OPEN_TRIP_DAY_FORM, false);
     this.resetForm();
   }
 
@@ -48,8 +49,8 @@ export default class CreateTripDayDialog extends Vue {
       if (valid) {
         this.tripDay.trip_id = this.$store.state.trip.tripDetail.id;
         this.tripDay.user_id = this.$store.state.authentication.user.id;
-        this.$store.dispatch('dashboard/openTripDayForm', false);
-        this.$store.dispatch('trip/createTripDay', this.tripDay);
+        this.$store.dispatch(Actions.OPEN_TRIP_DAY_FORM, false);
+        this.$store.dispatch(Actions.CREATE_TRIP_DAY, this.tripDay);
         this.resetForm();
       } else {
         return false;
