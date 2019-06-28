@@ -4,10 +4,7 @@
       <el-col :span="2">
         <el-button @click="goBack"><font-awesome-icon icon="chevron-left"/></el-button>
       </el-col>
-      <el-col :span="22">
-        <div>
-          <el-button @click="editTrip" type="primary" size="mini"><font-awesome-icon icon="edit"/></el-button>
-        </div>
+      <el-col :span="21">
         <div class="trip-destination-text">
           {{ tripDetail.destination }}
         </div>
@@ -18,6 +15,9 @@
         <div v-if="tripDetail.name" class="trip-detail-text">
           {{ tripDetail.name }}
         </div>
+      </el-col>
+      <el-col :span="1">
+        <el-button @click="editTrip" type="primary" size="mini" circle><font-awesome-icon icon="edit"/></el-button>
       </el-col>
     </el-row>
   </el-card>
@@ -46,7 +46,7 @@ export default class TripDetailBanner extends Vue {
 
 <style scoped>
 .box-card {
-  min-height: 10rem;
+  min-height: 5rem;
 }
 .trip-destination-text {
   font-size: 2.2rem;

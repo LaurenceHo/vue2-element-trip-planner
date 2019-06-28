@@ -27,7 +27,7 @@
         </el-form-item>
       </el-row>
       <el-form-item label="Timezone">
-        <el-select v-model="tripEvent.timezone_id" filterable placeholder="please select timezone" style="width: 100%">
+        <el-select v-model="tripEvent.timezone_id" filterable style="width: 100%">
           <el-option v-for="tz in timezoneList" :label="tz.text" :value="tz.id" :key="tz.id" />
         </el-select>
       </el-form-item>
@@ -70,12 +70,10 @@
 <script lang="ts">
 import { isEmpty } from 'lodash';
 import { Component, Vue, Watch } from 'vue-property-decorator';
-import moment = require('moment');
 
 import EventCategory from './EventCategory.vue';
 import { currency } from '../assets/currency';
 import { timezone } from '../assets/timezone';
-import { DATE_TIME_FORMAT } from '../constants/general';
 import { Event } from '../models/event';
 import { TripDay } from '../models/trip-day';
 import { Actions } from '../constants/actions';
@@ -87,7 +85,6 @@ import { Messages } from '../constants/messages';
 export default class TripEventForm extends Vue {
   currencyList: any = currency;
   timezoneList: any = timezone;
-  currentTimezone = this.timezoneList.find((tz: any) => tz.id === this.$store.state.trip.tripDetail.timezone_id);
 
   event_time: string[] = [];
   requiredRules = {

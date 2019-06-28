@@ -12,7 +12,7 @@
     >
       <el-button @click="openCreateTripDialog" class="create-button" type="primary">
         <font-awesome-icon icon="plus" class="menu-icon" />
-        {{ this.$store.state.dashboard.toggle ? 'Create new trip' : '' }}
+        {{ this.$store.state.dashboard.toggle ? 'New Trip' : '' }}
       </el-button>
       <el-submenu index="dateFilter">
         <template slot="title">

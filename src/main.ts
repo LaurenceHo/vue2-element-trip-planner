@@ -14,6 +14,7 @@ import {
   faPlus,
   faShip,
   faSignOutAlt,
+  faTrashAlt,
   faUser,
   faWalking,
 } from '@fortawesome/free-solid-svg-icons';
@@ -44,6 +45,8 @@ import {
   Select,
   Submenu,
   Switch,
+  Table,
+  TableColumn,
   TimePicker,
 } from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
@@ -70,6 +73,7 @@ library.add(
   faPlus,
   faShip,
   faSignOutAlt,
+  faTrashAlt,
   faUser,
   faWalking
 );
@@ -101,6 +105,8 @@ Vue.use(Select);
 Vue.use(Switch);
 Vue.use(Submenu);
 Vue.use(TimePicker);
+Vue.use(Table);
+Vue.use(TableColumn);
 
 new Vue({
   el: '#app',

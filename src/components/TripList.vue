@@ -10,21 +10,20 @@
         <el-alert title="You have no trip..." type="info" show-icon />
       </div>
       <div v-else>
-        <div v-for="trip in tripList">
-          <el-card :key="trip.id" :title="trip.name" class="box-card">
-            <div slot="header" class="clearfix">
-              <span>{{ trip.name }}</span>
-              <el-button @click="goToTripDetail(trip.id)" class="detail-button" type="text">
-                Detail
-              </el-button>
-            </div>
-            <div>
-              <p>Start date: {{ trip.start_date }}</p>
-              <p>End date: {{ trip.end_date }}</p>
-              <p>Destination: {{ trip.destination }}</p>
-            </div>
-          </el-card>
-        </div>
+        <el-table :data="tripList" stripe style="width: 100%">
+          <el-table-column prop="name" label="Trip name" />
+          <el-table-column label="Date">
+            <template slot-scope="scope">
+              <span>{{ `${scope.row.start_date} ~ ${scope.row.end_date}` }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column prop="destination" label="Destination" />
+          <el-table-column fixed="right" label="Operations">
+            <template slot-scope="scope">
+              <el-button @click="goToTripDetail(scope.row)" type="text">Detail</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
       </div>
     </div>
   </div>
@@ -33,6 +32,7 @@
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
 import { Actions } from '../constants/actions';
+import { Trip } from '../models/trip';
 
 @Component
 export default class TripList extends Vue {
@@ -52,9 +52,9 @@ export default class TripList extends Vue {
     return this.$store.state.trip.isLoading;
   }
 
-  goToTripDetail(tripId: number) {
-    this.$router.push(`trip/${tripId}`);
-    this.$store.dispatch(Actions.GET_TRIP_DETAIL, tripId);
+  goToTripDetail(row: Trip) {
+    this.$router.push(`trip/${row.id}`);
+    this.$store.dispatch(Actions.GET_TRIP_DETAIL, row.id);
   }
 }
 </script>

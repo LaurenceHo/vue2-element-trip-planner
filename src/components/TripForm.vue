@@ -28,7 +28,7 @@
         </el-form-item>
       </el-row>
       <el-form-item label="Timezone" prop="timezone_id">
-        <el-select v-model="trip.timezone_id" filterable placeholder="please select timezone" style="width: 100%">
+        <el-select v-model="trip.timezone_id" filterable style="width: 100%">
           <el-option v-for="tz in timezoneList" :label="tz.text" :value="tz.id" :key="tz.id" />
         </el-select>
       </el-form-item>
