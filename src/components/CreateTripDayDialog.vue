@@ -32,7 +32,6 @@ export default class CreateTripDayDialog extends Vue {
   };
 
   tripDay = {
-    user_id: 0,
     trip_id: 0,
     trip_date: '',
     name: '',
@@ -48,7 +47,6 @@ export default class CreateTripDayDialog extends Vue {
     tripForm.validate((valid: boolean) => {
       if (valid) {
         this.tripDay.trip_id = this.$store.state.trip.tripDetail.id;
-        this.tripDay.user_id = this.$store.state.authentication.user.id;
         this.$store.dispatch(Actions.OPEN_TRIP_DAY_FORM, false);
         this.$store.dispatch(Actions.CREATE_TRIP_DAY, this.tripDay);
         this.resetForm();
@@ -60,7 +58,6 @@ export default class CreateTripDayDialog extends Vue {
 
   resetForm() {
     this.tripDay = {
-      user_id: 0,
       trip_id: 0,
       trip_date: '',
       name: '',

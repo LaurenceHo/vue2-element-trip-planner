@@ -75,15 +75,9 @@ export default class CreateTripDialog extends Vue {
   onEditModeChanged(val: any) {
     if (val.isEditMode && val.component === 'trip') {
       this.trip_date = [this.tripDetail.start_date, this.tripDetail.end_date];
-      this.trip = {
-        id: this.tripDetail.id,
-        timezone_id: this.tripDetail.timezone_id,
-        start_date: this.tripDetail.start_date,
-        end_date: this.tripDetail.end_date,
-        name: this.tripDetail.name,
-        destination: this.tripDetail.destination,
-        archived: this.tripDetail.archived,
-      };
+      Object.keys(this.tripDetail).forEach(prop => {
+        this.trip[prop] = this.tripDetail[prop];
+      });
     }
   }
 

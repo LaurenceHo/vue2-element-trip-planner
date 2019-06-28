@@ -19,18 +19,12 @@
           <font-awesome-icon icon="filter" class="menu-icon" />
           <span slot="title">Filter by date</span>
         </template>
-        <el-menu-item index="upcoming">
-          <font-awesome-icon icon="calendar-alt" class="menu-icon" />
-          Upcoming
-        </el-menu-item>
-        <el-menu-item index="current">
-          <font-awesome-icon icon="calendar-alt" class="menu-icon" />
-          Current
-        </el-menu-item>
-        <el-menu-item index="past">
-          <font-awesome-icon icon="calendar-alt" class="menu-icon" />
-          Past
-        </el-menu-item>
+        <div v-for="option in sideMenuOption">
+          <el-menu-item :index="option.key">
+            <font-awesome-icon icon="calendar-alt" class="menu-icon" />
+            {{ option.label }}
+          </el-menu-item>
+        </div>
       </el-submenu>
       <el-menu-item index="archived">
         <font-awesome-icon icon="archive" class="menu-icon" />
@@ -46,6 +40,12 @@ import { Actions } from '../constants/actions';
 
 @Component
 export default class SideMenu extends Vue {
+  sideMenuOption = [
+    { key: 'upcoming', label: 'Upcoming' },
+    { key: 'current', label: 'Currently Traveling' },
+    { key: 'past', label: 'Past' },
+  ];
+
   openCreateTripDialog() {
     this.$store.dispatch(Actions.OPEN_TRIP_FORM, true);
   }
@@ -64,7 +64,7 @@ export default class SideMenu extends Vue {
 }
 
 .side-menu:not(.el-menu--collapse) {
-  width: 13rem;
+  width: 16rem;
 }
 
 .menu-icon {

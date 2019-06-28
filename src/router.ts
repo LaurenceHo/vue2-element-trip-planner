@@ -20,7 +20,7 @@ export const router = new Router({
       component: Register,
     },
     {
-      path: '/',
+      path: '/dashboard',
       component: Layout,
       children: [
         {
@@ -28,10 +28,14 @@ export const router = new Router({
           component: TripDashboard,
         },
         {
-          path: 'trip/:trip_id',
+          path: '/trip/:trip_id',
           component: TripDetailDashboard,
         },
       ],
+    },
+    {
+      path: '/',
+      redirect: '/dashboard',
     },
     {
       path: '*',
