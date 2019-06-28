@@ -23,7 +23,7 @@ import { Actions } from '../constants/actions';
 @Component({
   components: { SideMenu, TopBar },
 })
-export default class Layout extends Vue {
+export default class Dashboard extends Vue {
   created() {
     this.$store.dispatch(Actions.CLEAR_ALERT);
   }

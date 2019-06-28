@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-row>
-      <trip-banner />
+      <trip-detail-banner />
     </el-row>
     <div style="padding-top: 1rem">
       <el-row>
@@ -19,12 +19,12 @@
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
 import TripDayList from '../components/TripDayList.vue';
-import TripItinerary from '../components/TripItinerary.vue';
-import TripBanner from '../components/TripBanner.vue';
+import TripEventList from '../components/TripEventList.vue';
+import TripDetailBanner from '../components/TripDetailBanner.vue';
 import { Actions } from '../constants/actions';
 
 @Component({
-  components: { TripBanner, TripDayList, TripItinerary },
+  components: { TripDetailBanner, TripDayList, TripItinerary: TripEventList },
 })
 export default class TripDetailDashboard extends Vue {
   beforeMount() {

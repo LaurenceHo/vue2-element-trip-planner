@@ -28,7 +28,7 @@ import { Vue, Component } from 'vue-property-decorator';
 import { Actions } from '../constants/actions';
 
 @Component
-export default class TripBanner extends Vue {
+export default class TripDetailBanner extends Vue {
   get tripDetail() {
     return this.$store.state.trip.tripDetail;
   }

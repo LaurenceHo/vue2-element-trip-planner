@@ -10,7 +10,10 @@
         <div v-if="tripDayDetail">
           <el-row>
             <el-col :xs="18" :sm="18" :md="19" :lg="21" :xl="21">
-              <div class="trip-date-text"><font-awesome-icon icon="calendar-alt" /> {{ tripDayDetail.trip_date }}</div>
+              <div class="trip-date-text">
+                <font-awesome-icon icon="calendar-alt" />
+                {{ tripDayDetail.trip_date }}
+              </div>
               <div class="trip-date-name">
                 {{ tripDayDetail.name }}
               </div>
@@ -25,7 +28,6 @@
           <div v-for="e in tripDayDetail.events">
             <event :event="e" />
           </div>
-          <create-event-dialog />
         </div>
         <div v-else>
           <el-alert title="You don't have trip detail. Please create trip day at first" type="info" show-icon />
@@ -37,16 +39,16 @@
 
 <script lang="ts">
 import { isEmpty } from 'lodash';
-import { Vue, Component } from 'vue-property-decorator';
-import CreateEventDialog from './CreateEventDialog.vue';
+import { Component, Vue } from 'vue-property-decorator';
+
 import Event from './Event.vue';
 import { TripDay } from '../models/trip-day';
 import { Actions } from '../constants/actions';
 
 @Component({
-  components: { CreateEventDialog, Event },
+  components: { Event },
 })
-export default class TripItinerary extends Vue {
+export default class TripEventList extends Vue {
   get alert() {
     return this.$store.state.alert;
   }
@@ -80,6 +82,7 @@ export default class TripItinerary extends Vue {
   line-height: 1.8rem;
   font-weight: 500;
 }
+
 .trip-date-name {
   line-height: 1.8rem;
 }

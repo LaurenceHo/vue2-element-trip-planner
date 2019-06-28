@@ -7,7 +7,7 @@
   >
     <el-form ref="eventForm" :rules="requiredRules" :model="tripEvent" class="create-event-form" label-width="8rem">
       <el-form-item label="Category">
-        <CategoryRadioButton v-model="tripEvent.category_id" />
+        <event-category v-model="tripEvent.category_id" />
       </el-form-item>
       <el-form-item label="Title" prop="title">
         <el-input v-model="tripEvent.title" />
@@ -72,7 +72,7 @@ import { isEmpty } from 'lodash';
 import { Component, Vue, Watch } from 'vue-property-decorator';
 import moment = require('moment');
 
-import CategoryRadioButton from './CategoryRadioButton.vue';
+import EventCategory from './EventCategory.vue';
 import { currency } from '../assets/currency';
 import { timezone } from '../assets/timezone';
 import { DATE_TIME_FORMAT } from '../constants/general';
@@ -82,9 +82,9 @@ import { Actions } from '../constants/actions';
 import { Messages } from '../constants/messages';
 
 @Component({
-  components: { CategoryRadioButton },
+  components: { EventCategory },
 })
-export default class CreateEventDialog extends Vue {
+export default class TripEventForm extends Vue {
   currencyList: any = currency;
   timezoneList: any = timezone;
   currentTimezone = this.timezoneList.find((tz: any) => tz.id === this.$store.state.trip.tripDetail.timezone_id);

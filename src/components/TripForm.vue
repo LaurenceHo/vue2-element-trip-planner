@@ -50,7 +50,7 @@ import { Actions } from '../constants/actions';
 import { Messages } from '../constants/messages';
 
 @Component
-export default class CreateTripDialog extends Vue {
+export default class TripForm extends Vue {
   timezoneList: any = timezone;
 
   requiredRules = {

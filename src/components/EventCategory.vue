@@ -13,7 +13,7 @@
 import { Component, Prop, Watch, Vue } from 'vue-property-decorator';
 
 @Component
-export default class CategoryRadioButton extends Vue {
+export default class EventCategory extends Vue {
   @Prop()
   value: number;
 

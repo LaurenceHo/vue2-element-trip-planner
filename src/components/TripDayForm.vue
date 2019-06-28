@@ -26,7 +26,7 @@ import { Vue, Component } from 'vue-property-decorator';
 import { Actions } from '../constants/actions';
 
 @Component
-export default class CreateTripDayDialog extends Vue {
+export default class TripDayForm extends Vue {
   requiredRules = {
     trip_date: [{ type: 'date', required: true, message: 'Please pick a date', trigger: 'change' }],
   };

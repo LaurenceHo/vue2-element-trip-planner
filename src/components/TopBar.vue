@@ -1,7 +1,9 @@
 <template>
   <div class="top-bar">
-    <create-trip-dialog />
-    <create-trip-day-dialog />
+    <trip-form />
+    <trip-day-form />
+    <trip-event-form />
+
     <el-button @click="handleClick" type="info" circle>
       <img src="../assets/vue-logo.png" height="30" alt="Vuejs" />
     </el-button>
@@ -38,14 +40,16 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator';
+import { Component, Vue } from 'vue-property-decorator';
+
 import Hamburger from './Hamburger.vue';
-import CreateTripDialog from './CreateTripDialog.vue';
-import CreateTripDayDialog from './CreateTripDayDialog.vue';
+import TripForm from './TripForm.vue';
+import TripDayForm from './TripDayForm.vue';
+import TripEventForm from './TripEventForm.vue';
 import { Actions } from '../constants/actions';
 
 @Component({
-  components: { CreateTripDialog, CreateTripDayDialog, Hamburger },
+  components: { Hamburger, TripForm, TripDayForm, TripEventForm },
 })
 export default class TopBar extends Vue {
   get user() {

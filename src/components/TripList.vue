@@ -35,7 +35,7 @@ import { Vue, Component } from 'vue-property-decorator';
 import { Actions } from '../constants/actions';
 
 @Component
-export default class TripDashboard extends Vue {
+export default class TripList extends Vue {
   beforeMount() {
     this.$store.dispatch(Actions.GET_TRIP_LIST);
   }
