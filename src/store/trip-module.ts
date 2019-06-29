@@ -1,5 +1,5 @@
 import { isEmpty, isNumber, map } from 'lodash';
-import * as moment from 'moment';
+import * as moment from 'moment-timezone';
 import { ActionTree, Module, MutationTree } from 'vuex';
 
 import { RootState, TripState } from './types';
@@ -9,6 +9,8 @@ import { TripDay } from '../models/trip-day';
 import { TripService } from '../services/trip-service';
 import { DATE_FORMAT, DATE_TIME_FORMAT } from '../constants/general';
 import { Actions } from '../constants/actions';
+import { Messages } from '../constants/messages';
+import { timezone } from '../assets/timezone';
 
 const tripList: Trip[] = [];
 const trip_day: TripDay[] = [];
@@ -107,15 +109,21 @@ const actions: ActionTree<TripState, RootState> = {
     context.commit('isLoading', true);
     tripService
       .getTripDetail(tripId)
-      .then((result: any) => {
+      .then((tripDetailResult: any) => {
         context.commit('isLoading', false);
-        if (result.success) {
-          context.commit('getTripDetail', result.result);
-          if (context.rootState.dashboard.selectedTripDayId === 0) {
-            context.dispatch(Actions.UPDATE_SELECTED_TRIP_DAY_ID, result.result.trip_day[0].id, { root: true });
-          }
+        if (isEmpty(tripDetailResult)) {
+          context.dispatch(Actions.CREATE_ALERT, { type: 'error', message: Messages.response.message }, { root: true });
         } else {
-          context.dispatch(Actions.CREATE_ALERT, { type: 'error', message: result.error }, { root: true });
+          if (tripDetailResult.success) {
+            context.commit('getTripDetail', tripDetailResult.result);
+            if (context.rootState.dashboard.selectedTripDayId === 0) {
+              context.dispatch(Actions.UPDATE_SELECTED_TRIP_DAY_ID, tripDetailResult.result.trip_day[0].id, {
+                root: true,
+              });
+            }
+          } else {
+            context.dispatch(Actions.CREATE_ALERT, { type: 'error', message: tripDetailResult.error }, { root: true });
+          }
         }
       })
       .catch((error: any) => {
@@ -251,6 +259,7 @@ const mutations: MutationTree<TripState> = {
   },
   getTripDetail(state: TripState, payload: any) {
     if (payload) {
+      const timezoneObject = timezone.find(tz => tz.id === payload.timezone_id);
       if (!isEmpty(payload.start_date)) {
         payload.start_date = moment(payload.start_date).format(DATE_FORMAT);
       }
@@ -262,10 +271,16 @@ const mutations: MutationTree<TripState> = {
           tripDay.trip_date = moment(tripDay.trip_date).format(DATE_FORMAT);
           map(tripDay.events, (tripEvent: Event) => {
             if (!isEmpty(tripEvent.start_time)) {
-              tripEvent.start_time = moment(tripEvent.start_time).format(DATE_TIME_FORMAT);
+              tripEvent.start_time = moment
+                .utc(tripEvent.start_time)
+                .tz(timezoneObject.utc)
+                .format(DATE_TIME_FORMAT);
             }
             if (!isEmpty(tripEvent.end_time)) {
-              tripEvent.end_time = moment(tripEvent.end_time).format(DATE_TIME_FORMAT);
+              tripEvent.end_time = moment
+                .utc(tripEvent.end_time)
+                .tz(timezoneObject.utc)
+                .format(DATE_TIME_FORMAT);
             }
             return tripEvent;
           });

@@ -1,18 +1,18 @@
 <template>
   <div>
     <el-row>
-      <trip-detail-banner />
+      <el-col :xs="24" :sm="24" :md="24" :lg="23" :xl="21" class="trip-event-list-outer">
+        <trip-detail-banner />
+      </el-col>
     </el-row>
-    <div style="padding-top: 1rem">
-      <el-row>
-        <el-col :xs="6" :sm="6" :md="6" :lg="6" :xl="4">
-          <trip-day-list />
-        </el-col>
-        <el-col :xs="18" :sm="17" :md="17" :lg="16" :xl="16">
-          <trip-itinerary />
-        </el-col>
-      </el-row>
-    </div>
+    <el-row style="padding-top: 1rem">
+      <el-col :xs="6" :sm="6" :md="5" :lg="4" :xl="3">
+        <trip-day-list />
+      </el-col>
+      <el-col :xs="18" :sm="18" :md="19" :lg="19" :xl="18" class="trip-event-list-outer">
+        <trip-event-list />
+      </el-col>
+    </el-row>
   </div>
 </template>
 
@@ -24,7 +24,7 @@ import TripDetailBanner from '../components/TripDetailBanner.vue';
 import { Actions } from '../constants/actions';
 
 @Component({
-  components: { TripDetailBanner, TripDayList, TripItinerary: TripEventList },
+  components: { TripDetailBanner, TripDayList, TripEventList },
 })
 export default class TripDetailDashboard extends Vue {
   beforeMount() {
@@ -35,4 +35,8 @@ export default class TripDetailDashboard extends Vue {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.trip-event-list-outer {
+  padding-right: 1rem;
+}
+</style>
