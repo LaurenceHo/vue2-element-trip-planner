@@ -9,7 +9,13 @@
       <div v-else>
         <div v-if="tripDayDetail">
           <el-row class="trip-date-banner">
-            <el-col :xs="18" :sm="18" :md="19" :lg="20" :xl="21">
+            <el-col :xs="10" :sm="8" :md="6" :lg="4" :xl="3">
+              <el-button @click="openTripEventForm" class="create-button" type="primary">
+                <font-awesome-icon icon="plus" />
+                New Event
+              </el-button>
+            </el-col>
+            <el-col :xs="14" :sm="16" :md="18" :lg="20" :xl="21">
               <div class="trip-date-text">
                 <font-awesome-icon icon="calendar-alt" />
                 {{ tripDayDetail.trip_date }}
@@ -17,12 +23,6 @@
               <div class="trip-date-name">
                 {{ tripDayDetail.name }}
               </div>
-            </el-col>
-            <el-col :xs="6" :sm="6" :md="5" :lg="4" :xl="3">
-              <el-button @click="openTripEventForm" class="create-button" type="primary">
-                <font-awesome-icon icon="plus" />
-                New Event
-              </el-button>
             </el-col>
           </el-row>
           <div v-for="tripEvent in tripDayDetail.events">

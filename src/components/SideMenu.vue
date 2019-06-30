@@ -3,16 +3,16 @@
     <el-menu
       @select="handleSelect"
       :default-openeds="['dateFilter']"
-      :collapse="!this.$store.state.dashboard.toggle"
+      :collapse="!$store.state.dashboard.toggle"
       class="side-menu"
       background-color="#2d3a4b"
       text-color="#fff"
       active-text-color="#ffd04b"
       default-active="current"
     >
-      <el-button @click="openCreateTripDialog" class="create-button" type="primary">
+      <el-button @click="openCreateTripDialog" :disabled="shouldDisable" class="create-button" type="info">
         <font-awesome-icon icon="plus" class="menu-icon" />
-        {{ this.$store.state.dashboard.toggle ? 'New Trip' : '' }}
+        {{ $store.state.dashboard.toggle ? 'New Trip' : '' }}
       </el-button>
       <el-submenu index="dateFilter">
         <template slot="title">
@@ -20,13 +20,13 @@
           <span slot="title">Filter by date</span>
         </template>
         <div v-for="option in sideMenuOption">
-          <el-menu-item :index="option.key">
+          <el-menu-item :index="option.key" :disabled="shouldDisable">
             <font-awesome-icon icon="calendar-alt" class="menu-icon" />
             {{ option.label }}
           </el-menu-item>
         </div>
       </el-submenu>
-      <el-menu-item index="archived">
+      <el-menu-item :disabled="shouldDisable" index="archived">
         <font-awesome-icon icon="archive" class="menu-icon" />
         <span>Archived</span>
       </el-menu-item>
@@ -45,6 +45,10 @@ export default class SideMenu extends Vue {
     { key: 'current', label: 'Currently Traveling' },
     { key: 'past', label: 'Past' },
   ];
+
+  get shouldDisable() {
+    return !this.$route.path.includes('dashboard');
+  }
 
   openCreateTripDialog() {
     this.$store.dispatch(Actions.OPEN_TRIP_FORM, true);
@@ -75,5 +79,7 @@ export default class SideMenu extends Vue {
   background-color: #2d3a4b;
   border-color: #2d3a4b;
   margin-top: 1rem;
+  width: 100%;
+  text-align: left;
 }
 </style>

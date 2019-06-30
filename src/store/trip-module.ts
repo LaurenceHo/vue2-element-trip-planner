@@ -62,24 +62,19 @@ const _generateGetTripListPayload = (currentMenu: 'archived' | 'current' | 'upco
 };
 
 const _createEventRequestPayload = (payload: Event) => {
-  let newPayload: Event = {
-    trip_day_id: 0,
-    category_id: 0,
-    timezone_id: 0,
-    title: '',
-  };
+  // FIXME
   Object.keys(payload).forEach(prop => {
-    // FIXME
-    if (prop === 'start_location' || prop === 'end_location' || prop === 'note' || prop === 'cost') {
-      // @ts-ignore
-      newPayload[prop] = payload[prop];
-    } else {
-      if ((isNumber(payload[prop]) && payload[prop] > 0) || !isEmpty(payload[prop])) {
-        newPayload[prop] = payload[prop];
+    if (prop === 'start_time' || prop === 'end_time') {
+      if (isEmpty(payload[prop])) {
+        payload[prop] = null;
       }
+    } else if (prop === 'currency_id' && payload[prop] === 0) {
+      payload[prop] = null;
+    } else if (prop === 'cost' && isEmpty(payload[prop])) {
+      payload[prop] = null;
     }
   });
-  return newPayload;
+  return payload;
 };
 
 const actions: ActionTree<TripState, RootState> = {
@@ -105,10 +100,10 @@ const actions: ActionTree<TripState, RootState> = {
         context.dispatch(Actions.CREATE_ALERT, { type: 'error', message: error.error }, { root: true });
       });
   },
-  getTripDetail(context: any, tripId: number) {
+  getTripDetail(context: any, payload: { tripId: number; isCreateOrUpdate: boolean }) {
     context.commit('isLoading', true);
     tripService
-      .getTripDetail(tripId)
+      .getTripDetail(payload.tripId)
       .then((tripDetailResult: any) => {
         context.commit('isLoading', false);
         if (isEmpty(tripDetailResult)) {
@@ -116,7 +111,7 @@ const actions: ActionTree<TripState, RootState> = {
         } else {
           if (tripDetailResult.success) {
             context.commit('getTripDetail', tripDetailResult.result);
-            if (context.rootState.dashboard.selectedTripDayId === 0) {
+            if (!payload.isCreateOrUpdate) {
               context.dispatch(Actions.UPDATE_SELECTED_TRIP_DAY_ID, tripDetailResult.result.trip_day[0].id, {
                 root: true,
               });
@@ -160,7 +155,11 @@ const actions: ActionTree<TripState, RootState> = {
       .createTripDay(payload)
       .then((result: any) => {
         if (result.success) {
-          context.dispatch(Actions.GET_TRIP_DETAIL, payload.trip_id, { root: true });
+          context.dispatch(
+            Actions.GET_TRIP_DETAIL,
+            { tripId: payload.trip_id, isCreateOrUpdate: true },
+            { root: true }
+          );
         } else {
           context.commit('isLoading', false);
           context.dispatch(Actions.CREATE_ALERT, { type: 'error', message: result.error }, { root: true });
@@ -184,7 +183,11 @@ const actions: ActionTree<TripState, RootState> = {
       .createTripEvent(context.state.tripDetail.id, newPayload)
       .then((result: any) => {
         if (result.success) {
-          context.dispatch(Actions.GET_TRIP_DETAIL, context.state.tripDetail.id, { root: true });
+          context.dispatch(
+            Actions.GET_TRIP_DETAIL,
+            { tripId: context.state.tripDetail.id, isCreateOrUpdate: true },
+            { root: true }
+          );
         } else {
           context.commit('isLoading', false);
           context.dispatch(Actions.CREATE_ALERT, { type: 'error', message: result.error }, { root: true });
@@ -231,8 +234,11 @@ const actions: ActionTree<TripState, RootState> = {
       .updateTripEvent(context.state.tripDetail.id, newPayload)
       .then((result: any) => {
         if (result.success) {
-          console.log('tripDetail.id', context.state.tripDetail.id);
-          context.dispatch(Actions.GET_TRIP_DETAIL, context.state.tripDetail.id, { root: true });
+          context.dispatch(
+            Actions.GET_TRIP_DETAIL,
+            { tripId: context.state.tripDetail.id, isCreateOrUpdate: true },
+            { root: true }
+          );
         } else {
           context.commit('isLoading', false);
           context.dispatch(Actions.CREATE_ALERT, { type: 'error', message: result.error }, { root: true });

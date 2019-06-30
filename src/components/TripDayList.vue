@@ -1,13 +1,19 @@
 <template>
   <el-menu @select="handleSelect" class="trip-day-menu" default-active="0">
-    <el-button @click="openTripEventForm" class="create-button" type="primary">
+    <el-button @click="openTripDayForm" type="primary">
       <font-awesome-icon icon="plus" />
       New Day
     </el-button>
     <div v-for="(tripDay, index) in tripDetail.trip_day">
       <el-menu-item :index="String(index)">
-        <span>{{ tripDay.trip_date }}</span>
-        <font-awesome-icon icon="chevron-right" />
+        <el-row>
+          <el-col :span="23">
+            <span>{{ tripDay.trip_date }}</span>
+          </el-col>
+          <el-col :span="1">
+            <font-awesome-icon icon="chevron-right" />
+          </el-col>
+        </el-row>
       </el-menu-item>
     </div>
   </el-menu>
@@ -23,7 +29,7 @@ export default class TripDay extends Vue {
     return this.$store.state.trip.tripDetail;
   }
 
-  openCreateDialog() {
+  openTripDayForm() {
     this.$store.dispatch(Actions.OPEN_TRIP_DAY_FORM, true);
   }
 
@@ -35,6 +41,7 @@ export default class TripDay extends Vue {
 
 <style scoped>
 .el-button {
+  margin-bottom: 0.5rem;
   margin-left: 1rem;
 }
 

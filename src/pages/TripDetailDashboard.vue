@@ -18,6 +18,8 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
+import { isEmpty } from 'lodash';
+
 import TripDayList from '../components/TripDayList.vue';
 import TripEventList from '../components/TripEventList.vue';
 import TripDetailBanner from '../components/TripDetailBanner.vue';
@@ -27,10 +29,11 @@ import { Actions } from '../constants/actions';
   components: { TripDetailBanner, TripDayList, TripEventList },
 })
 export default class TripDetailDashboard extends Vue {
-  beforeMount() {
-    if (this.$store.state.trip.tripDetail.id === 0) {
-      this.$store.dispatch(Actions.GET_TRIP_DETAIL, this.$route.params.trip_id);
+  mounted() {
+    if (isEmpty(this.$store.state.trip.tripList)) {
+      this.$store.dispatch(Actions.GET_TRIP_LIST);
     }
+    this.$store.dispatch(Actions.GET_TRIP_DETAIL, { tripId: this.$route.params.trip_id, isCreateOrUpdate: false });
   }
 }
 </script>

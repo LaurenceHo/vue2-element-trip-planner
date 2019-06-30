@@ -1,6 +1,6 @@
 <template>
   <el-dialog
-    :visible.sync="this.$store.state.dashboard.openTripDayForm"
+    :visible.sync="$store.state.dashboard.openTripDayForm"
     :show-close="false"
     custom-class="create-trip-day-dialog"
     title="Create trip day"

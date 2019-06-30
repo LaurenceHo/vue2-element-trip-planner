@@ -1,6 +1,6 @@
 <template>
   <el-dialog
-    :visible.sync="this.$store.state.dashboard.openTripEventForm"
+    :visible.sync="$store.state.dashboard.openTripEventForm"
     :show-close="false"
     :title="edit.isEditMode ? 'Edit event' : 'Create event'"
     width="48rem"
@@ -34,7 +34,7 @@
       <el-row>
         <el-col :span="12">
           <el-form-item label="Cost">
-            <el-input v-model="tripEvent.cost" style="width: 100%" />
+            <el-input v-model="tripEvent.cost" type="number" style="width: 100%" />
           </el-form-item>
         </el-col>
         <el-col :span="12">
@@ -45,6 +45,7 @@
               placeholder="please select currency"
               style="width: 100%"
             >
+              <el-option :value="0" label="--" />
               <el-option v-for="c in currencyList" :label="`${c.name} (${c.code})`" :value="c.id" :key="c.id" />
             </el-select>
           </el-form-item>
@@ -92,8 +93,7 @@ export default class TripEventForm extends Vue {
   };
 
   tripEvent: Event = {
-    id: 0,
-    trip_day_id: this.selectedTripDayId,
+    trip_day_id: 0,
     timezone_id: this.$store.state.trip.tripDetail.timezone_id,
     category_id: 1,
     currency_id: 0,
@@ -152,12 +152,15 @@ export default class TripEventForm extends Vue {
     let eventForm: any = this.$refs.eventForm;
     eventForm.validate((valid: boolean) => {
       if (valid) {
-        this.tripEvent.start_time = this.event_time[0];
-        this.tripEvent.end_time = this.event_time[1];
+        if (!isEmpty(this.event_time)) {
+          this.tripEvent.start_time = this.event_time[0];
+          this.tripEvent.end_time = this.event_time[1];
+        }
         if (isEmpty(this.tripEvent.timezone_id)) {
           this.tripEvent.timezone_id = this.tripDetail.timezone_id;
         }
         if (!this.edit.isEditMode) {
+          this.tripEvent.trip_day_id = this.selectedTripDayId;
           this.$store.dispatch(Actions.CREATE_TRIP_EVENT, this.tripEvent);
         } else {
           this.$store.dispatch(Actions.UPDATE_TRIP_EVENT, this.tripEvent);
@@ -173,7 +176,6 @@ export default class TripEventForm extends Vue {
 
   resetForm() {
     this.tripEvent = {
-      id: 0,
       trip_day_id: this.selectedTripDayId,
       timezone_id: this.$store.state.trip.tripDetail.timezone_id,
       category_id: 1,

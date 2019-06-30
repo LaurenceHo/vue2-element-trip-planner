@@ -54,7 +54,7 @@ export default class TripList extends Vue {
 
   goToTripDetail(row: Trip) {
     this.$router.push(`trip/${row.id}`);
-    this.$store.dispatch(Actions.GET_TRIP_DETAIL, row.id);
+    this.$store.dispatch(Actions.GET_TRIP_DETAIL, { tripId: row.id, isCreateOrUpdate: false });
   }
 }
 </script>

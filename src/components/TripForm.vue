@@ -1,6 +1,6 @@
 <template>
   <el-dialog
-    :visible.sync="this.$store.state.dashboard.openTripForm"
+    :visible.sync="$store.state.dashboard.openTripForm"
     :show-close="false"
     :title="edit.isEditMode ? 'Edit trip' : 'Create trip'"
     custom-class="create-trip-dialog"
@@ -48,6 +48,7 @@ import { Component, Vue, Watch } from 'vue-property-decorator';
 import { timezone } from '../assets/timezone';
 import { Actions } from '../constants/actions';
 import { Messages } from '../constants/messages';
+import { Trip } from '../models/trip';
 
 @Component
 export default class TripForm extends Vue {
@@ -56,13 +57,11 @@ export default class TripForm extends Vue {
   requiredRules = {
     destination: [{ required: true, message: Messages.destination.required, trigger: 'blur' }],
     // FIXME
-    // timezone_id: [{ required: true, message: 'Please select timezone', trigger: 'blur' }],
     // trip_date: [{ required: true, message: 'Please pick a date', trigger: 'blur' }],
   };
 
   trip_date: string[] = [];
-  trip = {
-    id: 0,
+  trip: Trip = {
     timezone_id: 99,
     start_date: '',
     end_date: '',
@@ -75,9 +74,15 @@ export default class TripForm extends Vue {
   onEditModeChanged(val: any) {
     if (val.isEditMode && val.component === 'trip') {
       this.trip_date = [this.tripDetail.start_date, this.tripDetail.end_date];
-      Object.keys(this.tripDetail).forEach(prop => {
-        this.trip[prop] = this.tripDetail[prop];
-      });
+      this.trip = {
+        id: this.tripDetail.id,
+        timezone_id: this.tripDetail.timezone_id,
+        start_date: this.tripDetail.start_date,
+        end_date: this.tripDetail.end_date,
+        name: this.tripDetail.name,
+        destination: this.tripDetail.destination,
+        archived: this.tripDetail.archived,
+      };
     }
   }
 
@@ -117,7 +122,6 @@ export default class TripForm extends Vue {
 
   resetForm() {
     this.trip = {
-      id: 0,
       timezone_id: 99,
       start_date: '',
       end_date: '',

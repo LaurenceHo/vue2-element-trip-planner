@@ -7,11 +7,7 @@
     <el-button @click="handleClick" type="info" circle>
       <img src="../assets/vue-logo.png" height="30" alt="Vuejs" />
     </el-button>
-    <hamburger
-      :toggle-click="toggleSideBar"
-      :is-active="this.$store.state.dashboard.toggle"
-      class="hamburger-container"
-    />
+    <hamburger :toggle-click="toggleSideBar" :is-active="$store.state.dashboard.toggle" class="hamburger-container" />
     <div class="right-menu">
       <el-dropdown @command="handleSelect" class="avatar-container right-menu-item hover-effect" trigger="click">
         <div class="avatar-wrapper">
