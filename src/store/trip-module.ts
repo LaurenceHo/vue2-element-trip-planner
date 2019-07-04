@@ -22,6 +22,8 @@ const state: TripState = {
     timezone_id: 0,
     start_date: '',
     end_date: '',
+    start_date_object: new Date(),
+    end_date_object: new Date(),
     name: '',
     destination: '',
     archived: false,
@@ -128,11 +130,11 @@ const actions: ActionTree<TripState, RootState> = {
   },
   createTrip(context: any, payload: Trip) {
     context.commit('isLoading', true);
-    if (isEmpty(payload.name)) {
-      delete payload.name;
-    }
-    payload.start_date = moment(payload.start_date).format(DATE_FORMAT);
-    payload.end_date = moment(payload.end_date).format(DATE_FORMAT);
+    payload.start_date = moment(payload.start_date_object).format(DATE_FORMAT);
+    payload.end_date = moment(payload.end_date_object).format(DATE_FORMAT);
+    delete payload.start_date_object;
+    delete payload.end_date_object;
+
     tripService
       .createTrip(payload)
       .then((result: any) => {
@@ -150,7 +152,9 @@ const actions: ActionTree<TripState, RootState> = {
   },
   createTripDay(context: any, payload: TripDay) {
     context.commit('isLoading', true);
-    payload.trip_date = moment(payload.trip_date).format(DATE_FORMAT);
+    payload.trip_date = moment(payload.trip_date_object).format(DATE_FORMAT);
+    delete payload.trip_date_object;
+
     tripService
       .createTripDay(payload)
       .then((result: any) => {
@@ -200,8 +204,10 @@ const actions: ActionTree<TripState, RootState> = {
   },
   updateTrip(context: any, payload: Trip) {
     context.commit('isLoading', true);
-    payload.start_date = moment(payload.start_date).format(DATE_FORMAT);
-    payload.end_date = moment(payload.end_date).format(DATE_FORMAT);
+    payload.start_date = moment(payload.start_date_object).format(DATE_FORMAT);
+    payload.end_date = moment(payload.end_date_object).format(DATE_FORMAT);
+    delete payload.start_date_object;
+    delete payload.end_date_object;
 
     tripService
       .updateTrip(payload)

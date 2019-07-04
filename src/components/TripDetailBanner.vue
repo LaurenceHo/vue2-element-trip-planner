@@ -9,8 +9,10 @@
           {{ tripDetail.destination }}
         </div>
         <div class="trip-date-text">
-          <font-awesome-icon icon="calendar-alt" /> {{ tripDetail.start_date }} to
-          {{ tripDetail.end_date }}
+          <font-awesome-icon icon="calendar-alt" /> {{ tripDetail.start_date }} to {{ tripDetail.end_date }} ({{
+            dateDiff
+          }}
+          days)
         </div>
         <div v-if="tripDetail.name" class="trip-detail-text">
           {{ tripDetail.name }}
@@ -25,6 +27,7 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
+import * as moment from 'moment';
 import { Actions } from '../constants/actions';
 
 @Component
@@ -33,6 +36,11 @@ export default class TripDetailBanner extends Vue {
     return this.$store.state.trip.tripDetail;
   }
 
+  get dateDiff() {
+    const startDateMoment = moment(this.tripDetail.start_date);
+    const endDateMoment = moment(this.tripDetail.end_date);
+    return endDateMoment.diff(startDateMoment, 'days');
+  }
   editTrip() {
     this.$store.dispatch(Actions.OPEN_TRIP_FORM, true);
     this.$store.dispatch(Actions.UPDATE_EDIT, { isEditMode: true, idInEdit: this.tripDetail.id, component: 'trip' });

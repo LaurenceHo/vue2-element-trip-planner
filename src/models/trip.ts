@@ -5,6 +5,8 @@ export interface Trip {
   timezone_id: number;
   start_date: string;
   end_date: string;
+  start_date_object: Date;
+  end_date_object: Date;
   name?: string;
   destination: string;
   archived: boolean;

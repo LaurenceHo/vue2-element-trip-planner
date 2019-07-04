@@ -1,4 +1,7 @@
 export const Messages = {
+  date: {
+    required: 'Date is required',
+  },
   email: {
     invalid: 'Please enter valid email',
     required: 'Email address is required',

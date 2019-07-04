@@ -14,18 +14,28 @@
         <el-input v-model="trip.destination" />
       </el-form-item>
       <el-row>
-        <el-form-item label="Trip date" prop="trip_date">
-          <el-date-picker
-            v-model="trip_date"
-            type="daterange"
-            align="right"
-            unlink-panels
-            range-separator="To"
-            start-placeholder="Start date"
-            end-placeholder="End date"
-            style="width: 100%"
-          />
-        </el-form-item>
+        <el-col :span="12">
+          <el-form-item label="Start date" prop="start_date_object">
+            <el-date-picker
+              :picker-options="{ disabledDate: disabledStartDate }"
+              v-model="trip.start_date_object"
+              style="width: 100%"
+              type="date"
+              placeholder="Start date"
+            />
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="End date" prop="end_date_object">
+            <el-date-picker
+              :picker-options="{ disabledDate: disabledEndDate }"
+              v-model="trip.end_date_object"
+              style="width: 100%;"
+              type="date"
+              placeholder="End date"
+            />
+          </el-form-item>
+        </el-col>
       </el-row>
       <el-form-item label="Timezone" prop="timezone_id">
         <el-select v-model="trip.timezone_id" filterable style="width: 100%">
@@ -56,15 +66,16 @@ export default class TripForm extends Vue {
 
   requiredRules = {
     destination: [{ required: true, message: Messages.destination.required, trigger: 'blur' }],
-    // FIXME
-    // trip_date: [{ required: true, message: 'Please pick a date', trigger: 'blur' }],
+    start_date_object: [{ type: 'date', required: true, message: Messages.date.required, trigger: 'change' }],
+    end_date_object: [{ type: 'date', required: true, message: Messages.date.required, trigger: 'change' }],
   };
 
-  trip_date: string[] = [];
   trip: Trip = {
     timezone_id: 99,
     start_date: '',
     end_date: '',
+    start_date_object: new Date(),
+    end_date_object: new Date(),
     name: '',
     destination: '',
     archived: false,
@@ -73,12 +84,13 @@ export default class TripForm extends Vue {
   @Watch('edit', { immediate: true, deep: true })
   onEditModeChanged(val: any) {
     if (val.isEditMode && val.component === 'trip') {
-      this.trip_date = [this.tripDetail.start_date, this.tripDetail.end_date];
       this.trip = {
         id: this.tripDetail.id,
         timezone_id: this.tripDetail.timezone_id,
         start_date: this.tripDetail.start_date,
         end_date: this.tripDetail.end_date,
+        start_date_object: new Date(this.tripDetail.start_date),
+        end_date_object: new Date(this.tripDetail.end_date),
         name: this.tripDetail.name,
         destination: this.tripDetail.destination,
         archived: this.tripDetail.archived,
@@ -94,26 +106,38 @@ export default class TripForm extends Vue {
     return this.$store.state.trip.tripDetail;
   }
 
+  disabledStartDate(date: Date) {
+    if (this.trip.end_date_object) {
+      return date > this.trip.end_date_object;
+    }
+  }
+
+  disabledEndDate(date: Date) {
+    if (this.trip.start_date_object) {
+      return date < this.trip.start_date_object;
+    }
+  }
+
   closeDialog() {
     this.$store.dispatch(Actions.OPEN_TRIP_FORM, false);
-    this.$store.dispatch(Actions.UPDATE_EDIT, { isEditMode: false, idInEdit: 0, component: null });
+    if (this.edit.isEditMode) {
+      this.$store.dispatch(Actions.UPDATE_EDIT, { isEditMode: false, idInEdit: 0, component: null });
+    }
     this.resetForm();
   }
 
   createTrip() {
-    let tripForm: any = this.$refs.tripForm;
+    const tripForm: any = this.$refs.tripForm;
     tripForm.validate((valid: boolean) => {
       if (valid) {
-        this.trip.start_date = this.trip_date[0];
-        this.trip.end_date = this.trip_date[1];
         if (!this.edit.isEditMode) {
           this.$store.dispatch(Actions.CREATE_TRIP, this.trip);
         } else {
           this.$store.dispatch(Actions.UPDATE_TRIP, this.trip);
+          this.$store.dispatch(Actions.UPDATE_EDIT, { isEditMode: false, idInEdit: 0, component: null });
         }
         this.$store.dispatch(Actions.OPEN_TRIP_FORM, false);
-        this.$store.dispatch(Actions.UPDATE_EDIT, { isEditMode: false, idInEdit: 0, component: null });
-        this.resetForm();
+        tripForm.resetFields();
       } else {
         return false;
       }
@@ -121,10 +145,15 @@ export default class TripForm extends Vue {
   }
 
   resetForm() {
+    const tripForm: any = this.$refs.tripForm;
+    tripForm.resetFields();
+
     this.trip = {
       timezone_id: 99,
       start_date: '',
       end_date: '',
+      start_date_object: new Date(),
+      end_date_object: new Date(),
       name: '',
       destination: '',
       archived: false,
