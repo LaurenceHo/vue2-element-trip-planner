@@ -1,4 +1,4 @@
-import { isEmpty, isNumber, map } from 'lodash';
+import { isEmpty, map } from 'lodash';
 import * as moment from 'moment-timezone';
 import { ActionTree, Module, MutationTree } from 'vuex';
 
@@ -6,8 +6,9 @@ import { RootState, TripState } from './types';
 import { Event } from '../models/event';
 import { Trip } from '../models/trip';
 import { TripDay } from '../models/trip-day';
+import { EventService } from '../services/event-service';
 import { TripService } from '../services/trip-service';
-import { DATE_FORMAT, DATE_TIME_FORMAT } from '../constants/general';
+import { DATE_FORMAT, DATE_TIME_FORMAT, DATE_TIME_TZ_FORMAT } from '../constants/general';
 import { Actions } from '../constants/actions';
 import { Messages } from '../constants/messages';
 import { timezone } from '../assets/timezone';
@@ -22,8 +23,6 @@ const state: TripState = {
     timezone_id: 0,
     start_date: '',
     end_date: '',
-    start_date_object: new Date(),
-    end_date_object: new Date(),
     name: '',
     destination: '',
     archived: false,
@@ -31,6 +30,7 @@ const state: TripState = {
   },
 };
 const namespaced = true;
+const eventService = new EventService();
 const tripService = new TripService();
 
 const _generateGetTripListPayload = (currentMenu: 'archived' | 'current' | 'upcoming' | 'past') => {
@@ -64,13 +64,22 @@ const _generateGetTripListPayload = (currentMenu: 'archived' | 'current' | 'upco
 };
 
 const _createEventRequestPayload = (payload: Event) => {
-  // FIXME
   Object.keys(payload).forEach(prop => {
-    if (prop === 'start_time' || prop === 'end_time') {
+    if (prop === 'start_time_object') {
       if (isEmpty(payload[prop])) {
         payload[prop] = null;
+        payload['start_time'] = null;
+      }
+    } else if (prop === 'end_time_object') {
+      if (isEmpty(payload[prop])) {
+        payload[prop] = null;
+        payload['end_time'] = null;
       }
     } else if (prop === 'currency_id' && payload[prop] === 0) {
+      payload[prop] = null;
+    } else if (prop === 'start_time_timezone_id' && payload[prop] === 0) {
+      payload[prop] = null;
+    } else if (prop === 'end_time_timezone_id' && payload[prop] === 0) {
       payload[prop] = null;
     } else if (prop === 'cost' && isEmpty(payload[prop])) {
       payload[prop] = null;
@@ -177,14 +186,23 @@ const actions: ActionTree<TripState, RootState> = {
   createTripEvent(context: any, payload: Event) {
     context.commit('isLoading', true);
     const newPayload = _createEventRequestPayload(payload);
-    if (newPayload.start_time) {
-      newPayload.start_time = moment(newPayload.start_time).format(DATE_TIME_FORMAT);
+
+    if (newPayload.start_time_object) {
+      newPayload.start_time = moment(newPayload.start_time_object).format(DATE_TIME_FORMAT);
+      if (!newPayload.start_time_timezone_id) {
+        newPayload.start_time_timezone_id = context.state.tripDetail.timezone_id;
+      }
     }
-    if (newPayload.end_time) {
-      newPayload.end_time = moment(newPayload.end_time).format(DATE_TIME_FORMAT);
+
+    if (newPayload.end_time_object) {
+      newPayload.end_time = moment(newPayload.end_time_object).format(DATE_TIME_FORMAT);
+      if (!newPayload.end_time_timezone_id) {
+        newPayload.start_time_timezone_id = context.state.tripDetail.timezone_id;
+      }
     }
-    tripService
-      .createTripEvent(context.state.tripDetail.id, newPayload)
+
+    eventService
+      .createTripEvent(newPayload)
       .then((result: any) => {
         if (result.success) {
           context.dispatch(
@@ -236,8 +254,8 @@ const actions: ActionTree<TripState, RootState> = {
     if (newPayload.end_time) {
       newPayload.end_time = moment(newPayload.end_time).format(DATE_TIME_FORMAT);
     }
-    tripService
-      .updateTripEvent(context.state.tripDetail.id, newPayload)
+    eventService
+      .updateTripEvent(newPayload)
       .then((result: any) => {
         if (result.success) {
           context.dispatch(
@@ -269,30 +287,29 @@ const mutations: MutationTree<TripState> = {
     });
     state.tripList = payload;
   },
-  getTripDetail(state: TripState, payload: any) {
+  getTripDetail(state: TripState, payload: Trip) {
     if (payload) {
-      const timezoneObject = timezone.find(tz => tz.id === payload.timezone_id);
-      if (!isEmpty(payload.start_date)) {
-        payload.start_date = moment(payload.start_date).format(DATE_FORMAT);
-      }
-      if (!isEmpty(payload.end_date)) {
-        payload.end_date = moment(payload.end_date).format(DATE_FORMAT);
-      }
+      payload.start_date = moment(payload.start_date).format(DATE_FORMAT);
+      payload.end_date = moment(payload.end_date).format(DATE_FORMAT);
       if (!isEmpty(payload.trip_day)) {
         map(payload.trip_day, (tripDay: TripDay) => {
           tripDay.trip_date = moment(tripDay.trip_date).format(DATE_FORMAT);
           map(tripDay.events, (tripEvent: Event) => {
             if (!isEmpty(tripEvent.start_time)) {
+              const startTimeTimezoneId = tripEvent.start_time_timezone_id || payload.timezone_id;
+              const startTimeTimezone = timezone.find(tz => tz.id === startTimeTimezoneId);
               tripEvent.start_time = moment
                 .utc(tripEvent.start_time)
-                .tz(timezoneObject.utc)
-                .format(DATE_TIME_FORMAT);
+                .tz(startTimeTimezone.utc)
+                .format(DATE_TIME_TZ_FORMAT);
             }
             if (!isEmpty(tripEvent.end_time)) {
+              const endTimeTimezoneId = tripEvent.end_time_timezone_id || payload.timezone_id;
+              const endTimeTimezone = timezone.find(tz => tz.id === endTimeTimezoneId);
               tripEvent.end_time = moment
                 .utc(tripEvent.end_time)
-                .tz(timezoneObject.utc)
-                .format(DATE_TIME_FORMAT);
+                .tz(endTimeTimezone.utc)
+                .format(DATE_TIME_TZ_FORMAT);
             }
             return tripEvent;
           });

@@ -13,24 +13,35 @@
         <el-input v-model="tripEvent.title" />
       </el-form-item>
       <el-row>
-        <el-form-item label="Event time" prop="trip_date">
-          <el-date-picker
-            v-model="event_time"
-            type="datetimerange"
-            align="right"
-            unlink-panels
-            range-separator="To"
-            start-placeholder="Start time"
-            end-placeholder="End time"
-            style="width: 100%"
-          />
-        </el-form-item>
+        <el-col :span="12">
+          <el-form-item label="Start time" prop="start_time_object">
+            <el-date-picker v-model="tripEvent.start_time_object" style="width: 100%" type="date" />
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="Timezone">
+            <el-select v-model="tripEvent.start_time_timezone_id" filterable style="width: 100%">
+              <el-option :value="0" label="--" />
+              <el-option v-for="tz in timezoneList" :label="tz.text" :value="tz.id" :key="tz.id" />
+            </el-select>
+          </el-form-item>
+        </el-col>
       </el-row>
-      <el-form-item label="Timezone">
-        <el-select v-model="tripEvent.timezone_id" filterable style="width: 100%">
-          <el-option v-for="tz in timezoneList" :label="tz.text" :value="tz.id" :key="tz.id" />
-        </el-select>
-      </el-form-item>
+      <el-row>
+        <el-col :span="12">
+          <el-form-item label="End time" prop="end_time_object">
+            <el-date-picker v-model="tripEvent.end_time_object" style="width: 100%" type="date" />
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="Timezone">
+            <el-select v-model="tripEvent.end_time_timezone_id" filterable style="width: 100%">
+              <el-option :value="0" label="--" />
+              <el-option v-for="tz in timezoneList" :label="tz.text" :value="tz.id" :key="tz.id" />
+            </el-select>
+          </el-form-item>
+        </el-col>
+      </el-row>
       <el-row>
         <el-col :span="12">
           <el-form-item label="Cost">
@@ -39,12 +50,7 @@
         </el-col>
         <el-col :span="12">
           <el-form-item label="Currency">
-            <el-select
-              v-model="tripEvent.currency_id"
-              filterable
-              placeholder="please select currency"
-              style="width: 100%"
-            >
+            <el-select v-model="tripEvent.currency_id" filterable style="width: 100%">
               <el-option :value="0" label="--" />
               <el-option v-for="c in currencyList" :label="`${c.name} (${c.code})`" :value="c.id" :key="c.id" />
             </el-select>
@@ -59,6 +65,12 @@
       </el-form-item>
       <el-form-item label="Note">
         <el-input v-model="tripEvent.note" type="textarea" />
+      </el-form-item>
+      <el-form-item label="Tag">
+        <el-input v-model="tripEvent.tag" placeholder="Use comma to separate tag" />
+      </el-form-item>
+      <el-form-item v-if="tripEvent.tag" v-for="tag in tripEvent.tag.split(',')">
+        <el-tag>{{ tag }}</el-tag>
       </el-form-item>
     </el-form>
     <span slot="footer" class="dialog-footer">
@@ -75,7 +87,7 @@ import { Component, Vue, Watch } from 'vue-property-decorator';
 import EventCategory from './EventCategory.vue';
 import { currency } from '../assets/currency';
 import { timezone } from '../assets/timezone';
-import { Event } from '../models/event';
+import { Event as TripEvent } from '../models/event';
 import { TripDay } from '../models/trip-day';
 import { Actions } from '../constants/actions';
 import { Messages } from '../constants/messages';
@@ -87,34 +99,36 @@ export default class TripEventForm extends Vue {
   currencyList: any = currency;
   timezoneList: any = timezone;
 
-  event_time: string[] = [];
   requiredRules = {
     title: [{ required: true, message: Messages.title.required, trigger: 'blur' }],
+    start_time_object: [{ type: 'date', message: Messages.date.required, trigger: 'change' }],
+    end_time_object: [{ type: 'date', message: Messages.date.required, trigger: 'change' }],
   };
 
-  tripEvent: Event = {
-    trip_day_id: 0,
-    timezone_id: this.$store.state.trip.tripDetail.timezone_id,
+  tripEvent: TripEvent = {
+    trip_day_id: this.selectedTripDayId,
+    start_time_timezone_id: null,
+    end_time_timezone_id: null,
     category_id: 1,
-    currency_id: 0,
+    currency_id: null,
     title: '',
-    start_time: '',
-    end_time: '',
+    start_time_object: null,
+    end_time_object: null,
     start_location: '',
     end_location: '',
     note: '',
-    tag: '',
-    cost: 0,
+    tag: 'tag1,tag2',
+    cost: null,
   };
 
   @Watch('edit', { immediate: true, deep: true })
   onEditModeChanged(val: any) {
     if (val.isEditMode && val.component === 'tripEvent') {
-      this.event_time = [this.tripEvent.start_time, this.tripEvent.end_time];
-
       Object.keys(this.tripEventDetail).forEach(prop => {
         this.tripEvent[prop] = this.tripEventDetail[prop];
       });
+      this.tripEvent.start_time_object = new Date(this.tripEventDetail.start_time);
+      this.tripEvent.end_time_object = new Date(this.tripEventDetail.end_time);
     }
   }
 
@@ -130,17 +144,30 @@ export default class TripEventForm extends Vue {
     return this.$store.state.trip.tripDetail;
   }
 
-  get tripEventDetail() {
+  get tripEventDetail(): TripEvent {
     if (!isEmpty(this.tripDetail.trip_day)) {
       const tripDay = this.tripDetail.trip_day.find((tripDay: TripDay) => tripDay.id === this.selectedTripDayId);
 
       if (!isEmpty(tripDay.events) && this.edit.isEditMode) {
         return tripDay.events.find((e: any) => e.id === this.edit.idInEdit);
       } else {
-        return {};
+        return null;
       }
     }
   }
+
+  // TODO, need to consider local time
+  // disabledStartTime(date: Date): boolean {
+  //   if (this.tripEventDetail.end_time_object) {
+  //     return date > this.tripEventDetail.end_time_object;
+  //   }
+  // }
+  //
+  // disabledEndTime(date: Date): boolean {
+  //   if (this.tripEventDetail.start_time_object) {
+  //     return date < this.tripDetail.start_time_object;
+  //   }
+  // }
 
   closeDialog() {
     this.$store.dispatch(Actions.OPEN_TRIP_EVENT_FORM, false);
@@ -152,13 +179,6 @@ export default class TripEventForm extends Vue {
     let eventForm: any = this.$refs.eventForm;
     eventForm.validate((valid: boolean) => {
       if (valid) {
-        if (!isEmpty(this.event_time)) {
-          this.tripEvent.start_time = this.event_time[0];
-          this.tripEvent.end_time = this.event_time[1];
-        }
-        if (isEmpty(this.tripEvent.timezone_id)) {
-          this.tripEvent.timezone_id = this.tripDetail.timezone_id;
-        }
         if (!this.edit.isEditMode) {
           this.tripEvent.trip_day_id = this.selectedTripDayId;
           this.$store.dispatch(Actions.CREATE_TRIP_EVENT, this.tripEvent);
@@ -177,17 +197,18 @@ export default class TripEventForm extends Vue {
   resetForm() {
     this.tripEvent = {
       trip_day_id: this.selectedTripDayId,
-      timezone_id: this.$store.state.trip.tripDetail.timezone_id,
+      start_time_timezone_id: null,
+      end_time_timezone_id: null,
       category_id: 1,
-      currency_id: 0,
+      currency_id: null,
       title: '',
-      start_time: '',
-      end_time: '',
+      start_time_object: null,
+      end_time_object: null,
       start_location: '',
       end_location: '',
       note: '',
       tag: '',
-      cost: 0,
+      cost: null,
     };
   }
 }

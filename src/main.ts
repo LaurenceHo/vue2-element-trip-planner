@@ -47,6 +47,7 @@ import {
   Switch,
   Table,
   TableColumn,
+  Tag,
   TimePicker,
 } from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
@@ -104,9 +105,10 @@ Vue.use(Row);
 Vue.use(Select);
 Vue.use(Switch);
 Vue.use(Submenu);
-Vue.use(TimePicker);
 Vue.use(Table);
 Vue.use(TableColumn);
+Vue.use(Tag);
+Vue.use(TimePicker);
 
 new Vue({
   el: '#app',

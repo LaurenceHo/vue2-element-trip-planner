@@ -12,24 +12,24 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, '../dist'),
     filename: '[name].bundle.js',
+    publicPath: '/',
   },
   resolve: {
-    modules: [path.join(__dirname, '../dist'), 'node_modules'],
-    extensions: ['.ts', '.vue', '.js', '.json'],
+    extensions: ['.js', '.vue', '.tsx', '.ts'],
   },
   module: {
     rules: [
       {
-        test: /\.ts?$/,
+        test: /\.vue$/,
+        loader: 'vue-loader',
+      },
+      {
+        test: /\.(ts|tsx)?$/,
         loader: 'ts-loader',
-        exclude: /node_modules|vue\/src/,
+        exclude: /node_modules/,
         options: {
           appendTsSuffixTo: [/\.vue$/],
         },
-      },
-      {
-        test: /\.vue$/,
-        loader: 'vue-loader',
       },
       {
         enforce: 'pre',

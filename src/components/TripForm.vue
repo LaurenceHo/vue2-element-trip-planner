@@ -72,8 +72,6 @@ export default class TripForm extends Vue {
 
   trip: Trip = {
     timezone_id: 99,
-    start_date: '',
-    end_date: '',
     start_date_object: new Date(),
     end_date_object: new Date(),
     name: '',
@@ -87,8 +85,6 @@ export default class TripForm extends Vue {
       this.trip = {
         id: this.tripDetail.id,
         timezone_id: this.tripDetail.timezone_id,
-        start_date: this.tripDetail.start_date,
-        end_date: this.tripDetail.end_date,
         start_date_object: new Date(this.tripDetail.start_date),
         end_date_object: new Date(this.tripDetail.end_date),
         name: this.tripDetail.name,
@@ -102,23 +98,23 @@ export default class TripForm extends Vue {
     return this.$store.state.dashboard.edit;
   }
 
-  get tripDetail() {
+  get tripDetail(): Trip {
     return this.$store.state.trip.tripDetail;
   }
 
-  disabledStartDate(date: Date) {
+  disabledStartDate(date: Date): boolean {
     if (this.trip.end_date_object) {
       return date > this.trip.end_date_object;
     }
   }
 
-  disabledEndDate(date: Date) {
+  disabledEndDate(date: Date): boolean {
     if (this.trip.start_date_object) {
       return date < this.trip.start_date_object;
     }
   }
 
-  closeDialog() {
+  closeDialog(): void {
     this.$store.dispatch(Actions.OPEN_TRIP_FORM, false);
     if (this.edit.isEditMode) {
       this.$store.dispatch(Actions.UPDATE_EDIT, { isEditMode: false, idInEdit: 0, component: null });
@@ -144,14 +140,12 @@ export default class TripForm extends Vue {
     });
   }
 
-  resetForm() {
+  resetForm(): void {
     const tripForm: any = this.$refs.tripForm;
     tripForm.resetFields();
 
     this.trip = {
       timezone_id: 99,
-      start_date: '',
-      end_date: '',
       start_date_object: new Date(),
       end_date_object: new Date(),
       name: '',
