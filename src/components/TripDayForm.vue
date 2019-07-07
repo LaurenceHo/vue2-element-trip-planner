@@ -43,7 +43,7 @@ export default class TripDayForm extends Vue {
   tripDay: TripDay = {
     trip_id: 0,
     trip_date: '',
-    trip_date_object: new Date(this.tripDetail.start_date),
+    trip_date_object: this.tripDetail.start_date ? new Date(this.tripDetail.start_date) : null,
     name: '',
   };
 

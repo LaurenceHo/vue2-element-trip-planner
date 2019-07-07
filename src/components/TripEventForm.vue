@@ -15,7 +15,7 @@
       <el-row>
         <el-col :span="12">
           <el-form-item label="Start time" prop="start_time_object">
-            <el-date-picker v-model="tripEvent.start_time_object" style="width: 100%" type="date" />
+            <el-date-picker v-model="tripEvent.start_time_object" clearable style="width: 100%" type="datetime" />
           </el-form-item>
         </el-col>
         <el-col :span="12">
@@ -30,7 +30,7 @@
       <el-row>
         <el-col :span="12">
           <el-form-item label="End time" prop="end_time_object">
-            <el-date-picker v-model="tripEvent.end_time_object" style="width: 100%" type="date" />
+            <el-date-picker v-model="tripEvent.end_time_object" clearable style="width: 100%" type="datetime" />
           </el-form-item>
         </el-col>
         <el-col :span="12">
@@ -69,8 +69,8 @@
       <el-form-item label="Tag">
         <el-input v-model="tripEvent.tag" placeholder="Use comma to separate tag" />
       </el-form-item>
-      <el-form-item v-if="tripEvent.tag" v-for="tag in tripEvent.tag.split(',')">
-        <el-tag>{{ tag }}</el-tag>
+      <el-form-item v-if="tripEvent.tag">
+        <el-tag v-for="tag in tripEvent.tag.split(',')" :key="tag" style="margin-right: 0.3rem;">{{ tag }}</el-tag>
       </el-form-item>
     </el-form>
     <span slot="footer" class="dialog-footer">
@@ -127,8 +127,10 @@ export default class TripEventForm extends Vue {
       Object.keys(this.tripEventDetail).forEach(prop => {
         this.tripEvent[prop] = this.tripEventDetail[prop];
       });
-      this.tripEvent.start_time_object = new Date(this.tripEventDetail.start_time);
-      this.tripEvent.end_time_object = new Date(this.tripEventDetail.end_time);
+      this.tripEvent.start_time_object = this.tripEventDetail.start_time
+        ? new Date(this.tripEventDetail.start_time)
+        : null;
+      this.tripEvent.end_time_object = this.tripEventDetail.end_time ? new Date(this.tripEventDetail.end_time) : null;
     }
   }
 
