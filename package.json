@@ -23,33 +23,23 @@
     }
   },
   "lint-staged": {
-    "linters": {
-      "*.{ts,vue}": [
-        "eslint --fix",
-        "git add"
-      ]
-    },
-    "ignore": [
-      "node_modules",
-      "dist",
-      "package-lock.json"
-    ]
+    "src/**/*.{ts,vue}": "eslint --fix"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.18",
     "@fortawesome/free-solid-svg-icons": "^5.8.2",
     "@fortawesome/vue-fontawesome": "^0.1.6",
-    "element-ui": "^2.9.2",
+    "element-ui": "^2.10.1",
     "lodash": "^4.17.11",
     "moment": "^2.24.0",
-    "moment-timezone": "^0.5.25",
+    "moment-timezone": "^0.5.26",
     "vue": "^2.6.10",
-    "vue-router": "^3.0.6",
+    "vue-router": "^3.0.7",
     "vuex": "^3.1.0",
     "whatwg-fetch": "^3.0.0"
   },
   "devDependencies": {
-    "@types/lodash": "^4.14.124",
+    "@types/lodash": "^4.14.135",
     "@types/moment-timezone": "^0.5.12",
     "@typescript-eslint/eslint-plugin": "^1.11.0",
     "@typescript-eslint/parser": "^1.11.0",
@@ -57,13 +47,13 @@
     "copy-webpack-plugin": "^5.0.3",
     "css-loader": "^3.0.0",
     "eslint": "^6.0.1",
-    "eslint-config-prettier": "^5.0.0",
+    "eslint-config-prettier": "^5.1.0",
     "eslint-plugin-prettier": "^3.0.1",
     "eslint-plugin-vue": "^5.2.3",
     "file-loader": "^4.0.0",
     "html-webpack-plugin": "^3.2.0",
-    "husky": "^2.5.0",
-    "lint-staged": "^8.2.1",
+    "husky": "^2.7.0",
+    "lint-staged": "^9.1.0",
     "mini-css-extract-plugin": "^0.7.0",
     "node-sass": "^4.12.0",
     "source-map-loader": "^0.2.4",
@@ -74,7 +64,7 @@
     "vue-loader": "^15.7.0",
     "vue-property-decorator": "^8.2.1",
     "vue-template-compiler": "^2.6.10",
-    "webpack": "^4.35.0",
+    "webpack": "^4.35.2",
     "webpack-cli": "^3.3.5",
     "webpack-dev-server": "^3.7.2",
     "webpack-merge": "^4.2.1"
