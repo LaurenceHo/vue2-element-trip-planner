@@ -14,6 +14,7 @@ import {
   faPlus,
   faShip,
   faSignOutAlt,
+  faTags,
   faTrashAlt,
   faUser,
   faWalking,
@@ -74,6 +75,7 @@ library.add(
   faPlus,
   faShip,
   faSignOutAlt,
+  faTags,
   faTrashAlt,
   faUser,
   faWalking

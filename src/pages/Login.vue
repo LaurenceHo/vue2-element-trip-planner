@@ -8,7 +8,7 @@
       </el-col>
     </el-row>
     <el-form ref="user" :model="user" class="user-form" label-position="top" label-width="5rem">
-      <el-alert v-if="alert.message" :title="alert.message" :type="alert.type" show-icon />
+      <el-alert v-if="alert.message" :title="alert.message" :type="alert.type" show-icon effect="dark" />
       <div class="user-form-title-container">
         <h3 class="user-form-title ">
           Sign In

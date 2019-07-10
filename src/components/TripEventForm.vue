@@ -13,12 +13,12 @@
         <el-input v-model="tripEvent.title" />
       </el-form-item>
       <el-row>
-        <el-col :span="12">
+        <el-col :span="11">
           <el-form-item label="Start time" prop="start_time_object">
             <el-date-picker v-model="tripEvent.start_time_object" clearable style="width: 100%" type="datetime" />
           </el-form-item>
         </el-col>
-        <el-col :span="12">
+        <el-col :span="13">
           <el-form-item label="Timezone">
             <el-select v-model="tripEvent.start_time_timezone_id" filterable style="width: 100%">
               <el-option :value="0" label="--" />
@@ -28,12 +28,12 @@
         </el-col>
       </el-row>
       <el-row>
-        <el-col :span="12">
+        <el-col :span="11">
           <el-form-item label="End time" prop="end_time_object">
             <el-date-picker v-model="tripEvent.end_time_object" clearable style="width: 100%" type="datetime" />
           </el-form-item>
         </el-col>
-        <el-col :span="12">
+        <el-col :span="13">
           <el-form-item label="Timezone">
             <el-select v-model="tripEvent.end_time_timezone_id" filterable style="width: 100%">
               <el-option :value="0" label="--" />
@@ -43,12 +43,12 @@
         </el-col>
       </el-row>
       <el-row>
-        <el-col :span="12">
+        <el-col :span="11">
           <el-form-item label="Cost">
             <el-input v-model="tripEvent.cost" type="number" style="width: 100%" />
           </el-form-item>
         </el-col>
-        <el-col :span="12">
+        <el-col :span="13">
           <el-form-item label="Currency">
             <el-select v-model="tripEvent.currency_id" filterable style="width: 100%">
               <el-option :value="0" label="--" />
@@ -70,6 +70,7 @@
         <el-input v-model="tripEvent.tag" placeholder="Use comma to separate tag" />
       </el-form-item>
       <el-form-item v-if="tripEvent.tag">
+        <font-awesome-icon icon="tags" />
         <el-tag v-for="tag in tripEvent.tag.split(',')" :key="tag" style="margin-right: 0.3rem;">{{ tag }}</el-tag>
       </el-form-item>
     </el-form>

@@ -1,10 +1,13 @@
 <template>
   <div>
-    <el-alert v-if="alert.message" :title="alert.message" :type="alert.type" :closable="true" show-icon />
+    <el-alert v-if="alert.message" :title="alert.message" :type="alert.type" :closable="true" show-icon effect="dark" />
     <div v-else>
-      <div v-if="isLoading" class="loading-spinner-outer">
-        <i class="el-icon-loading loading-spinner" />
-        Loading...
+      <div v-if="isLoading">
+        <div class="el-loading-spinner">
+          <svg viewBox="25 25 50 50" class="circular">
+            <circle cx="50" cy="50" r="20" fill="none" class="path"></circle>
+          </svg>
+        </div>
       </div>
       <div v-else>
         <div v-if="tripDayDetail">
@@ -32,7 +35,7 @@
           </div>
         </div>
         <div v-else>
-          <el-alert :title="createTripDayMessage" type="info" show-icon />
+          <el-alert :title="createTripDayMessage" type="info" show-icon effect="dark" />
         </div>
       </div>
     </div>
@@ -83,6 +86,12 @@ export default class TripEventList extends Vue {
 </script>
 
 <style scoped>
+.el-loading-spinner {
+  margin-top: 3rem;
+  width: 100%;
+  position: relative;
+}
+
 .trip-date-banner {
   padding-bottom: 0.5rem;
 }

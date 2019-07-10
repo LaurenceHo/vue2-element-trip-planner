@@ -6,7 +6,7 @@
       </el-col>
     </el-row>
     <el-row style="padding-top: 1rem">
-      <el-col :xs="6" :sm="6" :md="5" :lg="4" :xl="3">
+      <el-col :xs="6" :sm="6" :md="5" :lg="4" :xl="3" style="padding-right: 0.2rem">
         <trip-day-list />
       </el-col>
       <el-col :xs="18" :sm="18" :md="19" :lg="19" :xl="18" class="trip-event-list-outer">
