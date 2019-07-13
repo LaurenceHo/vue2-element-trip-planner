@@ -1,4 +1,4 @@
-import { cloneDeep, isEmpty, map } from 'lodash';
+import { cloneDeep, isEmpty, map, remove, sortBy } from 'lodash';
 import * as moment from 'moment-timezone';
 import { ActionContext, ActionTree, Module, MutationTree } from 'vuex';
 
@@ -33,6 +33,10 @@ const namespaced = true;
 const eventService = new EventService();
 const tripService = new TripService();
 
+const _dispatchCreateAlert = (dispatch: ActionContext<TripState, RootState>['dispatch'], message: string) => {
+  dispatch(Actions.CREATE_ALERT, { type: 'error', message: message ? message : 'Error!' }, { root: true });
+};
+
 const _generateGetTripListPayload = (currentMenu: 'archived' | 'current' | 'upcoming' | 'past') => {
   let requestBody = null;
   if (currentMenu === 'archived') {
@@ -63,14 +67,27 @@ const _generateGetTripListPayload = (currentMenu: 'archived' | 'current' | 'upco
   return requestBody;
 };
 
-const _createEventRequestPayload = (payload: Event, context: any) => {
+const _createTripRequestPayload = (payload: Trip): Trip => {
+  let newPayload = cloneDeep(payload);
+  // Convert to string before sending to server
+  newPayload.start_date = moment(payload.start_date_object).format(DATE_FORMAT);
+  newPayload.end_date = moment(payload.end_date_object).format(DATE_FORMAT);
+  // Must delete start_time_object and end_time_object before sending request to server since these 2 objects are only for UI
+  delete newPayload.start_date_object;
+  delete newPayload.end_date_object;
+
+  return newPayload;
+};
+
+const _createEventRequestPayload = (payload: Event, state: TripState): Event => {
   let newPayload = cloneDeep(payload);
   Object.keys(newPayload).forEach(prop => {
+    // Convert to UTC date time string before sending request to server
     if (prop === 'start_time_object') {
       if (newPayload.start_time_object) {
         newPayload.start_time_timezone_id = newPayload.start_time_timezone_id
           ? newPayload.start_time_timezone_id
-          : context.state.tripDetail.timezone_id;
+          : state.tripDetail.timezone_id;
         const startTimeTimezone = timezone.find(tz => tz.id === newPayload.start_time_timezone_id);
         newPayload.start_time = moment
           .tz(moment(newPayload.start_time_object).format(DATE_TIME_FORMAT), startTimeTimezone.utc)
@@ -83,7 +100,7 @@ const _createEventRequestPayload = (payload: Event, context: any) => {
       if (newPayload.end_time_object) {
         newPayload.end_time_timezone_id = newPayload.end_time_timezone_id
           ? newPayload.end_time_timezone_id
-          : context.state.tripDetail.timezone_id;
+          : state.tripDetail.timezone_id;
         const endTimeTimezone = timezone.find(tz => tz.id === newPayload.end_time_timezone_id);
         newPayload.end_time = moment
           .tz(moment(newPayload.end_time_object).format(DATE_TIME_FORMAT), endTimeTimezone.utc)
@@ -102,35 +119,59 @@ const _createEventRequestPayload = (payload: Event, context: any) => {
       newPayload.cost = null;
     }
   });
-
+  // Must delete start_time_object and end_time_object before sending request to server since these 2 objects are only for UI
   delete newPayload.start_time_object;
   delete newPayload.end_time_object;
 
   return newPayload;
 };
 
+const _parseToLocalTime = (tripEvent: Event, state: TripState): Event => {
+  // Convert UTC time to local time for UI displaying
+  if (!isEmpty(tripEvent.start_time)) {
+    const startTimeTimezoneId = tripEvent.start_time_timezone_id
+      ? tripEvent.start_time_timezone_id
+      : state.tripDetail.timezone_id;
+    const startTimeTimezone = timezone.find(tz => tz.id === startTimeTimezoneId);
+    tripEvent.start_time = moment
+      .utc(tripEvent.start_time)
+      .tz(startTimeTimezone.utc)
+      .format(DATE_TIME_TZ_FORMAT);
+  }
+  if (!isEmpty(tripEvent.end_time)) {
+    const endTimeTimezoneId = tripEvent.end_time_timezone_id
+      ? tripEvent.end_time_timezone_id
+      : state.tripDetail.timezone_id;
+    const endTimeTimezone = timezone.find(tz => tz.id === endTimeTimezoneId);
+    tripEvent.end_time = moment
+      .utc(tripEvent.end_time)
+      .tz(endTimeTimezone.utc)
+      .format(DATE_TIME_TZ_FORMAT);
+  }
+  return tripEvent;
+};
 const actions: ActionTree<TripState, RootState> = {
   isLoading({ dispatch, commit }: ActionContext<TripState, RootState>, payload: boolean) {
     dispatch(Actions.CLEAR_ALERT, null, { root: true });
     commit('isLoading', payload);
   },
 
-  getTripList(context: any) {
-    context.commit('isLoading', true);
-    const requestPayload = _generateGetTripListPayload(context.rootState.dashboard.currentMenu);
+  getTripList({ dispatch, commit, rootState }: ActionContext<TripState, RootState>) {
+    commit('isLoading', true);
+    const requestPayload = _generateGetTripListPayload(rootState.dashboard.currentMenu);
     tripService
       .getTripList(requestPayload)
       .then((result: any) => {
-        context.commit('isLoading', false);
+        commit('isLoading', false);
         if (result.success) {
-          context.commit('getTripList', result.result);
+          commit('getTripList', result.result);
         } else {
-          context.dispatch(Actions.CREATE_ALERT, { type: 'error', message: result.error }, { root: true });
+          _dispatchCreateAlert(dispatch, result.error);
         }
       })
       .catch((error: any) => {
-        context.commit('isLoading', false);
-        context.dispatch(Actions.CREATE_ALERT, { type: 'error', message: error.error }, { root: true });
+        commit('isLoading', false);
+        _dispatchCreateAlert(dispatch, error.error);
       });
   },
 
@@ -144,7 +185,7 @@ const actions: ActionTree<TripState, RootState> = {
       .then((tripDetailResult: any) => {
         commit('isLoading', false);
         if (isEmpty(tripDetailResult)) {
-          dispatch(Actions.CREATE_ALERT, { type: 'error', message: Messages.response.message }, { root: true });
+          _dispatchCreateAlert(dispatch, Messages.response.message);
         } else {
           if (tripDetailResult.success) {
             commit('getTripDetail', tripDetailResult.result);
@@ -154,128 +195,135 @@ const actions: ActionTree<TripState, RootState> = {
               });
             }
           } else {
-            dispatch(Actions.CREATE_ALERT, { type: 'error', message: tripDetailResult.error }, { root: true });
+            _dispatchCreateAlert(dispatch, tripDetailResult.error);
           }
         }
       })
       .catch((error: any) => {
         commit('isLoading', false);
-        dispatch(Actions.CREATE_ALERT, { type: 'error', message: error.error }, { root: true });
+        _dispatchCreateAlert(dispatch, error.error);
       });
   },
 
   createTrip({ dispatch, commit }: ActionContext<TripState, RootState>, payload: Trip) {
     commit('isLoading', true);
-    payload.start_date = moment(payload.start_date_object).format(DATE_FORMAT);
-    payload.end_date = moment(payload.end_date_object).format(DATE_FORMAT);
-    delete payload.start_date_object;
-    delete payload.end_date_object;
-
+    const newPayload = _createTripRequestPayload(payload);
     tripService
-      .createTrip(payload)
+      .createTrip(newPayload)
       .then((result: any) => {
         if (result.success) {
-          dispatch(Actions.GET_TRIP_LIST, null, { root: true });
+          commit('createTrip', newPayload);
+          commit('isLoading', false);
         } else {
           commit('isLoading', false);
-          dispatch(Actions.CREATE_ALERT, { type: 'error', message: result.error }, { root: true });
+          _dispatchCreateAlert(dispatch, result.error);
         }
       })
       .catch((error: any) => {
         commit('isLoading', false);
-        dispatch(Actions.CREATE_ALERT, { type: 'error', message: error.error }, { root: true });
+        _dispatchCreateAlert(dispatch, error.error);
       });
   },
 
   createTripDay({ dispatch, commit }: ActionContext<TripState, RootState>, payload: TripDay) {
+    let newPayload = cloneDeep(payload);
     commit('isLoading', true);
-    payload.trip_date = moment(payload.trip_date_object).format(DATE_FORMAT);
-    delete payload.trip_date_object;
+    newPayload.trip_date = moment(payload.trip_date_object).format(DATE_FORMAT);
+    delete newPayload.trip_date_object;
 
     tripService
-      .createTripDay(payload)
+      .createTripDay(newPayload)
       .then((result: any) => {
         if (result.success) {
-          dispatch(Actions.GET_TRIP_DETAIL, { tripId: payload.trip_id, isCreateOrUpdate: true }, { root: true });
+          commit('createTripDay', newPayload);
+          commit('isLoading', false);
         } else {
           commit('isLoading', false);
-          dispatch(Actions.CREATE_ALERT, { type: 'error', message: result.error }, { root: true });
+          _dispatchCreateAlert(dispatch, result.error);
         }
       })
       .catch((error: any) => {
         commit('isLoading', false);
-        dispatch(Actions.CREATE_ALERT, { type: 'error', message: error.error }, { root: true });
+        _dispatchCreateAlert(dispatch, error.error);
       });
   },
 
-  createTripEvent(context: any, payload: Event) {
-    context.commit('isLoading', true);
-    const newPayload = _createEventRequestPayload(payload, context);
+  createTripEvent({ dispatch, commit, state }: ActionContext<TripState, RootState>, payload: Event) {
+    commit('isLoading', true);
+    const newPayload = _createEventRequestPayload(payload, state);
     eventService
       .createTripEvent(newPayload)
       .then((result: any) => {
         if (result.success) {
-          context.dispatch(
-            Actions.GET_TRIP_DETAIL,
-            { tripId: context.state.tripDetail.id, isCreateOrUpdate: true },
-            { root: true }
-          );
+          commit('createTripEvent', newPayload);
+          commit('isLoading', false);
         } else {
-          context.commit('isLoading', false);
-          context.dispatch(Actions.CREATE_ALERT, { type: 'error', message: result.error }, { root: true });
+          commit('isLoading', false);
+          _dispatchCreateAlert(dispatch, result.error);
         }
       })
       .catch((error: any) => {
-        context.commit('isLoading', false);
-        context.dispatch(Actions.CREATE_ALERT, { type: 'error', message: error.error }, { root: true });
+        commit('isLoading', false);
+        _dispatchCreateAlert(dispatch, error.error);
       });
   },
 
   updateTrip({ dispatch, commit }: ActionContext<TripState, RootState>, payload: Trip) {
     commit('isLoading', true);
-    payload.start_date = moment(payload.start_date_object).format(DATE_FORMAT);
-    payload.end_date = moment(payload.end_date_object).format(DATE_FORMAT);
-    delete payload.start_date_object;
-    delete payload.end_date_object;
-
+    const newPayload = _createTripRequestPayload(payload);
     tripService
-      .updateTrip(payload)
+      .updateTrip(newPayload)
       .then((result: any) => {
         if (result.success) {
+          commit('updateTrip', newPayload);
           commit('isLoading', false);
-          commit('updateTrip', payload);
         } else {
           commit('isLoading', false);
-          dispatch(Actions.CREATE_ALERT, { type: 'error', message: result.error }, { root: true });
+          _dispatchCreateAlert(dispatch, result.error);
         }
       })
       .catch((error: any) => {
         commit('isLoading', false);
-        dispatch(Actions.CREATE_ALERT, { type: 'error', message: error.error }, { root: true });
+        _dispatchCreateAlert(dispatch, error.error);
       });
   },
-  // TODO - A new action for updating trip day action
 
-  updateTripEvent(context: any, payload: Event) {
-    context.commit('isLoading', true);
-    const newPayload = _createEventRequestPayload(payload, context);
+  updateTripEvent({ dispatch, commit, state }: ActionContext<TripState, RootState>, payload: Event) {
+    commit('isLoading', true);
+    const newPayload = _createEventRequestPayload(payload, state);
     eventService
       .updateTripEvent(newPayload)
       .then((result: any) => {
         if (result.success) {
-          context.dispatch(
-            Actions.GET_TRIP_DETAIL,
-            { tripId: context.state.tripDetail.id, isCreateOrUpdate: true },
-            { root: true }
-          );
+          commit('updateTripEvent', newPayload);
+          commit('isLoading', false);
         } else {
-          context.commit('isLoading', false);
-          context.dispatch(Actions.CREATE_ALERT, { type: 'error', message: result.error }, { root: true });
+          commit('isLoading', false);
+          _dispatchCreateAlert(dispatch, result.error);
         }
       })
       .catch((error: any) => {
-        context.commit('isLoading', false);
-        context.dispatch(Actions.CREATE_ALERT, { type: 'error', message: error.error }, { root: true });
+        commit('isLoading', false);
+        _dispatchCreateAlert(dispatch, error.error);
+      });
+  },
+
+  deleteTripEvent({ dispatch, commit, rootState }: ActionContext<TripState, RootState>, payload: Event) {
+    commit('isLoading', true);
+    eventService
+      .deleteTripEvent(payload.id)
+      .then((result: any) => {
+        if (result.success) {
+          commit('deleteTripEvent', payload);
+          commit('isLoading', false);
+        } else {
+          commit('isLoading', false);
+          _dispatchCreateAlert(dispatch, result.error);
+        }
+      })
+      .catch((error: any) => {
+        commit('isLoading', false);
+        _dispatchCreateAlert(dispatch, error.error);
       });
   },
 };
@@ -302,27 +350,7 @@ const mutations: MutationTree<TripState> = {
         map(payload.trip_day, (tripDay: TripDay) => {
           tripDay.trip_date = moment(tripDay.trip_date).format(DATE_FORMAT);
           map(tripDay.events, (tripEvent: Event) => {
-            if (!isEmpty(tripEvent.start_time)) {
-              const startTimeTimezoneId = tripEvent.start_time_timezone_id
-                ? tripEvent.start_time_timezone_id
-                : payload.timezone_id;
-              const startTimeTimezone = timezone.find(tz => tz.id === startTimeTimezoneId);
-              tripEvent.start_time = moment
-                .utc(tripEvent.start_time)
-                .tz(startTimeTimezone.utc)
-                .format(DATE_TIME_TZ_FORMAT);
-            }
-            if (!isEmpty(tripEvent.end_time)) {
-              const endTimeTimezoneId = tripEvent.end_time_timezone_id
-                ? tripEvent.end_time_timezone_id
-                : payload.timezone_id;
-              const endTimeTimezone = timezone.find(tz => tz.id === endTimeTimezoneId);
-              tripEvent.end_time = moment
-                .utc(tripEvent.end_time)
-                .tz(endTimeTimezone.utc)
-                .format(DATE_TIME_TZ_FORMAT);
-            }
-            return tripEvent;
+            return _parseToLocalTime(tripEvent, state);
           });
           return tripDay;
         });
@@ -332,9 +360,66 @@ const mutations: MutationTree<TripState> = {
     state.tripDetail = payload;
   },
 
+  createTrip(state: TripState, payload: Trip) {
+    state.tripList.push(payload);
+    state.tripList = sortBy(state.tripList, (trip: Trip) => trip.start_date);
+  },
+
+  createTripDay(state: TripState, payload: TripDay) {
+    state.tripDetail.trip_day.push(payload);
+    state.tripDetail.trip_day = sortBy(state.tripDetail.trip_day, (tripDay: TripDay) => tripDay.trip_date);
+  },
+
+  createTripEvent(state: TripState, payload: Event) {
+    payload = _parseToLocalTime(payload, state);
+    map(state.tripDetail.trip_day, (tripDay: TripDay) => {
+      if (tripDay.id === payload.trip_day_id) {
+        tripDay.events.push(payload);
+        tripDay.events = sortBy(tripDay.events, (tripEvent: Event) => tripEvent.start_time);
+      }
+      return tripDay;
+    });
+  },
+
   updateTrip(state: TripState, payload: Trip) {
+    // Update trip detail state
     Object.keys(payload).forEach(prop => {
       state.tripDetail[prop] = payload[prop];
+    });
+    // Update trip list state
+    map(state.tripList, (trip: Trip) => {
+      if (trip.id === payload.id) {
+        Object.keys(payload).forEach(prop => {
+          trip[prop] = payload[prop];
+        });
+      }
+      return trip;
+    });
+  },
+
+  updateTripEvent(state: TripState, payload: Event) {
+    payload = _parseToLocalTime(payload, state);
+    map(state.tripDetail.trip_day, (tripDay: TripDay) => {
+      if (tripDay.id === payload.trip_day_id) {
+        map(tripDay.events, (tripEvent: Event) => {
+          if (tripEvent.id === payload.id) {
+            Object.keys(payload).forEach(prop => {
+              tripEvent[prop] = payload[prop];
+            });
+          }
+          return tripEvent;
+        });
+      }
+      return tripDay;
+    });
+  },
+
+  deleteTripEvent(state: TripState, payload: Event) {
+    map(state.tripDetail.trip_day, (tripDay: TripDay) => {
+      if (tripDay.id === payload.trip_day_id) {
+        remove(tripDay.events, tripEvent => tripEvent.id === payload.id);
+      }
+      return tripDay;
     });
   },
 };

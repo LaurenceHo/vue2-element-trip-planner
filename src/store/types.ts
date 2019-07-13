@@ -2,7 +2,10 @@ import { Trip } from '../models/trip';
 import { User } from '../models/user';
 
 export interface RootState {
-  version: string;
+  dashboard: DashboardState;
+  alert: AlertState;
+  trip: TripState;
+  authentication: AuthenticationState;
 }
 
 export interface DashboardState {

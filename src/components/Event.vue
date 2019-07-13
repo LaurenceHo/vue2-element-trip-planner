@@ -30,17 +30,20 @@
           <el-button @click="editEvent" type="primary" size="mini" circle>
             <font-awesome-icon icon="edit" />
           </el-button>
-          <el-button @click="controlDialog" type="danger" size="mini" circle>
+          <el-button @click="isDialogOpen = true" type="danger" size="mini" circle>
             <font-awesome-icon icon="trash-alt" />
           </el-button>
         </el-col>
       </el-row>
     </el-card>
     <el-dialog v-if="isDialogOpen" :visible.sync="isDialogOpen" title="Warning" width="30%">
-      <span>This will permanently delete the event. Continue?</span>
+      <span>
+        This will permanently delete the event <strong>{{ tripEvent.title }}</strong
+        >. Do you want to continue?
+      </span>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="controlDialog">Cancel</el-button>
-        <el-button @click="controlDialog" type="primary">Confirm</el-button>
+        <el-button @click="isDialogOpen = false">Cancel</el-button>
+        <el-button @click="deleteEvent" type="primary">Confirm</el-button>
       </span>
     </el-dialog>
   </div>
@@ -74,8 +77,9 @@ export default class Event extends Vue {
     });
   }
 
-  controlDialog() {
-    this.isDialogOpen = !this.isDialogOpen;
+  deleteEvent() {
+    this.isDialogOpen = false;
+    this.$store.dispatch(Actions.DELETE_TRIP_EVENT, this.tripEvent);
   }
 }
 </script>

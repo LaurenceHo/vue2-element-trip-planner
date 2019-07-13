@@ -34,7 +34,8 @@ export default class TripDay extends Vue {
   }
 
   handleSelect(value: string) {
-    this.$store.dispatch(Actions.UPDATE_SELECTED_TRIP_DAY_ID, this.tripDetail.trip_day[Number(value)].id);
+    const tripDay = this.tripDetail.trip_day[Number(value)];
+    this.$store.dispatch(Actions.UPDATE_SELECTED_TRIP_DAY_ID, tripDay.id);
   }
 }
 </script>

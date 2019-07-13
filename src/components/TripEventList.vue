@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-alert v-if="alert.message" :title="alert.message" :type="alert.type" :closable="true" show-icon effect="dark" />
-    <div v-else>
+    <div>
       <div v-if="isLoading">
         <div class="el-loading-spinner">
           <svg viewBox="25 25 50 50" class="circular">
