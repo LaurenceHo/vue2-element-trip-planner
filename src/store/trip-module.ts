@@ -117,6 +117,8 @@ const _createEventRequestPayload = (payload: Event, state: TripState): Event => 
       newPayload.end_time_timezone_id = null;
     } else if (prop === 'cost' && isEmpty(newPayload.cost)) {
       newPayload.cost = null;
+    } else if (prop === 'category_id') {
+      newPayload.category_id = Number(newPayload[prop]);
     }
   });
   // Must delete start_time_object and end_time_object before sending request to server since these 2 objects are only for UI
@@ -161,12 +163,12 @@ const actions: ActionTree<TripState, RootState> = {
     const requestPayload = _generateGetTripListPayload(rootState.dashboard.currentMenu);
     tripService
       .getTripList(requestPayload)
-      .then((result: any) => {
+      .then((result: { success: boolean; result: Trip[] }) => {
         commit('isLoading', false);
         if (result.success) {
           commit('getTripList', result.result);
         } else {
-          _dispatchCreateAlert(dispatch, result.error);
+          _dispatchCreateAlert(dispatch, Messages.response.message);
         }
       })
       .catch((error: any) => {
@@ -175,28 +177,23 @@ const actions: ActionTree<TripState, RootState> = {
       });
   },
 
-  getTripDetail(
-    { dispatch, commit }: ActionContext<TripState, RootState>,
-    payload: { tripId: number; isCreateOrUpdate: boolean }
-  ) {
+  getTripDetail({ dispatch, commit }: ActionContext<TripState, RootState>, tripId: number) {
     commit('isLoading', true);
     tripService
-      .getTripDetail(payload.tripId)
-      .then((tripDetailResult: any) => {
+      .getTripDetail(tripId)
+      .then((tripDetailResult: { success: boolean; result: Trip }) => {
         commit('isLoading', false);
-        if (isEmpty(tripDetailResult)) {
-          _dispatchCreateAlert(dispatch, Messages.response.message);
-        } else {
-          if (tripDetailResult.success) {
-            commit('getTripDetail', tripDetailResult.result);
-            if (!payload.isCreateOrUpdate) {
-              dispatch(Actions.UPDATE_SELECTED_TRIP_DAY_ID, tripDetailResult.result.trip_day[0].id, {
-                root: true,
-              });
-            }
-          } else {
-            _dispatchCreateAlert(dispatch, tripDetailResult.error);
+        if (tripDetailResult.success) {
+          commit('getTripDetail', tripDetailResult.result);
+          let tripDayId = 0;
+          if (!isEmpty(tripDetailResult.result.trip_day)) {
+            tripDayId = tripDetailResult.result.trip_day[0].id;
           }
+          dispatch(Actions.UPDATE_SELECTED_TRIP_DAY_ID, tripDayId, {
+            root: true,
+          });
+        } else {
+          _dispatchCreateAlert(dispatch, Messages.response.message);
         }
       })
       .catch((error: any) => {
@@ -211,12 +208,12 @@ const actions: ActionTree<TripState, RootState> = {
     tripService
       .createTrip(newPayload)
       .then((result: any) => {
+        commit('isLoading', false);
         if (result.success) {
+          newPayload.id = result.result.trip_id;
           commit('createTrip', newPayload);
-          commit('isLoading', false);
         } else {
-          commit('isLoading', false);
-          _dispatchCreateAlert(dispatch, result.error);
+          _dispatchCreateAlert(dispatch, Messages.response.message);
         }
       })
       .catch((error: any) => {
@@ -234,12 +231,12 @@ const actions: ActionTree<TripState, RootState> = {
     tripService
       .createTripDay(newPayload)
       .then((result: any) => {
+        commit('isLoading', false);
         if (result.success) {
+          newPayload.id = result.result.trip_day_id;
           commit('createTripDay', newPayload);
-          commit('isLoading', false);
         } else {
-          commit('isLoading', false);
-          _dispatchCreateAlert(dispatch, result.error);
+          _dispatchCreateAlert(dispatch, Messages.response.message);
         }
       })
       .catch((error: any) => {
@@ -254,12 +251,12 @@ const actions: ActionTree<TripState, RootState> = {
     eventService
       .createTripEvent(newPayload)
       .then((result: any) => {
+        commit('isLoading', false);
         if (result.success) {
+          newPayload.id = result.result.event_id;
           commit('createTripEvent', newPayload);
-          commit('isLoading', false);
         } else {
-          commit('isLoading', false);
-          _dispatchCreateAlert(dispatch, result.error);
+          _dispatchCreateAlert(dispatch, Messages.response.message);
         }
       })
       .catch((error: any) => {
@@ -274,12 +271,11 @@ const actions: ActionTree<TripState, RootState> = {
     tripService
       .updateTrip(newPayload)
       .then((result: any) => {
+        commit('isLoading', false);
         if (result.success) {
           commit('updateTrip', newPayload);
-          commit('isLoading', false);
         } else {
-          commit('isLoading', false);
-          _dispatchCreateAlert(dispatch, result.error);
+          _dispatchCreateAlert(dispatch, Messages.response.message);
         }
       })
       .catch((error: any) => {
@@ -294,12 +290,11 @@ const actions: ActionTree<TripState, RootState> = {
     eventService
       .updateTripEvent(newPayload)
       .then((result: any) => {
+        commit('isLoading', false);
         if (result.success) {
           commit('updateTripEvent', newPayload);
-          commit('isLoading', false);
         } else {
-          commit('isLoading', false);
-          _dispatchCreateAlert(dispatch, result.error);
+          _dispatchCreateAlert(dispatch, Messages.response.message);
         }
       })
       .catch((error: any) => {
@@ -313,12 +308,11 @@ const actions: ActionTree<TripState, RootState> = {
     eventService
       .deleteTripEvent(payload.id)
       .then((result: any) => {
+        commit('isLoading', false);
         if (result.success) {
           commit('deleteTripEvent', payload);
-          commit('isLoading', false);
         } else {
-          commit('isLoading', false);
-          _dispatchCreateAlert(dispatch, result.error);
+          _dispatchCreateAlert(dispatch, Messages.response.message);
         }
       })
       .catch((error: any) => {
@@ -361,11 +355,13 @@ const mutations: MutationTree<TripState> = {
   },
 
   createTrip(state: TripState, payload: Trip) {
+    payload.trip_day = [];
     state.tripList.push(payload);
     state.tripList = sortBy(state.tripList, (trip: Trip) => trip.start_date);
   },
 
   createTripDay(state: TripState, payload: TripDay) {
+    payload.events = [];
     state.tripDetail.trip_day.push(payload);
     state.tripDetail.trip_day = sortBy(state.tripDetail.trip_day, (tripDay: TripDay) => tripDay.trip_date);
   },

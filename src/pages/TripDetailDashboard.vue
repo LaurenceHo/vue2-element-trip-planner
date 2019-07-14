@@ -33,7 +33,7 @@ export default class TripDetailDashboard extends Vue {
     if (isEmpty(this.$store.state.trip.tripList)) {
       this.$store.dispatch(Actions.GET_TRIP_LIST);
     }
-    this.$store.dispatch(Actions.GET_TRIP_DETAIL, { tripId: this.$route.params.trip_id, isCreateOrUpdate: false });
+    this.$store.dispatch(Actions.GET_TRIP_DETAIL, this.$route.params.trip_id);
   }
 }
 </script>

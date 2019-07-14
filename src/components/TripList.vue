@@ -12,7 +12,7 @@
         v-if="alert.message"
         :title="alert.message"
         :type="alert.type"
-        :closable="false"
+        @close="clearAlert"
         show-icon
         effect="dark"
       />
@@ -59,7 +59,11 @@ export default class TripList extends Vue {
 
   goToTripDetail(row: Trip) {
     this.$router.push(`trip/${row.id}`);
-    this.$store.dispatch(Actions.GET_TRIP_DETAIL, { tripId: row.id, isCreateOrUpdate: false });
+    this.$store.dispatch(Actions.GET_TRIP_DETAIL, row.id);
+  }
+
+  clearAlert() {
+    this.$store.dispatch(Actions.CLEAR_ALERT);
   }
 }
 </script>

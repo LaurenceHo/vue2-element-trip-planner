@@ -1,6 +1,13 @@
 <template>
   <div>
-    <el-alert v-if="alert.message" :title="alert.message" :type="alert.type" :closable="true" show-icon effect="dark" />
+    <el-alert
+      v-if="alert.message"
+      :title="alert.message"
+      :type="alert.type"
+      @close="clearAlert"
+      show-icon
+      effect="dark"
+    />
     <div>
       <div v-if="isLoading">
         <div class="el-loading-spinner">
@@ -81,6 +88,10 @@ export default class TripEventList extends Vue {
 
   openTripEventForm() {
     this.$store.dispatch(Actions.OPEN_TRIP_EVENT_FORM, true);
+  }
+
+  clearAlert() {
+    this.$store.dispatch(Actions.CLEAR_ALERT);
   }
 }
 </script>
