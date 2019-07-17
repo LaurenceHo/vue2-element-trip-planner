@@ -48,10 +48,6 @@ export default class Login extends Vue {
     password: '',
   };
 
-  created() {
-    this.$store.dispatch(Actions.CLEAR_ALERT);
-  }
-
   get alert() {
     return this.$store.state.alert;
   }
@@ -60,13 +56,13 @@ export default class Login extends Vue {
     return this.$store.state.authentication.status.loggingIn;
   }
 
+  goToRegisterPage() {
+    this.$router.push('/register');
+  }
+
   handleSubmit(event: any) {
     event.preventDefault();
     this.$store.dispatch(Actions.LOGIN, this.user);
-  }
-
-  goToRegisterPage() {
-    this.$router.push('/register');
   }
 }
 </script>

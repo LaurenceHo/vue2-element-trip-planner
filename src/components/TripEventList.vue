@@ -24,39 +24,7 @@
               New Event
             </el-button>
             <div v-if="isEdit" class="trip-day-edit-form">
-              <el-form
-                ref="tripForm"
-                :rules="requiredRules"
-                :model="tripDayDetail"
-                size="mini"
-                label-width="4rem"
-                label-position="top"
-                width="40rem"
-              >
-                <el-row align="bottom">
-                  <el-col :span="9">
-                    <el-form-item label="Trip date" prop="trip_date_object">
-                      <el-date-picker
-                        :picker-options="{ disabledDate }"
-                        v-model="tripDayDetail.trip_date_object"
-                        type="date"
-                        placeholder="Pick a day"
-                        style="width: 90%"
-                      />
-                    </el-form-item>
-                  </el-col>
-                  <el-col :span="9">
-                    <el-form-item label="Name">
-                      <el-input v-model="tripDayDetail.name" style="width: 90%" />
-                    </el-form-item>
-                  </el-col>
-                  <el-col :span="6" style="padding-top: 2.2rem">
-                    <el-button @click="focusField" type="info" size="mini" icon="el-icon-close" circle></el-button>
-                    <el-button @click="editTripDay" type="success" size="mini" icon="el-icon-check" circle></el-button>
-                    <el-button type="danger" size="mini" icon="el-icon-delete" circle></el-button>
-                  </el-col>
-                </el-row>
-              </el-form>
+              <trip-day-inner-form :tripDayDetail="tripDayDetail" @cancel="focusField" />
             </div>
             <div v-else>
               <div @click="focusField" class="trip-day-wrapper">
@@ -84,17 +52,17 @@
 </template>
 
 <script lang="ts">
-import * as moment from 'moment';
 import { isEmpty } from 'lodash';
 import { Component, Vue } from 'vue-property-decorator';
 
 import Event from './Event.vue';
+import TripDayInnerForm from './TripDayInnerForm.vue';
 import { TripDay } from '../models/trip-day';
 import { Actions } from '../constants/actions';
 import { Messages } from '../constants/messages';
 
 @Component({
-  components: { Event },
+  components: { Event, TripDayInnerForm },
 })
 export default class TripEventList extends Vue {
   requiredRules = {
@@ -131,23 +99,6 @@ export default class TripEventList extends Vue {
 
   focusField() {
     this.isEdit = !this.isEdit;
-  }
-
-  editTripDay() {
-    const tripForm: any = this.$refs.tripForm;
-    tripForm.validate((valid: boolean) => {
-      if (valid) {
-        this.$store.dispatch(Actions.UPDATE_TRIP_DAY, this.tripDayDetail);
-      } else {
-        return false;
-      }
-    });
-  }
-
-  disabledDate(date: Date) {
-    const startDate = moment(this.tripDetail.start_date);
-    const endDate = moment(this.tripDetail.end_date);
-    return moment(date) > endDate || moment(date) < startDate;
   }
 
   openTripEventForm() {

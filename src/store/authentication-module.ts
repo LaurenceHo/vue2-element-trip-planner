@@ -1,4 +1,4 @@
-import { ActionTree, Module, MutationTree } from 'vuex';
+import { ActionContext, ActionTree, Module, MutationTree } from 'vuex';
 
 import { AuthenticationState, RootState } from './types';
 import { User } from '../models/user';
@@ -15,40 +15,36 @@ const namespaced = true;
 const userService = new UserService();
 
 export const actions: ActionTree<AuthenticationState, RootState> = {
-  login(context: any, payload: any) {
+  login({ dispatch, commit }: ActionContext<AuthenticationState, RootState>, payload: any) {
     userService
       .login(payload)
       .then((result: any) => {
         if (result.success) {
           localStorage.setItem('user', JSON.stringify(result.user));
-          context.commit('loginSuccess', result.user);
+          commit('loginSuccess', result.user);
           router.push('/');
         } else {
-          context.commit('loginFailure', result);
-          context.dispatch(Actions.CREATE_ALERT, { type: 'error', message: result.error }, { root: true });
+          commit('loginFailure', result);
+          dispatch(Actions.CREATE_ALERT, { type: 'error', message: result.error }, { root: true });
         }
       })
       .catch((error: any) => {
-        context.commit('loginFailure', error);
-        context.dispatch(Actions.CREATE_ALERT, { type: 'error', message: error.error }, { root: true });
+        commit('loginFailure', error);
+        dispatch(Actions.CREATE_ALERT, { type: 'error', message: error.error }, { root: true });
       });
   },
-  logout(context: any) {
+  logout({ commit }: ActionContext<AuthenticationState, RootState>) {
     userService.logout();
-    context.commit('logout');
+    commit('logout');
     router.push('/login');
   },
-  register(context: any, payload: User) {
+  register({ dispatch }: ActionContext<AuthenticationState, RootState>, payload: User) {
     userService.register(payload).then((result: any) => {
       if (result.success) {
-        context.dispatch(
-          Actions.CREATE_ALERT,
-          { type: 'info', message: Messages.registerSuccess.message },
-          { root: true }
-        );
+        dispatch(Actions.CREATE_ALERT, { type: 'info', message: Messages.registerSuccess.message }, { root: true });
         setTimeout(() => router.push('/login'), 4000);
       } else {
-        context.dispatch(Actions.CREATE_ALERT, { type: 'error', message: result.error }, { root: true });
+        dispatch(Actions.CREATE_ALERT, { type: 'error', message: result.error }, { root: true });
       }
     });
   },

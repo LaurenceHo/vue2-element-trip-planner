@@ -295,9 +295,7 @@ const actions: ActionTree<TripState, RootState> = {
       .updateTripDay(newPayload)
       .then((result: any) => {
         commit('isLoading', false);
-        if (result.success) {
-          commit('updateTripDay', newPayload);
-        } else {
+        if (!result.success) {
           _dispatchCreateAlert(dispatch, Messages.response.message);
         }
       })
@@ -414,10 +412,6 @@ const mutations: MutationTree<TripState> = {
       }
       return trip;
     });
-  },
-
-  updateTripDay(state: TripState, payload: TripDay) {
-    // TODO
   },
 
   updateTripEvent(state: TripState, payload: Event) {
