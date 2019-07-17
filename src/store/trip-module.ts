@@ -284,6 +284,29 @@ const actions: ActionTree<TripState, RootState> = {
       });
   },
 
+  updateTripDay({ dispatch, commit }: ActionContext<TripState, RootState>, payload: TripDay) {
+    let newPayload = cloneDeep(payload);
+    commit('isLoading', true);
+    newPayload.trip_date = moment(payload.trip_date_object).format(DATE_FORMAT);
+    delete newPayload.trip_date_object;
+    delete newPayload.events;
+
+    tripService
+      .updateTripDay(newPayload)
+      .then((result: any) => {
+        commit('isLoading', false);
+        if (result.success) {
+          commit('updateTripDay', newPayload);
+        } else {
+          _dispatchCreateAlert(dispatch, Messages.response.message);
+        }
+      })
+      .catch((error: any) => {
+        commit('isLoading', false);
+        _dispatchCreateAlert(dispatch, error.error);
+      });
+  },
+
   updateTripEvent({ dispatch, commit, state }: ActionContext<TripState, RootState>, payload: Event) {
     commit('isLoading', true);
     const newPayload = _createEventRequestPayload(payload, state);
@@ -391,6 +414,10 @@ const mutations: MutationTree<TripState> = {
       }
       return trip;
     });
+  },
+
+  updateTripDay(state: TripState, payload: TripDay) {
+    // TODO
   },
 
   updateTripEvent(state: TripState, payload: Event) {

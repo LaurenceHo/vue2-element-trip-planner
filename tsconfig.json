@@ -7,7 +7,7 @@
     "module": "es2015",
     "moduleResolution": "node",
     "noImplicitAny": true,
-    "outDir": "./dist/",
+    "outDir": "../dist/",
     "skipLibCheck": true,
     "sourceMap": true,
     "suppressImplicitAnyIndexErrors": true,

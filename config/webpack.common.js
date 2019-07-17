@@ -15,7 +15,7 @@ module.exports = {
     publicPath: '/',
   },
   resolve: {
-    extensions: ['.js', '.vue', '.tsx', '.ts'],
+    extensions: ['.js', '.vue', '.ts'],
   },
   module: {
     rules: [
@@ -38,7 +38,7 @@ module.exports = {
         loader: 'source-map-loader',
       },
       {
-        test: /\.(sa|sc|c)ss$/,
+        test: /\.css$/,
         use: [
           {
             loader: MiniCssExtractPlugin.loader,

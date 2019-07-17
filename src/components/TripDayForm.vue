@@ -6,7 +6,7 @@
     title="Create trip day"
     width="35rem"
   >
-    <el-form ref="tripForm" :rules="requiredRules" :model="tripDay" class="create-trip-day-form" label-width="6rem">
+    <el-form ref="tripForm" :rules="requiredRules" :model="tripDay" label-width="6rem">
       <el-form-item label="Name">
         <el-input v-model="tripDay.name" />
       </el-form-item>
@@ -28,7 +28,7 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Watch } from 'vue-property-decorator';
+import { Vue, Component } from 'vue-property-decorator';
 import * as moment from 'moment';
 import { Actions } from '../constants/actions';
 import { Messages } from '../constants/messages';
@@ -47,13 +47,6 @@ export default class TripDayForm extends Vue {
     name: '',
   };
 
-  @Watch('edit', { immediate: true, deep: true })
-  onEditModeChanged(val: any) {
-    if (val.isEditMode && val.component === 'tripDay') {
-      //TODO
-    }
-  }
-
   get edit() {
     return this.$store.state.dashboard.edit;
   }
@@ -70,9 +63,6 @@ export default class TripDayForm extends Vue {
 
   closeDialog() {
     this.$store.dispatch(Actions.OPEN_TRIP_DAY_FORM, false);
-    if (this.edit.isEditMode) {
-      this.$store.dispatch(Actions.UPDATE_EDIT, { isEditMode: false, idInEdit: 0, component: null });
-    }
     this.resetForm();
   }
 
@@ -80,13 +70,8 @@ export default class TripDayForm extends Vue {
     let tripForm: any = this.$refs.tripForm;
     tripForm.validate((valid: boolean) => {
       if (valid) {
-        if (!this.edit.isEditMode) {
-          this.tripDay.trip_id = this.$store.state.trip.tripDetail.id;
-          this.$store.dispatch(Actions.CREATE_TRIP_DAY, this.tripDay);
-        } else {
-          // TODO
-          this.$store.dispatch(Actions.UPDATE_EDIT, { isEditMode: false, idInEdit: 0, component: null });
-        }
+        this.tripDay.trip_id = this.$store.state.trip.tripDetail.id;
+        this.$store.dispatch(Actions.CREATE_TRIP_DAY, this.tripDay);
         this.$store.dispatch(Actions.OPEN_TRIP_DAY_FORM, false);
         this.resetForm();
       } else {

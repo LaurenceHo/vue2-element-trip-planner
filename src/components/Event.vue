@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="padding-bottom: 0.2rem;">
     <el-card shadow="hover">
       <el-row type="flex">
         <el-col :span="1">
@@ -27,12 +27,8 @@
           </div>
         </el-col>
         <el-col :span="2">
-          <el-button @click="editEvent" type="primary" size="mini" circle>
-            <font-awesome-icon icon="edit" />
-          </el-button>
-          <el-button @click="isDialogOpen = true" type="danger" size="mini" circle>
-            <font-awesome-icon icon="trash-alt" />
-          </el-button>
+          <el-button @click="editEvent" type="primary" size="mini" icon="el-icon-edit" circle></el-button>
+          <el-button @click="isDialogOpen = true" type="danger" size="mini" icon="el-icon-delete" circle></el-button>
         </el-col>
       </el-row>
     </el-card>

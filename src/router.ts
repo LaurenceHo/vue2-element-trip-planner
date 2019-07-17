@@ -1,11 +1,11 @@
 import { includes } from 'lodash';
 import Vue from 'vue';
 import Router from 'vue-router';
-import Dashboard from './pages/Dashboard.vue';
-import Login from './pages/Login.vue';
-import Register from './pages/Register.vue';
+import Dashboard from './views/Dashboard.vue';
+import Login from './views/Login.vue';
+import Register from './views/Register.vue';
 import TripList from './components/TripList.vue';
-import TripDetailDashboard from './pages/TripDetailDashboard.vue';
+import TripDetailDashboard from './views/TripDetailDashboard.vue';
 
 Vue.use(Router);
 

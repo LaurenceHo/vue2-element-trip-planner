@@ -19,7 +19,7 @@
         </div>
       </el-col>
       <el-col :span="1">
-        <el-button @click="editTrip" type="primary" size="mini" circle><font-awesome-icon icon="edit"/></el-button>
+        <el-button @click="editTrip" type="primary" size="mini" icon="el-icon-edit" circle></el-button>
       </el-col>
     </el-row>
   </el-card>
