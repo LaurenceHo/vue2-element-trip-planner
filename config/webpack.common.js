@@ -8,7 +8,7 @@ const NormalModuleReplacementPlugin = require('webpack/lib/NormalModuleReplaceme
 const IgnorePlugin = require('webpack/lib/IgnorePlugin');
 
 module.exports = {
-  entry: ['./src/main.ts', 'whatwg-fetch'],
+  entry: ['./src/main.ts'],
   output: {
     path: path.resolve(__dirname, '../dist'),
     filename: '[name].bundle.js',
