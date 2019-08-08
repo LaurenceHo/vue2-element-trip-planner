@@ -11,7 +11,7 @@
           <el-radio-button label="1"><font-awesome-icon icon="walking" /> Activity</el-radio-button>
           <el-radio-button label="2"><font-awesome-icon icon="bus-alt" /> Transportation</el-radio-button>
           <el-radio-button label="3"><font-awesome-icon icon="info-circle" /> Info</el-radio-button>
-          <el-radio-button label="4"><font-awesome-icon icon="hotel" /> Accommodation</el-radio-button>
+          <el-radio-button label="4"><font-awesome-icon icon="bed" /> Accommodation</el-radio-button>
           <el-radio-button label="5"><font-awesome-icon icon="plane" /> Flight</el-radio-button>
           <el-radio-button label="6"><font-awesome-icon icon="ship" /> Cruise</el-radio-button>
         </el-radio-group>

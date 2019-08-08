@@ -6,7 +6,7 @@
           <font-awesome-icon v-if="tripEvent.category_id === 1" icon="walking" size="2x" />
           <font-awesome-icon v-if="tripEvent.category_id === 2" icon="bus-alt" size="2x" />
           <font-awesome-icon v-if="tripEvent.category_id === 3" icon="info-circle" size="2x" />
-          <font-awesome-icon v-if="tripEvent.category_id === 4" icon="hotel" size="2x" />
+          <font-awesome-icon v-if="tripEvent.category_id === 4" icon="bed" size="2x" />
           <font-awesome-icon v-if="tripEvent.category_id === 5" icon="plane" size="2x" />
           <font-awesome-icon v-if="tripEvent.category_id === 6" icon="ship" size="2x" />
         </el-col>

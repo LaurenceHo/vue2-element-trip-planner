@@ -1,13 +1,13 @@
 import { library } from '@fortawesome/fontawesome-svg-core';
 import {
   faArchive,
+  faBed,
   faBusAlt,
   faCalendarAlt,
   faChevronLeft,
   faChevronRight,
   faCog,
   faFilter,
-  faHotel,
   faInfoCircle,
   faPen,
   faPlane,
@@ -60,13 +60,13 @@ import './style/style.css';
 
 library.add(
   faArchive,
+  faBed,
   faBusAlt,
   faCalendarAlt,
   faChevronLeft,
   faChevronRight,
   faCog,
   faFilter,
-  faHotel,
   faInfoCircle,
   faPen,
   faPlane,
