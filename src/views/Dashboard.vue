@@ -1,10 +1,10 @@
 <template>
   <el-container>
-    <el-header>
-      <top-bar />
-    </el-header>
+    <side-menu />
     <el-container>
-      <side-menu />
+      <el-header>
+        <top-bar />
+      </el-header>
       <el-main>
         <keep-alive>
           <router-view />
@@ -40,8 +40,6 @@ export default class Dashboard extends Vue {
 }
 
 .el-header {
-  background-color: #2d3a4b;
-  color: #fff;
   line-height: 5rem;
   padding: 0;
 }

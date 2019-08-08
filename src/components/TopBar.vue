@@ -3,11 +3,8 @@
     <trip-form />
     <trip-day-form />
     <trip-event-form />
-
-    <el-button @click="handleClick" type="info" circle>
-      <img src="../assets/vue-logo.png" height="30" alt="Vuejs" />
-    </el-button>
     <hamburger :toggle-click="toggleSideBar" :is-active="$store.state.dashboard.toggle" class="hamburger-container" />
+    <breadcrumb />
     <div class="right-menu">
       <el-dropdown @command="handleSelect" class="avatar-container right-menu-item hover-effect" trigger="click">
         <div class="avatar-wrapper">
@@ -38,6 +35,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 
+import Breadcrumb from './Breadcrumb.vue';
 import Hamburger from './Hamburger.vue';
 import TripForm from './TripForm.vue';
 import TripDayForm from './TripDayForm.vue';
@@ -45,7 +43,7 @@ import TripEventForm from './TripEventForm.vue';
 import { Actions } from '../constants/actions';
 
 @Component({
-  components: { Hamburger, TripForm, TripDayForm, TripEventForm },
+  components: { Breadcrumb, Hamburger, TripForm, TripDayForm, TripEventForm },
 })
 export default class TopBar extends Vue {
   get user() {
@@ -54,10 +52,6 @@ export default class TopBar extends Vue {
 
   toggleSideBar() {
     this.$store.dispatch(Actions.TOGGLE_SIDE_BAR);
-  }
-
-  handleClick() {
-    this.$router.push('/');
   }
 
   handleSelect(value: string) {
@@ -89,7 +83,7 @@ export default class TopBar extends Vue {
 .right-menu {
   float: right;
   height: 100%;
-  line-height: 3.8rem;
+  line-height: 3.3rem;
   padding-right: 2rem;
 }
 
@@ -113,7 +107,7 @@ export default class TopBar extends Vue {
 
 .avatar-wrapper {
   cursor: pointer;
-  color: #ffd04b;
+  color: #2d3a4b;
 }
 
 .avatar-outer {

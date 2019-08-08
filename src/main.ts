@@ -21,6 +21,8 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import {
   Alert,
+  Breadcrumb,
+  BreadcrumbItem,
   Button,
   ButtonGroup,
   Card,
@@ -80,6 +82,8 @@ library.add(
 
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 Vue.use(Alert);
+Vue.use(Breadcrumb);
+Vue.use(BreadcrumbItem);
 Vue.use(Button);
 Vue.use(ButtonGroup);
 Vue.use(Card);

@@ -1,5 +1,8 @@
 <template>
-  <div style="background-color: #545c64">
+  <div style="background-color: #2d3a4b">
+    <el-button @click="handleClick" type="info" circle class="logo">
+      <img src="../assets/vue-logo.png" height="30" alt="Vuejs" />
+    </el-button>
     <el-menu
       @select="handleSelect"
       :default-openeds="['dateFilter']"
@@ -54,6 +57,10 @@ export default class SideMenu extends Vue {
     this.$store.dispatch(Actions.OPEN_TRIP_FORM, true);
   }
 
+  handleClick() {
+    this.$router.push('/');
+  }
+
   handleSelect(value: string) {
     this.$store.dispatch(Actions.SET_SIDE_MENU, value);
     this.$store.dispatch(Actions.GET_TRIP_LIST);
@@ -62,6 +69,10 @@ export default class SideMenu extends Vue {
 </script>
 
 <style scoped>
+.logo {
+  margin: 0.5rem 0 0 0.15rem;
+}
+
 .side-menu {
   border: none;
   min-height: 100%;
