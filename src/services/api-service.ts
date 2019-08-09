@@ -1,4 +1,5 @@
 import { isEmpty } from 'lodash';
+import { Messages } from '../constants/messages';
 
 export class ApiService {
   perform(method: string, urlPath: string, requestBody: any, searchParams: any, formParams: any): any {
@@ -47,7 +48,7 @@ export class ApiService {
       if (response.status === 401 || response.status === 403) {
         localStorage.removeItem('user');
       }
-      throw new Error(response.statusText);
+      throw new Error(Messages.login.message);
     }
   };
 

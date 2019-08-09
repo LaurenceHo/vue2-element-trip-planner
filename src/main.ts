@@ -15,6 +15,7 @@ import {
   faShip,
   faSignOutAlt,
   faTags,
+  faTrashAlt,
   faUser,
   faWalking,
 } from '@fortawesome/free-solid-svg-icons';
@@ -76,6 +77,7 @@ library.add(
   faShip,
   faSignOutAlt,
   faTags,
+  faTrashAlt,
   faUser,
   faWalking
 );

@@ -20,6 +20,7 @@ export const Actions = {
   UPDATE_TRIP: 'trip/updateTrip',
   CREATE_TRIP_DAY: 'trip/createTripDay',
   UPDATE_TRIP_DAY: 'trip/updateTripDay',
+  DELETE_TRIP_DAY: 'trip/deleteTripDay',
   CREATE_TRIP_EVENT: 'trip/createTripEvent',
   UPDATE_TRIP_EVENT: 'trip/updateTripEvent',
   DELETE_TRIP_EVENT: 'trip/deleteTripEvent',

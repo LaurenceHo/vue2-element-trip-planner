@@ -135,7 +135,7 @@ export default class TripEventForm extends Vue {
     start_location: '',
     end_location: '',
     note: '',
-    tag: 'tag1,tag2',
+    tag: '',
     cost: null,
   };
 

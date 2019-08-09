@@ -152,194 +152,191 @@ const _parseToLocalTime = (tripEvent: Event, state: TripState): Event => {
   }
   return tripEvent;
 };
+
 const actions: ActionTree<TripState, RootState> = {
   isLoading({ dispatch, commit }: ActionContext<TripState, RootState>, payload: boolean) {
     dispatch(Actions.CLEAR_ALERT, null, { root: true });
     commit('isLoading', payload);
   },
 
-  getTripList({ dispatch, commit, rootState }: ActionContext<TripState, RootState>) {
+  async getTripList({ dispatch, commit, rootState }: ActionContext<TripState, RootState>) {
     commit('isLoading', true);
     const requestPayload = _generateGetTripListPayload(rootState.dashboard.currentMenu);
-    tripService
-      .getTripList(requestPayload)
-      .then((result: { success: boolean; result: Trip[] }) => {
-        commit('isLoading', false);
-        if (result.success) {
-          commit('getTripList', result.result);
-        } else {
-          _dispatchCreateAlert(dispatch, Messages.response.message);
-        }
-      })
-      .catch((error: any) => {
-        commit('isLoading', false);
-        _dispatchCreateAlert(dispatch, error.error);
-      });
+    try {
+      const result: { success: boolean; result: Trip[] } = await tripService.getTripList(requestPayload);
+      commit('isLoading', false);
+      if (result.success) {
+        commit('getTripList', result.result);
+      } else {
+        _dispatchCreateAlert(dispatch, Messages.response.message);
+      }
+    } catch (error) {
+      commit('isLoading', false);
+      _dispatchCreateAlert(dispatch, error.error);
+    }
   },
 
-  getTripDetail({ dispatch, commit }: ActionContext<TripState, RootState>, tripId: number) {
+  async getTripDetail({ dispatch, commit }: ActionContext<TripState, RootState>, tripId: number) {
     commit('isLoading', true);
-    tripService
-      .getTripDetail(tripId)
-      .then((tripDetailResult: { success: boolean; result: Trip }) => {
-        commit('isLoading', false);
-        if (tripDetailResult.success) {
-          commit('getTripDetail', tripDetailResult.result);
-          let tripDayId = 0;
-          if (!isEmpty(tripDetailResult.result.trip_day)) {
-            tripDayId = tripDetailResult.result.trip_day[0].id;
-          }
-          dispatch(Actions.UPDATE_SELECTED_TRIP_DAY_ID, tripDayId, {
-            root: true,
-          });
-        } else {
-          _dispatchCreateAlert(dispatch, Messages.response.message);
+    try {
+      const tripDetailResult: { success: boolean; result: Trip } = await tripService.getTripDetail(tripId);
+      commit('isLoading', false);
+      if (tripDetailResult.success) {
+        commit('getTripDetail', tripDetailResult.result);
+        let tripDayId = 0;
+        if (!isEmpty(tripDetailResult.result.trip_day)) {
+          tripDayId = tripDetailResult.result.trip_day[0].id;
         }
-      })
-      .catch((error: any) => {
-        commit('isLoading', false);
-        _dispatchCreateAlert(dispatch, error.error);
-      });
+        dispatch(Actions.UPDATE_SELECTED_TRIP_DAY_ID, tripDayId, {
+          root: true,
+        });
+      } else {
+        _dispatchCreateAlert(dispatch, Messages.response.message);
+      }
+    } catch (error) {
+      commit('isLoading', false);
+      _dispatchCreateAlert(dispatch, error.error);
+    }
   },
 
-  createTrip({ dispatch, commit }: ActionContext<TripState, RootState>, payload: Trip) {
+  async createTrip({ dispatch, commit }: ActionContext<TripState, RootState>, payload: Trip) {
     commit('isLoading', true);
     const newPayload = _createTripRequestPayload(payload);
-    tripService
-      .createTrip(newPayload)
-      .then((result: any) => {
-        commit('isLoading', false);
-        if (result.success) {
-          newPayload.id = result.result.trip_id;
-          commit('createTrip', newPayload);
-        } else {
-          _dispatchCreateAlert(dispatch, Messages.response.message);
-        }
-      })
-      .catch((error: any) => {
-        commit('isLoading', false);
-        _dispatchCreateAlert(dispatch, error.error);
-      });
+    try {
+      const result: any = await tripService.createTrip(newPayload);
+      commit('isLoading', false);
+      if (result.success) {
+        newPayload.id = result.result.trip_id;
+        commit('createTrip', newPayload);
+      } else {
+        _dispatchCreateAlert(dispatch, Messages.response.message);
+      }
+    } catch (error) {
+      commit('isLoading', false);
+      _dispatchCreateAlert(dispatch, error.error);
+    }
   },
 
-  createTripDay({ dispatch, commit }: ActionContext<TripState, RootState>, payload: TripDay) {
+  async createTripDay({ dispatch, commit }: ActionContext<TripState, RootState>, payload: TripDay) {
     let newPayload = cloneDeep(payload);
     commit('isLoading', true);
     newPayload.trip_date = moment(payload.trip_date_object).format(DATE_FORMAT);
     delete newPayload.trip_date_object;
-
-    tripService
-      .createTripDay(newPayload)
-      .then((result: any) => {
-        commit('isLoading', false);
-        if (result.success) {
-          newPayload.id = result.result.trip_day_id;
-          commit('createTripDay', newPayload);
-        } else {
-          _dispatchCreateAlert(dispatch, Messages.response.message);
-        }
-      })
-      .catch((error: any) => {
-        commit('isLoading', false);
-        _dispatchCreateAlert(dispatch, error.error);
-      });
+    try {
+      const result: any = await tripService.createTripDay(newPayload);
+      commit('isLoading', false);
+      if (result.success) {
+        newPayload.id = result.result.trip_day_id;
+        commit('createTripDay', newPayload);
+      } else {
+        _dispatchCreateAlert(dispatch, Messages.response.message);
+      }
+    } catch (error) {
+      commit('isLoading', false);
+      _dispatchCreateAlert(dispatch, error.error);
+    }
   },
 
-  createTripEvent({ dispatch, commit, state }: ActionContext<TripState, RootState>, payload: Event) {
+  async createTripEvent({ dispatch, commit, state }: ActionContext<TripState, RootState>, payload: Event) {
     commit('isLoading', true);
     const newPayload = _createEventRequestPayload(payload, state);
-    eventService
-      .createTripEvent(newPayload)
-      .then((result: any) => {
-        commit('isLoading', false);
-        if (result.success) {
-          newPayload.id = result.result.event_id;
-          commit('createTripEvent', newPayload);
-        } else {
-          _dispatchCreateAlert(dispatch, Messages.response.message);
-        }
-      })
-      .catch((error: any) => {
-        commit('isLoading', false);
-        _dispatchCreateAlert(dispatch, error.error);
-      });
+    try {
+      const result: any = await eventService.createTripEvent(newPayload);
+      commit('isLoading', false);
+      if (result.success) {
+        newPayload.id = result.result.event_id;
+        commit('createTripEvent', newPayload);
+      } else {
+        _dispatchCreateAlert(dispatch, Messages.response.message);
+      }
+    } catch (error) {
+      commit('isLoading', false);
+      _dispatchCreateAlert(dispatch, error.error);
+    }
   },
 
-  updateTrip({ dispatch, commit }: ActionContext<TripState, RootState>, payload: Trip) {
+  async updateTrip({ dispatch, commit }: ActionContext<TripState, RootState>, payload: Trip) {
     commit('isLoading', true);
     const newPayload = _createTripRequestPayload(payload);
-    tripService
-      .updateTrip(newPayload)
-      .then((result: any) => {
-        commit('isLoading', false);
-        if (result.success) {
-          commit('updateTrip', newPayload);
-        } else {
-          _dispatchCreateAlert(dispatch, Messages.response.message);
-        }
-      })
-      .catch((error: any) => {
-        commit('isLoading', false);
-        _dispatchCreateAlert(dispatch, error.error);
-      });
+    try {
+      const result: any = await tripService.updateTrip(newPayload);
+      commit('isLoading', false);
+      if (result.success) {
+        commit('updateTrip', newPayload);
+      } else {
+        _dispatchCreateAlert(dispatch, Messages.response.message);
+      }
+    } catch (error) {
+      commit('isLoading', false);
+      _dispatchCreateAlert(dispatch, error.error);
+    }
   },
 
-  updateTripDay({ dispatch, commit }: ActionContext<TripState, RootState>, payload: TripDay) {
+  async updateTripDay({ dispatch, commit }: ActionContext<TripState, RootState>, payload: TripDay) {
     let newPayload = cloneDeep(payload);
     commit('isLoading', true);
     newPayload.trip_date = moment(payload.trip_date_object).format(DATE_FORMAT);
     delete newPayload.trip_date_object;
     delete newPayload.events;
-
-    tripService
-      .updateTripDay(newPayload)
-      .then((result: any) => {
-        commit('isLoading', false);
-        if (!result.success) {
-          _dispatchCreateAlert(dispatch, Messages.response.message);
-        }
-      })
-      .catch((error: any) => {
-        commit('isLoading', false);
-        _dispatchCreateAlert(dispatch, error.error);
-      });
+    try {
+      const result: any = await tripService.updateTripDay(newPayload);
+      commit('isLoading', false);
+      if (!result.success) {
+        _dispatchCreateAlert(dispatch, Messages.response.message);
+      }
+    } catch (error) {
+      commit('isLoading', false);
+      _dispatchCreateAlert(dispatch, error.error);
+    }
   },
 
-  updateTripEvent({ dispatch, commit, state }: ActionContext<TripState, RootState>, payload: Event) {
+  async updateTripEvent({ dispatch, commit, state }: ActionContext<TripState, RootState>, payload: Event) {
     commit('isLoading', true);
     const newPayload = _createEventRequestPayload(payload, state);
-    eventService
-      .updateTripEvent(newPayload)
-      .then((result: any) => {
-        commit('isLoading', false);
-        if (result.success) {
-          commit('updateTripEvent', newPayload);
-        } else {
-          _dispatchCreateAlert(dispatch, Messages.response.message);
-        }
-      })
-      .catch((error: any) => {
-        commit('isLoading', false);
-        _dispatchCreateAlert(dispatch, error.error);
-      });
+    try {
+      const result: any = await eventService.updateTripEvent(newPayload);
+      commit('isLoading', false);
+      if (result.success) {
+        commit('updateTripEvent', newPayload);
+      } else {
+        _dispatchCreateAlert(dispatch, Messages.response.message);
+      }
+    } catch (error) {
+      commit('isLoading', false);
+      _dispatchCreateAlert(dispatch, error.error);
+    }
   },
 
-  deleteTripEvent({ dispatch, commit, rootState }: ActionContext<TripState, RootState>, payload: Event) {
+  async deleteTripDay({ dispatch, commit }: ActionContext<TripState, RootState>, tripDayId: number) {
     commit('isLoading', true);
-    eventService
-      .deleteTripEvent(payload.id)
-      .then((result: any) => {
-        commit('isLoading', false);
-        if (result.success) {
-          commit('deleteTripEvent', payload);
-        } else {
-          _dispatchCreateAlert(dispatch, Messages.response.message);
-        }
-      })
-      .catch((error: any) => {
-        commit('isLoading', false);
-        _dispatchCreateAlert(dispatch, error.error);
-      });
+    try {
+      const result: any = await tripService.deleteTripDay(tripDayId);
+      commit('isLoading', false);
+      if (result.success) {
+        commit('deleteTripDay', tripDayId);
+      } else {
+        _dispatchCreateAlert(dispatch, Messages.response.message);
+      }
+    } catch (error) {
+      commit('isLoading', false);
+      _dispatchCreateAlert(dispatch, error.error);
+    }
+  },
+
+  async deleteTripEvent({ dispatch, commit }: ActionContext<TripState, RootState>, payload: Event) {
+    commit('isLoading', true);
+    try {
+      const result: any = await eventService.deleteTripEvent(payload.id);
+      commit('isLoading', false);
+      if (result.success) {
+        commit('deleteTripEvent', payload);
+      } else {
+        _dispatchCreateAlert(dispatch, Messages.response.message);
+      }
+    } catch (error) {
+      commit('isLoading', false);
+      _dispatchCreateAlert(dispatch, error.error);
+    }
   },
 };
 
@@ -429,6 +426,10 @@ const mutations: MutationTree<TripState> = {
       }
       return tripDay;
     });
+  },
+
+  deleteTripDay(state: TripState, tripDayId: number) {
+    remove(state.tripDetail.trip_day, tripDay => tripDay.id === tripDayId);
   },
 
   deleteTripEvent(state: TripState, payload: Event) {

@@ -38,6 +38,9 @@
                 <font-awesome-icon class="trip-day-edit-icon" icon="pen" />
               </div>
             </div>
+            <div v-if="!tripDayDetail.events || tripDayDetail.events.length === 0">
+              <font-awesome-icon @click="isDialogOpen = true" class="trip-day-delete-icon" icon="trash-alt" />
+            </div>
           </div>
           <div v-for="tripEvent in tripDayDetail.events">
             <event :tripEvent="tripEvent" />
@@ -48,6 +51,16 @@
         </div>
       </div>
     </div>
+    <el-dialog v-if="isDialogOpen" :visible.sync="isDialogOpen" title="Warning" width="30%">
+      <span>
+        This will permanently delete the trip day <strong>{{ tripDayDetail.trip_date }} </strong>. Do you want to
+        continue?
+      </span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="isDialogOpen = false">Cancel</el-button>
+        <el-button @click="deleteTripDay" type="primary">Confirm</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -70,6 +83,7 @@ export default class TripEventList extends Vue {
   };
   createTripDayMessage = Messages.createTripDay.message;
   isEdit = false;
+  isDialogOpen = false;
 
   get alert() {
     return this.$store.state.alert;
@@ -107,6 +121,11 @@ export default class TripEventList extends Vue {
 
   clearAlert() {
     this.$store.dispatch(Actions.CLEAR_ALERT);
+  }
+
+  deleteTripDay() {
+    this.isDialogOpen = false;
+    this.$store.dispatch(Actions.DELETE_TRIP_DAY, this.selectedTripDayId);
   }
 }
 </script>
@@ -155,5 +174,10 @@ export default class TripEventList extends Vue {
 
 .trip-day-edit-form {
   padding-left: 1rem;
+}
+
+.trip-day-delete-icon {
+  color: lightgray;
+  cursor: pointer;
 }
 </style>
