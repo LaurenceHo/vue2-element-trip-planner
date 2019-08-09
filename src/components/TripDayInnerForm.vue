@@ -42,7 +42,7 @@
 
 <script lang="ts">
 import * as moment from 'moment';
-import { Component, Vue, Prop } from 'vue-property-decorator';
+import { Component, Vue, Prop, Emit } from 'vue-property-decorator';
 import { TripDay } from '../models/trip-day';
 import { Actions } from '../constants/actions';
 import { Messages } from '../constants/messages';
@@ -56,9 +56,8 @@ export default class TripDayInnerForm extends Vue {
     trip_date_object: [{ type: 'date', required: true, message: Messages.date.required, trigger: 'change' }],
   };
 
-  cancel() {
-    this.$emit('cancel');
-  }
+  @Emit('cancel')
+  cancel() {}
 
   get tripDetail() {
     return this.$store.state.trip.tripDetail;

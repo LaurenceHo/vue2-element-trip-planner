@@ -20,53 +20,64 @@ The frontend stack is including [Vue2](https://vuejs.org/v2/guide/) (TypeScript)
 * Clone the repo: `git clone https://github.com/LaurenceHo/vue-trip-planner.git`
 * Install npm package: `npm install`
 * Start frontend app using webpack dev server: `npm run start`
-* Visit in your browser: `http://localhost:8080`, use `laurence@test.co.nz` as email and `abc123` as password to do login.
+* Visit in your browser: `http://localhost:8000`, use `laurence@test.co.nz` as email and `abc123` as password to do login.
 * If you want to bundle frontend code: `npm run build`
 * If you want to lint the project: `npm run lint`
 
 ## Write Vue using TypeScript
 ### Class-Style Vue Components
-We can use the officially maintained `vue-class-component` decorator or `vue-property-decorator`:
+We can use the officially maintained `vue-class-component` decorator or [vue-property-decorator](https://github.com/kaorun343/vue-property-decorator) for annotation:
+Example [TopBar.vue](./src/components/TopBar.vue), [TripDayInnerForm.vue](./src/components/TripDayInnerForm.vue) and [TripEventForm.vue](./src/components/TripEventForm.vue):
 ```
 <script lang="ts">
-import { Vue, Component, Watch, Prop } from 'vue-property-decorator';
+import { Component, Emit, Prop, Vue, Watch } from 'vue-property-decorator';
+import Breadcrumb from './Breadcrumb.vue';
 import Hamburger from './Hamburger.vue';
-import CreateTripDialog from '../components/CreateTripDialog.vue';
 
 // The @Component decorator indicates the class is a Vue component
 @Component({
-  components: { CreateTripDialog, CreateTripDayDialog, Hamburger },
+  components: { Breadcrumb, Hamburger },
 })
-export default class TopBar extends Vue {
+export default class TripDayInnerForm extends Vue {
   // Define props type here
   @Prop()
-  value: number;
+  tripDayDetail: TripDay;
 
   // Initial data can be declared as instance properties
   message: string = 'Hello!'
   
-  // Instance lifecycle hooks method
+  // Instance lifecycle hooks method 
+  // https://vuejs.org/v2/api/#Options-Lifecycle-Hooks
   beforeCreate() {
     ......
   }
-
+  created() {
+    ......
+  }
   beforeMount() {
     ......
   }
 
-  // Component methods can be declared as instance methods
-  toggleSideBar() {
+  // Computed property
+  get tripDetail() {
+    return this.$store.state.trip.tripDetail;
+  }
+
+  // Watch an expression or a computed function on the Vue instance for changes. 
+  // Watchers can be created with the @Watch(propertyString, config) decorator.
+  @Watch('edit', { immediate: true, deep: true })
+  onEditModeChanged(val: any) {
     ......
   }
-  
-  // Computed property
-  get tripList() {
-    return this.$store.state.trip.tripList;
+
+  // Trigger an event on the current instance
+  @Emit('cancel')
+  cancel() {
+    ......
   }
-  
-  // Watchers can be created with the @Watch(propertyString, config) decorator.
-  @Watch('isEditMode', { immediate: true, deep: true })
-  onEditModeChanged(val: boolean) {
+
+  // Component methods can be declared as instance methods
+  handleSubmit() {
     ......
   }
 
