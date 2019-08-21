@@ -2,14 +2,14 @@ import { ActionTree, Module, MutationTree } from 'vuex';
 
 import { AlertState, RootState } from './types';
 
-export const state: AlertState = {
+const state: AlertState = {
   type: null,
   message: null,
 };
 
 const namespaced = true;
 
-export const actions: ActionTree<AlertState, RootState> = {
+const actions: ActionTree<AlertState, RootState> = {
   create({ commit }, alert: AlertState) {
     commit('create', alert);
   },
@@ -18,7 +18,7 @@ export const actions: ActionTree<AlertState, RootState> = {
   },
 };
 
-export const mutations: MutationTree<AlertState> = {
+const mutations: MutationTree<AlertState> = {
   create(state: any, alert: AlertState) {
     state.type = alert.type;
     state.message = alert.message;

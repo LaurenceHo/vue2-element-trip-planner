@@ -2,7 +2,7 @@ import { ActionTree, Module, MutationTree } from 'vuex';
 
 import { DashboardState, RootState } from './types';
 
-export const state: DashboardState = {
+const state: DashboardState = {
   toggle: true,
   edit: {
     isEditMode: false,
@@ -18,7 +18,7 @@ export const state: DashboardState = {
 
 const namespaced = true;
 
-export const actions: ActionTree<DashboardState, RootState> = {
+const actions: ActionTree<DashboardState, RootState> = {
   toggleSideBar({ commit }: any) {
     commit('toggleSideBar');
   },
@@ -42,7 +42,7 @@ export const actions: ActionTree<DashboardState, RootState> = {
   },
 };
 
-export const mutations: MutationTree<DashboardState> = {
+const mutations: MutationTree<DashboardState> = {
   toggleSideBar(state: any) {
     state.toggle = !state.toggle;
   },

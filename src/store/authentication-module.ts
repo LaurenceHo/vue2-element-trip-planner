@@ -14,7 +14,7 @@ const namespaced = true;
 
 const userService = new UserService();
 
-export const actions: ActionTree<AuthenticationState, RootState> = {
+const actions: ActionTree<AuthenticationState, RootState> = {
   login({ dispatch, commit }: ActionContext<AuthenticationState, RootState>, payload: any) {
     userService
       .login(payload)
@@ -50,7 +50,7 @@ export const actions: ActionTree<AuthenticationState, RootState> = {
   },
 };
 
-export const mutations: MutationTree<AuthenticationState> = {
+const mutations: MutationTree<AuthenticationState> = {
   loginSuccess(state: any, user: User) {
     state.status = { loggedIn: true };
     state.user = user;
