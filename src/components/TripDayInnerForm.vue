@@ -82,5 +82,3 @@ export default class TripDayInnerForm extends Vue {
   }
 }
 </script>
-
-<style scoped></style>

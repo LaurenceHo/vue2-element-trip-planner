@@ -155,5 +155,3 @@ export default class TripForm extends Vue {
   }
 }
 </script>
-
-<style scoped></style>

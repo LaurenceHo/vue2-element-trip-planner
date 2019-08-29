@@ -66,5 +66,3 @@ export default class Register extends Vue {
   }
 }
 </script>
-
-<style scoped></style>

@@ -93,5 +93,3 @@ export default class TripDayForm extends Vue {
   }
 }
 </script>
-
-<style scoped></style>
