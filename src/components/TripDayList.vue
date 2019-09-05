@@ -4,7 +4,7 @@
       <font-awesome-icon icon="plus" />
       New Day
     </el-button>
-    <div v-for="(tripDay, index) in tripDetail.trip_day">
+    <div :key="index" v-for="(tripDay, index) in tripDetail.trip_day">
       <el-menu-item :index="String(index)">
         <el-row>
           <el-col :span="23">
@@ -20,8 +20,8 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator';
-import { Actions } from '../constants/actions';
+import { Component, Vue } from 'vue-property-decorator';
+import { Actions } from '@/constants/actions';
 
 @Component
 export default class TripDay extends Vue {

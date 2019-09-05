@@ -3,41 +3,41 @@
     <el-card shadow="hover">
       <el-row type="flex">
         <el-col :span="1">
-          <font-awesome-icon v-if="tripEvent.category_id === 1" icon="walking" size="2x" />
-          <font-awesome-icon v-if="tripEvent.category_id === 2" icon="bus-alt" size="2x" />
-          <font-awesome-icon v-if="tripEvent.category_id === 3" icon="info-circle" size="2x" />
-          <font-awesome-icon v-if="tripEvent.category_id === 4" icon="bed" size="2x" />
-          <font-awesome-icon v-if="tripEvent.category_id === 5" icon="plane" size="2x" />
-          <font-awesome-icon v-if="tripEvent.category_id === 6" icon="ship" size="2x" />
+          <font-awesome-icon icon="walking" size="2x" v-if="tripEvent.category_id === 1" />
+          <font-awesome-icon icon="bus-alt" size="2x" v-if="tripEvent.category_id === 2" />
+          <font-awesome-icon icon="info-circle" size="2x" v-if="tripEvent.category_id === 3" />
+          <font-awesome-icon icon="bed" size="2x" v-if="tripEvent.category_id === 4" />
+          <font-awesome-icon icon="plane" size="2x" v-if="tripEvent.category_id === 5" />
+          <font-awesome-icon icon="ship" size="2x" v-if="tripEvent.category_id === 6" />
         </el-col>
         <el-col :span="21" style="border-left: 2px dodgerblue solid">
           <div style="padding-left: 0.4rem">
             <div style="font-size: 1.5rem">{{ tripEvent.title }}</div>
-            <div v-if="tripEvent.start_time" class="event-text">Start at: {{ tripEvent.start_time }}</div>
-            <div v-if="tripEvent.end_time" class="event-text">End at: {{ tripEvent.end_time }}</div>
-            <div v-if="tripEvent.start_location" class="event-text">From: {{ tripEvent.start_location }}</div>
-            <div v-if="tripEvent.end_location" class="event-text">To: {{ tripEvent.end_location }}</div>
+            <div class="event-text" v-if="tripEvent.start_time">Start at: {{ tripEvent.start_time }}</div>
+            <div class="event-text" v-if="tripEvent.end_time">End at: {{ tripEvent.end_time }}</div>
+            <div class="event-text" v-if="tripEvent.start_location">From: {{ tripEvent.start_location }}</div>
+            <div class="event-text" v-if="tripEvent.end_location">To: {{ tripEvent.end_location }}</div>
             <div v-if="tripEvent.cost">Price: ${{ tripEvent.cost }} {{ currency ? `(${currency.code})` : '' }}</div>
             <div v-if="tripEvent.tag">
               <font-awesome-icon icon="tags" />
-              <el-tag v-for="tag in tripEvent.tag.split(',')" :key="tag" style="margin-right: 0.3rem;">
+              <el-tag :key="tag" style="margin-right: 0.3rem;" v-for="tag in tripEvent.tag.split(',')">
                 {{ tag }}
               </el-tag>
             </div>
           </div>
         </el-col>
         <el-col :span="2">
-          <el-button @click="editEvent" type="primary" size="mini" icon="el-icon-edit" circle></el-button>
-          <el-button @click="isDialogOpen = true" type="danger" size="mini" icon="el-icon-delete" circle></el-button>
+          <el-button @click="editEvent" circle icon="el-icon-edit" size="mini" type="primary"></el-button>
+          <el-button @click="isDialogOpen = true" circle icon="el-icon-delete" size="mini" type="danger"></el-button>
         </el-col>
       </el-row>
     </el-card>
-    <el-dialog v-if="isDialogOpen" :visible.sync="isDialogOpen" title="Warning" width="30%">
+    <el-dialog :visible.sync="isDialogOpen" title="Warning" v-if="isDialogOpen" width="30%">
       <span>
         This will permanently delete the event <strong>{{ tripEvent.title }}</strong
         >. Do you want to continue?
       </span>
-      <span slot="footer" class="dialog-footer">
+      <span class="dialog-footer" slot="footer">
         <el-button @click="isDialogOpen = false">Cancel</el-button>
         <el-button @click="deleteEvent" type="primary">Confirm</el-button>
       </span>
@@ -46,11 +46,11 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from 'vue-property-decorator';
-import { Event as TripEvent } from '../models/event';
-import { Actions } from '../constants/actions';
-import { currency } from '../assets/currency';
-import { Currency } from '../models/currency';
+import { Component, Prop, Vue } from 'vue-property-decorator';
+import { Event as TripEvent } from '@/models/event';
+import { Actions } from '@/constants/actions';
+import { currency } from '@/assets/currency';
+import { Currency } from '@/models/currency';
 
 @Component
 export default class Event extends Vue {

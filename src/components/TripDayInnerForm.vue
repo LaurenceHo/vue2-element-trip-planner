@@ -1,11 +1,11 @@
 <template>
   <el-form
-    ref="tripForm"
-    :rules="requiredRules"
     :model="tripDayDetail"
-    size="mini"
-    label-width="4rem"
+    :rules="requiredRules"
     label-position="top"
+    label-width="4rem"
+    ref="tripForm"
+    size="mini"
     width="40rem"
   >
     <el-row align="bottom">
@@ -13,27 +13,27 @@
         <el-form-item label="Trip date" prop="trip_date_object">
           <el-date-picker
             :picker-options="{ disabledDate }"
-            v-model="tripDayDetail.trip_date_object"
-            type="date"
             placeholder="Pick a day"
             style="width: 90%"
+            type="date"
+            v-model="tripDayDetail.trip_date_object"
           />
         </el-form-item>
       </el-col>
       <el-col :span="9">
         <el-form-item label="Name">
-          <el-input v-model="tripDayDetail.name" style="width: 90%" />
+          <el-input style="width: 90%" v-model="tripDayDetail.name" />
         </el-form-item>
       </el-col>
       <el-col :span="6" style="padding-top: 2.2rem">
-        <el-button @click="cancel" type="info" size="mini" icon="el-icon-close" circle></el-button>
+        <el-button @click="cancel" circle icon="el-icon-close" size="mini" type="info"></el-button>
         <el-button
           @click="handleSubmit"
-          type="success"
-          size="mini"
-          icon="el-icon-check"
           circle
+          icon="el-icon-check"
           native-type="submit"
+          size="mini"
+          type="success"
         ></el-button>
       </el-col>
     </el-row>
@@ -41,15 +41,15 @@
 </template>
 
 <script lang="ts">
-import * as moment from 'moment';
-import { Component, Vue, Prop, Emit } from 'vue-property-decorator';
-import { TripDay } from '../models/trip-day';
-import { Actions } from '../constants/actions';
-import { Messages } from '../constants/messages';
+import moment from 'moment';
+import { Component, Emit, Prop, Vue } from 'vue-property-decorator';
+import { TripDay } from '@/models/trip-day';
+import { Actions } from '@/constants/actions';
+import { Messages } from '@/constants/messages';
 
 @Component
 export default class TripDayInnerForm extends Vue {
-  @Prop()
+  @Prop({ default: null })
   tripDayDetail: TripDay;
 
   requiredRules = {

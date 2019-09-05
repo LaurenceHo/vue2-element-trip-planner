@@ -1,26 +1,26 @@
 <template>
   <el-dialog
-    :visible.sync="$store.state.dashboard.openTripDayForm"
     :show-close="false"
+    :visible.sync="$store.state.dashboard.openTripDayForm"
     custom-class="create-trip-day-dialog"
     title="Create trip day"
     width="35rem"
   >
-    <el-form ref="tripForm" :rules="requiredRules" :model="tripDay" label-width="6rem">
+    <el-form :model="tripDay" :rules="requiredRules" label-width="6rem" ref="tripForm">
       <el-form-item label="Name">
         <el-input v-model="tripDay.name" />
       </el-form-item>
       <el-form-item label="Trip date" prop="trip_date_object">
         <el-date-picker
           :picker-options="{ disabledDate }"
-          v-model="tripDay.trip_date_object"
-          type="date"
           placeholder="Pick a day"
           style="width: 100%"
+          type="date"
+          v-model="tripDay.trip_date_object"
         />
       </el-form-item>
     </el-form>
-    <span slot="footer" class="dialog-footer">
+    <span class="dialog-footer" slot="footer">
       <el-button @click="closeDialog">Cancel</el-button>
       <el-button @click="createTripDay" type="primary">Confirm</el-button>
     </span>
@@ -28,11 +28,11 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator';
-import * as moment from 'moment';
-import { Actions } from '../constants/actions';
-import { Messages } from '../constants/messages';
-import { TripDay } from '../models/trip-day';
+import { Component, Vue } from 'vue-property-decorator';
+import moment from 'moment';
+import { Actions } from '@/constants/actions';
+import { Messages } from '@/constants/messages';
+import { TripDay } from '@/models/trip-day';
 
 @Component
 export default class TripDayForm extends Vue {

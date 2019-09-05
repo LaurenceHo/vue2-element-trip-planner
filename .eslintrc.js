@@ -1,44 +1,22 @@
 module.exports = {
-  // https://eslint.org/docs/user-guide/configuring#using-configuration-files-1
   root: true,
-
-  // https://eslint.org/docs/user-guide/configuring#specifying-environments
   env: {
-    browser: true,
-    node: true,
-    jest: true,
+    node: true
   },
-
-  // https://eslint.org/docs/user-guide/configuring#specifying-parser
-  parser: 'vue-eslint-parser',
-  // https://vuejs.github.io/eslint-plugin-vue/user-guide/#faq
-  parserOptions: {
-    parser: '@typescript-eslint/parser',
-    ecmaVersion: 2017,
-    sourceType: 'module',
-    project: './tsconfig.json',
-  },
-
-  // https://eslint.org/docs/user-guide/configuring#extending-configuration-files
-  // order matters: from least important to most important in terms of overriding
-  // Prettier + Vue: https://medium.com/@gogl.alex/how-to-properly-set-up-eslint-with-prettier-for-vue-or-nuxt-in-vscode-e42532099a9c
-  extends: [
-    'plugin:@typescript-eslint/recommended',
-    'plugin:vue/recommended',
-    'prettier',
-    'prettier/vue',
-    'prettier/@typescript-eslint',
-  ],
-
-  // https://eslint.org/docs/user-guide/configuring#configuring-plugins
-  plugins: ['prettier', 'vue', '@typescript-eslint'],
-
+  extends: ["plugin:vue/essential", "@vue/prettier", "@vue/typescript"],
   rules: {
-    'prettier/prettier': 'error',
-    '@typescript-eslint/camelcase': 'off',
-    '@typescript-eslint/explicit-function-return-type': 'off',
-    '@typescript-eslint/explicit-member-accessibility': 'off',
-    '@typescript-eslint/no-explicit-any': 'off',
-    '@typescript-eslint/no-var-requires': 'off',
+    "no-console": process.env.NODE_ENV === "production" ? "error" : "off",
+    "no-debugger": process.env.NODE_ENV === "production" ? "error" : "off"
   },
+  parserOptions: {
+    parser: "@typescript-eslint/parser"
+  },
+  overrides: [
+    {
+      files: ["**/__tests__/*.{j,t}s?(x)"],
+      env: {
+        jest: true
+      }
+    }
+  ]
 };

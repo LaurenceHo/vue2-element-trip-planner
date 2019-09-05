@@ -40,8 +40,8 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
-import { Actions } from '../constants/actions';
-import { Messages } from '../constants/messages';
+import { Actions } from '@/constants/actions';
+import { Messages } from '@/constants/messages';
 
 @Component
 export default class Register extends Vue {

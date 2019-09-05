@@ -2,28 +2,28 @@
   <div class="main-content">
     <div v-if="isLoading">
       <div class="el-loading-spinner">
-        <svg viewBox="25 25 50 50" class="circular">
-          <circle cx="50" cy="50" r="20" fill="none" class="path"></circle>
+        <svg class="circular" viewBox="25 25 50 50">
+          <circle class="path" cx="50" cy="50" fill="none" r="20"></circle>
         </svg>
       </div>
     </div>
     <div v-else>
       <el-alert
-        v-if="alert.message"
         :title="alert.message"
         :type="alert.type"
         @close="clearAlert"
-        show-icon
         effect="dark"
+        show-icon
+        v-if="alert.message"
       />
       <el-table :data="tripList" stripe style="width: 100%">
-        <el-table-column prop="name" label="Trip name" />
+        <el-table-column label="Trip name" prop="name" />
         <el-table-column label="Date">
           <template slot-scope="scope">
             <span>{{ `${scope.row.start_date} ~ ${scope.row.end_date}` }}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="destination" label="Destination" />
+        <el-table-column label="Destination" prop="destination" />
         <el-table-column fixed="right" label="Operations">
           <template slot-scope="scope">
             <el-button @click="goToTripDetail(scope.row)" type="text">Detail</el-button>
@@ -35,9 +35,9 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator';
-import { Actions } from '../constants/actions';
-import { Trip } from '../models/trip';
+import { Component, Vue } from 'vue-property-decorator';
+import { Actions } from '@/constants/actions';
+import { Trip } from '@/models/trip';
 
 @Component
 export default class TripList extends Vue {

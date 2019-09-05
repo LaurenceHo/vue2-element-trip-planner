@@ -20,10 +20,10 @@
 import { Vue, Component } from 'vue-property-decorator';
 import { isEmpty } from 'lodash';
 
-import TripDayList from '../components/TripDayList.vue';
-import TripEventList from '../components/TripEventList.vue';
-import TripDetailBanner from '../components/TripDetailBanner.vue';
-import { Actions } from '../constants/actions';
+import TripDayList from '@/components/TripDayList.vue';
+import TripEventList from '@/components/TripEventList.vue';
+import TripDetailBanner from '@/components/TripDetailBanner.vue';
+import { Actions } from '@/constants/actions';
 
 @Component({
   components: { TripDetailBanner, TripDayList, TripEventList },

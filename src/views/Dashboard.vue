@@ -1,6 +1,6 @@
 <template>
   <el-container>
-    <side-menu />
+    <side-menu class="sidebar-container" />
     <el-container>
       <el-header>
         <top-bar />
@@ -16,9 +16,9 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
-import TopBar from '../components/TopBar.vue';
-import SideMenu from '../components/SideMenu.vue';
-import { Actions } from '../constants/actions';
+import TopBar from '@/components/TopBar.vue';
+import SideMenu from '@/components/SideMenu.vue';
+import { Actions } from '@/constants/actions';
 
 @Component({
   components: { SideMenu, TopBar },
@@ -35,6 +35,10 @@ export default class Dashboard extends Vue {
 </script>
 
 <style scoped>
+.sidebar-container {
+  background-color: #2d3a4b;
+}
+
 .el-container {
   min-height: 100%;
 }

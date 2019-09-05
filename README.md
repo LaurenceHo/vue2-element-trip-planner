@@ -87,7 +87,7 @@ export default class TripDayInnerForm extends Vue {
 
 ## element-ui usage
 ### Only import components on demand
-In [main.ts](src/main.ts):
+In [element.ts](src/plugins/element.ts):
 ```
 import {
   Alert,
@@ -102,17 +102,6 @@ Vue.use(Button);
 Vue.use(Card);
 Vue.use(Col);
 Vue.use(Container);
-```
-### Internationalization
-In [webpack.common.js](config/webpack.common.js):
-```
-const NormalModuleReplacementPlugin = require('webpack/lib/NormalModuleReplacementPlugin');
-
-module.exports = {
-  plugins: [
-    new NormalModuleReplacementPlugin(/element-ui[\/\\]lib[\/\\]locale[\/\\]lang[\/\\]zh-CN/, 'element-ui/lib/locale/lang/en')
-  ]
-};
 ```
 
 ## License

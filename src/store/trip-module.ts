@@ -1,17 +1,16 @@
 import { cloneDeep, isEmpty, map, remove, sortBy } from 'lodash';
-import * as moment from 'moment-timezone';
+import moment from 'moment-timezone';
 import { ActionContext, ActionTree, Module, MutationTree } from 'vuex';
-
 import { RootState, TripState } from './types';
-import { Event } from '../models/event';
-import { Trip } from '../models/trip';
-import { TripDay } from '../models/trip-day';
-import { EventService } from '../services/event-service';
-import { TripService } from '../services/trip-service';
-import { DATE_FORMAT, DATE_TIME_FORMAT, DATE_TIME_TZ_FORMAT } from '../constants/general';
-import { Actions } from '../constants/actions';
-import { Messages } from '../constants/messages';
-import { timezone } from '../assets/timezone';
+import { Event } from '@/models/event';
+import { Trip } from '@/models/trip';
+import { TripDay } from '@/models/trip-day';
+import { EventService } from '@/services/event-service';
+import { TripService } from '@/services/trip-service';
+import { DATE_FORMAT, DATE_TIME_FORMAT, DATE_TIME_TZ_FORMAT } from '@/constants/general';
+import { Actions } from '@/constants/actions';
+import { Messages } from '@/constants/messages';
+import { timezone } from '@/assets/timezone';
 
 const tripList: Trip[] = [];
 const trip_day: TripDay[] = [];

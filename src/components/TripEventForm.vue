@@ -1,19 +1,37 @@
 <template>
   <el-dialog
-    :visible.sync="$store.state.dashboard.openTripEventForm"
     :show-close="false"
     :title="edit.isEditMode ? 'Edit event' : 'Create event'"
+    :visible.sync="$store.state.dashboard.openTripEventForm"
     width="48rem"
   >
-    <el-form ref="eventForm" :rules="requiredRules" :model="tripEvent" class="create-event-form" label-width="8rem">
+    <el-form :model="tripEvent" :rules="requiredRules" class="create-event-form" label-width="8rem" ref="eventForm">
       <el-form-item label="Category">
-        <el-radio-group v-model="tripEvent.category_id" size="small">
-          <el-radio-button label="1"><font-awesome-icon icon="walking" /> Activity</el-radio-button>
-          <el-radio-button label="2"><font-awesome-icon icon="bus-alt" /> Transportation</el-radio-button>
-          <el-radio-button label="3"><font-awesome-icon icon="info-circle" /> Info</el-radio-button>
-          <el-radio-button label="4"><font-awesome-icon icon="bed" /> Accommodation</el-radio-button>
-          <el-radio-button label="5"><font-awesome-icon icon="plane" /> Flight</el-radio-button>
-          <el-radio-button label="6"><font-awesome-icon icon="ship" /> Cruise</el-radio-button>
+        <el-radio-group size="small" v-model="tripEvent.category_id">
+          <el-radio-button label="1">
+            <font-awesome-icon icon="walking" />
+            Activity
+          </el-radio-button>
+          <el-radio-button label="2">
+            <font-awesome-icon icon="bus-alt" />
+            Transportation
+          </el-radio-button>
+          <el-radio-button label="3">
+            <font-awesome-icon icon="info-circle" />
+            Info
+          </el-radio-button>
+          <el-radio-button label="4">
+            <font-awesome-icon icon="bed" />
+            Accommodation
+          </el-radio-button>
+          <el-radio-button label="5">
+            <font-awesome-icon icon="plane" />
+            Flight
+          </el-radio-button>
+          <el-radio-button label="6">
+            <font-awesome-icon icon="ship" />
+            Cruise
+          </el-radio-button>
         </el-radio-group>
       </el-form-item>
       <el-form-item label="Title" prop="title">
@@ -23,19 +41,19 @@
         <el-col :span="11">
           <el-form-item label="Start time" prop="start_time_object">
             <el-date-picker
-              v-model="tripEvent.start_time_object"
               :default-value="defaultDate"
               clearable
               style="width: 100%"
               type="datetime"
+              v-model="tripEvent.start_time_object"
             />
           </el-form-item>
         </el-col>
         <el-col :span="13">
           <el-form-item label="Timezone">
-            <el-select v-model="tripEvent.start_time_timezone_id" filterable style="width: 100%">
+            <el-select filterable style="width: 100%" v-model="tripEvent.start_time_timezone_id">
               <el-option :value="0" label="--" />
-              <el-option v-for="tz in timezoneList" :label="tz.text" :value="tz.id" :key="tz.id" />
+              <el-option :key="tz.id" :label="tz.text" :value="tz.id" v-for="tz in timezoneList" />
             </el-select>
           </el-form-item>
         </el-col>
@@ -44,19 +62,19 @@
         <el-col :span="11">
           <el-form-item label="End time" prop="end_time_object">
             <el-date-picker
-              v-model="tripEvent.end_time_object"
               :default-value="defaultDate"
               clearable
               style="width: 100%"
               type="datetime"
+              v-model="tripEvent.end_time_object"
             />
           </el-form-item>
         </el-col>
         <el-col :span="13">
           <el-form-item label="Timezone">
-            <el-select v-model="tripEvent.end_time_timezone_id" filterable style="width: 100%">
+            <el-select filterable style="width: 100%" v-model="tripEvent.end_time_timezone_id">
               <el-option :value="0" label="--" />
-              <el-option v-for="tz in timezoneList" :label="tz.text" :value="tz.id" :key="tz.id" />
+              <el-option :key="tz.id" :label="tz.text" :value="tz.id" v-for="tz in timezoneList" />
             </el-select>
           </el-form-item>
         </el-col>
@@ -64,14 +82,14 @@
       <el-row>
         <el-col :span="11">
           <el-form-item label="Cost">
-            <el-input v-model="tripEvent.cost" type="number" style="width: 100%" />
+            <el-input style="width: 100%" type="number" v-model="tripEvent.cost" />
           </el-form-item>
         </el-col>
         <el-col :span="13">
           <el-form-item label="Currency">
-            <el-select v-model="tripEvent.currency_id" filterable style="width: 100%">
+            <el-select filterable style="width: 100%" v-model="tripEvent.currency_id">
               <el-option :value="0" label="--" />
-              <el-option v-for="c in currencyList" :label="`${c.name} (${c.code})`" :value="c.id" :key="c.id" />
+              <el-option :key="c.id" :label="`${c.name} (${c.code})`" :value="c.id" v-for="c in currencyList" />
             </el-select>
           </el-form-item>
         </el-col>
@@ -83,17 +101,17 @@
         <el-input v-model="tripEvent.end_location" />
       </el-form-item>
       <el-form-item label="Note">
-        <el-input v-model="tripEvent.note" type="textarea" />
+        <el-input type="textarea" v-model="tripEvent.note" />
       </el-form-item>
       <el-form-item label="Tag">
-        <el-input v-model="tripEvent.tag" placeholder="Use comma to separate tag" />
+        <el-input placeholder="Use comma to separate tag" v-model="tripEvent.tag" />
       </el-form-item>
       <el-form-item v-if="tripEvent.tag">
         <font-awesome-icon icon="tags" />
-        <el-tag v-for="tag in tripEvent.tag.split(',')" :key="tag" style="margin-right: 0.3rem;">{{ tag }}</el-tag>
+        <el-tag :key="tag" style="margin-right: 0.3rem;" v-for="tag in tripEvent.tag.split(',')">{{ tag }}</el-tag>
       </el-form-item>
     </el-form>
-    <span slot="footer" class="dialog-footer">
+    <span class="dialog-footer" slot="footer">
       <el-button @click="closeDialog">Cancel</el-button>
       <el-button @click="createTripEvent" type="primary">Confirm</el-button>
     </span>
@@ -103,14 +121,13 @@
 <script lang="ts">
 import { isEmpty } from 'lodash';
 import { Component, Vue, Watch } from 'vue-property-decorator';
-
-import { currency } from '../assets/currency';
-import { timezone } from '../assets/timezone';
-import { Event as TripEvent } from '../models/event';
-import { TripDay } from '../models/trip-day';
-import { Actions } from '../constants/actions';
-import { Messages } from '../constants/messages';
-import { Trip } from '../models/trip';
+import { currency } from '@/assets/currency';
+import { timezone } from '@/assets/timezone';
+import { Event as TripEvent } from '@/models/event';
+import { TripDay } from '@/models/trip-day';
+import { Actions } from '@/constants/actions';
+import { Messages } from '@/constants/messages';
+import { Trip } from '@/models/trip';
 
 @Component
 export default class TripEventForm extends Vue {

@@ -1,18 +1,18 @@
 <template>
   <div>
     <el-alert
-      v-if="alert.message"
       :title="alert.message"
       :type="alert.type"
       @close="clearAlert"
-      show-icon
       effect="dark"
+      show-icon
+      v-if="alert.message"
     />
     <div>
       <div v-if="isLoading">
         <div class="el-loading-spinner">
-          <svg viewBox="25 25 50 50" class="circular">
-            <circle cx="50" cy="50" r="20" fill="none" class="path"></circle>
+          <svg class="circular" viewBox="25 25 50 50">
+            <circle class="path" cx="50" cy="50" fill="none" r="20"></circle>
           </svg>
         </div>
       </div>
@@ -23,7 +23,7 @@
               <font-awesome-icon icon="plus" />
               New Event
             </el-button>
-            <div v-if="isEdit" class="trip-day-edit-form">
+            <div class="trip-day-edit-form" v-if="isEdit">
               <trip-day-inner-form :tripDayDetail="tripDayDetail" @cancel="focusField" />
             </div>
             <div v-else>
@@ -42,21 +42,21 @@
               <font-awesome-icon @click="isDialogOpen = true" class="trip-day-delete-icon" icon="trash-alt" />
             </div>
           </div>
-          <div v-for="tripEvent in tripDayDetail.events">
+          <div :key="tripEvent.id" v-for="tripEvent in tripDayDetail.events">
             <event :tripEvent="tripEvent" />
           </div>
         </div>
         <div v-else>
-          <el-alert :title="createTripDayMessage" type="info" show-icon effect="dark" />
+          <el-alert :title="createTripDayMessage" effect="dark" show-icon type="info" />
         </div>
       </div>
     </div>
-    <el-dialog v-if="isDialogOpen" :visible.sync="isDialogOpen" title="Warning" width="30%">
+    <el-dialog :visible.sync="isDialogOpen" title="Warning" v-if="isDialogOpen" width="30%">
       <span>
         This will permanently delete the trip day <strong>{{ tripDayDetail.trip_date }} </strong>. Do you want to
         continue?
       </span>
-      <span slot="footer" class="dialog-footer">
+      <span class="dialog-footer" slot="footer">
         <el-button @click="isDialogOpen = false">Cancel</el-button>
         <el-button @click="deleteTripDay" type="primary">Confirm</el-button>
       </span>
@@ -70,9 +70,9 @@ import { Component, Vue } from 'vue-property-decorator';
 
 import Event from './Event.vue';
 import TripDayInnerForm from './TripDayInnerForm.vue';
-import { TripDay } from '../models/trip-day';
-import { Actions } from '../constants/actions';
-import { Messages } from '../constants/messages';
+import { TripDay } from '@/models/trip-day';
+import { Actions } from '@/constants/actions';
+import { Messages } from '@/constants/messages';
 
 @Component({
   components: { Event, TripDayInnerForm },
@@ -109,6 +109,7 @@ export default class TripEventList extends Vue {
       tripDayDetail.trip_date_object = new Date(tripDayDetail.trip_date);
       return tripDayDetail;
     }
+    return null;
   }
 
   focusField() {

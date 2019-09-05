@@ -1,36 +1,36 @@
 <template>
-  <div style="background-color: #2d3a4b">
-    <el-button @click="handleClick" type="info" circle class="logo">
-      <img src="../assets/vue-logo.png" height="30" alt="Vuejs" />
+  <div>
+    <el-button @click="handleClick" circle class="logo" type="info">
+      <img alt="Vuejs" height="30" src="../assets/vue-logo.png" />
     </el-button>
     <el-menu
-      @select="handleSelect"
-      :default-openeds="['dateFilter']"
       :collapse="!$store.state.dashboard.toggle"
-      class="side-menu"
-      background-color="#2d3a4b"
-      text-color="#fff"
+      :default-openeds="['dateFilter']"
+      @select="handleSelect"
       active-text-color="#ffd04b"
+      background-color="#2d3a4b"
+      class="side-menu"
       default-active="current"
+      text-color="#fff"
     >
-      <el-button @click="openCreateTripDialog" :disabled="shouldDisable" class="create-button" type="info">
-        <font-awesome-icon icon="plus" class="menu-icon" />
+      <el-button :disabled="shouldDisable" @click="openCreateTripDialog" class="create-button" type="info">
+        <font-awesome-icon class="menu-icon" icon="plus" />
         {{ $store.state.dashboard.toggle ? 'New Trip' : '' }}
       </el-button>
       <el-submenu index="dateFilter">
         <template slot="title">
-          <font-awesome-icon icon="filter" class="menu-icon" />
+          <font-awesome-icon class="menu-icon" icon="filter" />
           <span slot="title">Filter by date</span>
         </template>
-        <div v-for="option in sideMenuOption">
-          <el-menu-item :index="option.key" :disabled="shouldDisable">
-            <font-awesome-icon icon="calendar-alt" class="menu-icon" />
+        <div :key="option.key" v-for="option in sideMenuOption">
+          <el-menu-item :disabled="shouldDisable" :index="option.key">
+            <font-awesome-icon class="menu-icon" icon="calendar-alt" />
             {{ option.label }}
           </el-menu-item>
         </div>
       </el-submenu>
       <el-menu-item :disabled="shouldDisable" index="archived">
-        <font-awesome-icon icon="archive" class="menu-icon" />
+        <font-awesome-icon class="menu-icon" icon="archive" />
         <span>Archived</span>
       </el-menu-item>
     </el-menu>
@@ -38,8 +38,8 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator';
-import { Actions } from '../constants/actions';
+import { Component, Vue } from 'vue-property-decorator';
+import { Actions } from '@/constants/actions';
 
 @Component
 export default class SideMenu extends Vue {

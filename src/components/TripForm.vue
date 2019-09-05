@@ -1,12 +1,12 @@
 <template>
   <el-dialog
-    :visible.sync="$store.state.dashboard.openTripForm"
     :show-close="false"
     :title="edit.isEditMode ? 'Edit trip' : 'Create trip'"
+    :visible.sync="$store.state.dashboard.openTripForm"
     custom-class="create-trip-dialog"
     width="40rem"
   >
-    <el-form ref="tripForm" :rules="requiredRules" :model="trip" class="create-trip-form" label-width="7rem">
+    <el-form :model="trip" :rules="requiredRules" class="create-trip-form" label-width="7rem" ref="tripForm">
       <el-form-item label="Name">
         <el-input v-model="trip.name" />
       </el-form-item>
@@ -18,10 +18,10 @@
           <el-form-item label="Start date" prop="start_date_object">
             <el-date-picker
               :picker-options="{ disabledDate: disabledStartDate }"
-              v-model="trip.start_date_object"
+              placeholder="Start date"
               style="width: 100%"
               type="date"
-              placeholder="Start date"
+              v-model="trip.start_date_object"
             />
           </el-form-item>
         </el-col>
@@ -29,24 +29,24 @@
           <el-form-item label="End date" prop="end_date_object">
             <el-date-picker
               :picker-options="{ disabledDate: disabledEndDate }"
-              v-model="trip.end_date_object"
+              placeholder="End date"
               style="width: 100%;"
               type="date"
-              placeholder="End date"
+              v-model="trip.end_date_object"
             />
           </el-form-item>
         </el-col>
       </el-row>
       <el-form-item label="Timezone" prop="timezone_id">
-        <el-select v-model="trip.timezone_id" filterable style="width: 100%">
-          <el-option v-for="tz in timezoneList" :label="tz.text" :value="tz.id" :key="tz.id" />
+        <el-select filterable style="width: 100%" v-model="trip.timezone_id">
+          <el-option :key="tz.id" :label="tz.text" :value="tz.id" v-for="tz in timezoneList" />
         </el-select>
       </el-form-item>
-      <el-form-item v-if="edit.isEditMode" label="Archived" prop="archived">
-        <el-switch v-model="trip.archived" active-text="Yes" inactive-text="No" />
+      <el-form-item label="Archived" prop="archived" v-if="edit.isEditMode">
+        <el-switch active-text="Yes" inactive-text="No" v-model="trip.archived" />
       </el-form-item>
     </el-form>
-    <span slot="footer" class="dialog-footer">
+    <span class="dialog-footer" slot="footer">
       <el-button @click="closeDialog">Cancel</el-button>
       <el-button @click="createTrip" type="primary">Confirm</el-button>
     </span>
@@ -55,10 +55,10 @@
 
 <script lang="ts">
 import { Component, Vue, Watch } from 'vue-property-decorator';
-import { timezone } from '../assets/timezone';
-import { Actions } from '../constants/actions';
-import { Messages } from '../constants/messages';
-import { Trip } from '../models/trip';
+import { timezone } from '@/assets/timezone';
+import { Actions } from '@/constants/actions';
+import { Messages } from '@/constants/messages';
+import { Trip } from '@/models/trip';
 
 @Component
 export default class TripForm extends Vue {

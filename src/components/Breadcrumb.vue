@@ -1,7 +1,7 @@
 <template>
   <el-breadcrumb class="app-breadcrumb" separator="/">
     <transition-group name="breadcrumb">
-      <el-breadcrumb-item key="dashboard" :to="{ path: '/dashboard' }">Dashboard</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: '/dashboard' }" key="dashboard">Dashboard</el-breadcrumb-item>
       <el-breadcrumb-item key="trip" v-if="!isDashboard">Trip detail</el-breadcrumb-item>
     </transition-group>
   </el-breadcrumb>

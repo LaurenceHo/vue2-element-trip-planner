@@ -3,27 +3,27 @@
     <trip-form />
     <trip-day-form />
     <trip-event-form />
-    <hamburger :toggle-click="toggleSideBar" :is-active="$store.state.dashboard.toggle" class="hamburger-container" />
+    <hamburger :is-active="$store.state.dashboard.toggle" :toggle-click="toggleSideBar" class="hamburger-container" />
     <breadcrumb />
     <div class="right-menu">
       <el-dropdown @command="handleSelect" class="avatar-container right-menu-item hover-effect" trigger="click">
         <div class="avatar-wrapper">
           <div class="avatar-outer">
-            <img class="avatar" src="../assets/default-avatar.png" height="10" alt="avatar" />
+            <img alt="avatar" class="avatar" height="10" src="../assets/default-avatar.png" />
           </div>
           <div style="float: right">{{ user.username }}</div>
         </div>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item command="profile">
-            <font-awesome-icon icon="user" class="menu-icon" />
+            <font-awesome-icon class="menu-icon" icon="user" />
             Your profile
           </el-dropdown-item>
           <el-dropdown-item command="setting">
-            <font-awesome-icon icon="cog" class="menu-icon" />
+            <font-awesome-icon class="menu-icon" icon="cog" />
             Setting
           </el-dropdown-item>
-          <el-dropdown-item divided command="logout">
-            <font-awesome-icon icon="sign-out-alt" class="menu-icon" />
+          <el-dropdown-item command="logout" divided>
+            <font-awesome-icon class="menu-icon" icon="sign-out-alt" />
             Logout
           </el-dropdown-item>
         </el-dropdown-menu>
@@ -40,7 +40,7 @@ import Hamburger from './Hamburger.vue';
 import TripForm from './TripForm.vue';
 import TripDayForm from './TripDayForm.vue';
 import TripEventForm from './TripEventForm.vue';
-import { Actions } from '../constants/actions';
+import { Actions } from '@/constants/actions';
 
 @Component({
   components: { Breadcrumb, Hamburger, TripForm, TripDayForm, TripEventForm },
