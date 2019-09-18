@@ -1,8 +1,8 @@
 <template>
-  <div style="padding-bottom: 0.2rem;">
-    <el-card shadow="hover">
+  <div style="padding-bottom: 1rem;">
+    <el-card>
       <el-row type="flex">
-        <el-col :span="1">
+        <el-col :span="2">
           <font-awesome-icon icon="walking" size="2x" v-if="tripEvent.category_id === 1" />
           <font-awesome-icon icon="bus-alt" size="2x" v-if="tripEvent.category_id === 2" />
           <font-awesome-icon icon="info-circle" size="2x" v-if="tripEvent.category_id === 3" />
@@ -10,7 +10,7 @@
           <font-awesome-icon icon="plane" size="2x" v-if="tripEvent.category_id === 5" />
           <font-awesome-icon icon="ship" size="2x" v-if="tripEvent.category_id === 6" />
         </el-col>
-        <el-col :span="21" style="border-left: 2px dodgerblue solid">
+        <el-col :span="20" style="border-left: 2px dodgerblue solid">
           <div style="padding-left: 0.4rem">
             <div style="font-size: 1.5rem">{{ tripEvent.title }}</div>
             <div class="event-text" v-if="tripEvent.start_time">Start at: {{ tripEvent.start_time }}</div>

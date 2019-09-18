@@ -1,4 +1,4 @@
-import { ApiService } from './api-service';
+import { ApiService } from '@/services/api-service';
 
 const SERVER_URL = 'http://localhost:3000/api';
 

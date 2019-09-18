@@ -1,11 +1,10 @@
 import { ActionContext, ActionTree, Module, MutationTree } from 'vuex';
-
-import { AuthenticationState, RootState } from './types';
-import { User } from '../models/user';
-import { router } from '../router';
-import { UserService } from '../services/user-service';
-import { Actions } from '../constants/actions';
-import { Messages } from '../constants/messages';
+import { AuthenticationState, RootState } from '@/constants/types';
+import { User } from '@/models/user';
+import { router } from '@/router';
+import { UserService } from '@/services/user-service';
+import { Actions } from '@/constants/actions';
+import { Messages } from '@/constants/messages';
 
 const user: User = JSON.parse(localStorage.getItem('user'));
 const initialState = user ? { status: { loggedIn: true }, user } : { status: { loggedIn: false }, user };

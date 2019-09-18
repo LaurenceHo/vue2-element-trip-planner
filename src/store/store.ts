@@ -1,10 +1,10 @@
 import Vue from 'vue';
 import Vuex, { StoreOptions } from 'vuex';
-import { alert } from './alert-module';
-import { authentication } from './authentication-module';
-import { dashboard } from './dashboard-module';
-import { trip } from './trip-module';
-import { RootState } from './types';
+import { alert } from '@/store/alert-module';
+import { authentication } from '@/store/authentication-module';
+import { dashboard } from '@/store/dashboard-module';
+import { trip } from '@/store/trip-module';
+import { RootState } from '@/constants/types';
 
 Vue.use(Vuex);
 

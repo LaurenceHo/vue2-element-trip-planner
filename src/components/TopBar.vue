@@ -34,12 +34,11 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-
-import Breadcrumb from './Breadcrumb.vue';
-import Hamburger from './Hamburger.vue';
-import TripForm from './TripForm.vue';
-import TripDayForm from './TripDayForm.vue';
-import TripEventForm from './TripEventForm.vue';
+import Breadcrumb from '@/components/Breadcrumb.vue';
+import Hamburger from '@/components/Hamburger.vue';
+import TripForm from '@/components/TripForm.vue';
+import TripDayForm from '@/components/TripDayForm.vue';
+import TripEventForm from '@/components/TripEventForm.vue';
 import { Actions } from '@/constants/actions';
 
 @Component({

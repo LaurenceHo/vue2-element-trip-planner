@@ -1,7 +1,7 @@
 import { cloneDeep, isEmpty, map, remove, sortBy } from 'lodash';
 import moment from 'moment-timezone';
 import { ActionContext, ActionTree, Module, MutationTree } from 'vuex';
-import { RootState, TripState } from './types';
+import { RootState, TripState } from '@/constants/types';
 import { Event } from '@/models/event';
 import { Trip } from '@/models/trip';
 import { TripDay } from '@/models/trip-day';

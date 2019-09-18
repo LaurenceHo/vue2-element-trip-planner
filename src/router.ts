@@ -1,11 +1,6 @@
 import { includes } from 'lodash';
 import Vue from 'vue';
 import Router from 'vue-router';
-import Dashboard from './views/Dashboard.vue';
-import Login from './views/Login.vue';
-import Register from './views/Register.vue';
-import TripList from './components/TripList.vue';
-import TripDetailDashboard from './views/TripDetailDashboard.vue';
 
 Vue.use(Router);
 
@@ -13,23 +8,23 @@ export const router = new Router({
   routes: [
     {
       path: '/login',
-      component: Login,
+      component: () => import('./views/Login.vue'),
     },
     {
       path: '/register',
-      component: Register,
+      component: () => import('./views/Register.vue'),
     },
     {
       path: '/dashboard',
-      component: Dashboard,
+      component: () => import('./views/Dashboard.vue'),
       children: [
         {
           path: '',
-          component: TripList,
+          component: () => import('./components/TripList.vue'),
         },
         {
           path: '/trip/:trip_id',
-          component: TripDetailDashboard,
+          component: () => import('./views/TripDetailDashboard.vue'),
         },
       ],
     },

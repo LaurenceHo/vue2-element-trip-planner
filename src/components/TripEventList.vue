@@ -67,9 +67,8 @@
 <script lang="ts">
 import { isEmpty } from 'lodash';
 import { Component, Vue } from 'vue-property-decorator';
-
-import Event from './Event.vue';
-import TripDayInnerForm from './TripDayInnerForm.vue';
+import Event from '@/components/Event.vue';
+import TripDayInnerForm from '@/components/TripDayInnerForm.vue';
 import { TripDay } from '@/models/trip-day';
 import { Actions } from '@/constants/actions';
 import { Messages } from '@/constants/messages';

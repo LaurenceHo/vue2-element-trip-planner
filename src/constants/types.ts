@@ -1,5 +1,5 @@
-import { Trip } from '../models/trip';
-import { User } from '../models/user';
+import { Trip } from '@/models/trip';
+import { User } from '@/models/user';
 
 export interface RootState {
   dashboard: DashboardState;

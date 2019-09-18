@@ -1,6 +1,5 @@
 import { ActionTree, Module, MutationTree } from 'vuex';
-
-import { DashboardState, RootState } from './types';
+import { DashboardState, RootState } from '@/constants/types';
 
 const state: DashboardState = {
   toggle: true,

@@ -1,14 +1,14 @@
 <template>
   <div class="container">
-    <el-row type="flex" class="row-bg" justify="end" style="padding-top: 1rem">
+    <el-row class="row-bg" justify="end" style="padding-top: 1rem" type="flex">
       <el-col :span="2">
         <el-button @click="goToRegisterPage" type="primary">
           Sign Up
         </el-button>
       </el-col>
     </el-row>
-    <el-form ref="user" :model="user" class="user-form" label-position="top" label-width="5rem">
-      <el-alert v-if="alert.message" :title="alert.message" :type="alert.type" show-icon effect="dark" />
+    <el-form :model="user" class="user-form" label-position="top" label-width="5rem" ref="user">
+      <el-alert :title="alert.message" :type="alert.type" effect="dark" show-icon v-if="alert.message" />
       <div class="user-form-title-container">
         <h3 class="user-form-title ">
           Sign In
@@ -18,15 +18,15 @@
         <el-input v-model="user.email" />
       </el-form-item>
       <el-form-item label="Password">
-        <el-input v-model="user.password" type="password" />
+        <el-input type="password" v-model="user.password" />
       </el-form-item>
       <el-form-item>
         <el-button
-          @click="handleSubmit"
           :disabled="loggingIn || !user.email || !user.password"
+          @click="handleSubmit"
           class="user-form-button"
-          type="primary"
           native-type="submit"
+          type="primary"
         >
           Login
         </el-button>
@@ -36,7 +36,7 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator';
+import { Component, Vue } from 'vue-property-decorator';
 import { Actions } from '@/constants/actions';
 import { Messages } from '@/constants/messages';
 
