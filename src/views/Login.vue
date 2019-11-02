@@ -28,7 +28,7 @@
           native-type="submit"
           type="primary"
         >
-          Login
+          Sign In
         </el-button>
       </el-form-item>
     </el-form>

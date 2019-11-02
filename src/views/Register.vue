@@ -31,7 +31,7 @@
           native-type="submit"
           type="primary"
         >
-          Register
+          Sign Up
         </el-button>
       </el-form-item>
     </el-form>

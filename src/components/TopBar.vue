@@ -16,11 +16,11 @@
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item command="profile">
             <font-awesome-icon class="menu-icon" icon="user" />
-            Your profile
+            My profile
           </el-dropdown-item>
           <el-dropdown-item command="setting">
             <font-awesome-icon class="menu-icon" icon="cog" />
-            Setting
+            Settings
           </el-dropdown-item>
           <el-dropdown-item command="logout" divided>
             <font-awesome-icon class="menu-icon" icon="sign-out-alt" />
