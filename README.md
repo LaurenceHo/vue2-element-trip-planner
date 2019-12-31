@@ -1,4 +1,4 @@
-# (WIP) Trip planner frontend web application using Vue2, element-ui and Webpack4.
+# [DEPRECATED] Trip planner frontend web application using Vue2 and element-ui.
 
 ## Introduction
 This project's purpose is for trip planning and management, which is also my personal interest.
@@ -17,7 +17,7 @@ The frontend stack is including [Vue2](https://vuejs.org/v2/guide/) (TypeScript)
 * Run seed db: `node dist/server/database/seed.js`
 
 ### Set up Vuejs trip planner frontend app
-* Clone the repo: `git clone https://github.com/LaurenceHo/vue-trip-planner.git`
+* Clone the repo: `git clone https://github.com/LaurenceHo/vue2-element-trip-planner.git`
 * Install npm package: `npm install`
 * Start frontend app using webpack dev server: `npm run start`
 * Visit in your browser: `http://localhost:8000`, use `laurence@test.co.nz` as email and `abc123` as password to do login.
